@@ -1,2 +1,2 @@
 # Fermenta
-Fermentation chamber control software
+Software to control dough fermentation
