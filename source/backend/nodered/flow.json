@@ -2,7 +2,7 @@
     {
         "id": "a49856a6.d10848",
         "type": "tab",
-        "label": "Flow 1",
+        "label": "Sensors",
         "disabled": false,
         "info": ""
     },
@@ -50,8 +50,8 @@
         "z": "a49856a6.d10848",
         "name": "Distance01",
         "topic": "DS01",
-        "qos": "",
-        "retain": "",
+        "qos": "1",
+        "retain": "true",
         "broker": "638fc478.4db30c",
         "x": 530,
         "y": 860,
