@@ -1,0 +1,77 @@
+[
+    {
+        "id": "a49856a6.d10848",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "638fc478.4db30c",
+        "type": "mqtt-broker",
+        "name": "Fermenta",
+        "broker": "localhost",
+        "port": "1883",
+        "clientid": "",
+        "usetls": false,
+        "compatmode": false,
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": ""
+    },
+    {
+        "id": "41c8ede2.3e7b84",
+        "type": "rpi-srf",
+        "z": "a49856a6.d10848",
+        "name": "Distance01",
+        "topic": "SRF",
+        "pulse": "2",
+        "pins": "38,40",
+        "x": 250,
+        "y": 860,
+        "wires": [
+            [
+                "cdadd6c3.6ade48",
+                "903cfe34.3c25d"
+            ]
+        ]
+    },
+    {
+        "id": "903cfe34.3c25d",
+        "type": "mqtt out",
+        "z": "a49856a6.d10848",
+        "name": "Distance01",
+        "topic": "DS01",
+        "qos": "",
+        "retain": "",
+        "broker": "638fc478.4db30c",
+        "x": 530,
+        "y": 860,
+        "wires": []
+    },
+    {
+        "id": "cdadd6c3.6ade48",
+        "type": "debug",
+        "z": "a49856a6.d10848",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": true,
+        "tostatus": true,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "payload",
+        "statusType": "auto",
+        "x": 540,
+        "y": 800,
+        "wires": []
+    }
+]
