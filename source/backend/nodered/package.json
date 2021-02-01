@@ -2,7 +2,11 @@
     "name": "backend",
     "description": "Fermenta Backend",
     "version": "0.0.1",
-    "dependencies": {},
+    "dependencies": {
+        "node-red-node-pisrf": "0.1.4",
+        "node-red-dashboard": "2.27.0",
+        "node-red-contrib-os": "0.2.0"
+    },
     "node-red": {
         "settings": {
             "flowFile": "flow.json",
