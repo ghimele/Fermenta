@@ -147,6 +147,39 @@
         }
     },
     {
+        "id": "7853403.230cdc",
+        "type": "ui_group",
+        "name": "CPU Load",
+        "tab": "e6013c6f.69328",
+        "order": 2,
+        "disp": true,
+        "width": "6"
+    },
+    {
+        "id": "1d1da0fc.6ab84f",
+        "type": "ui_group",
+        "name": "Memory",
+        "tab": "e6013c6f.69328",
+        "order": 3,
+        "disp": true,
+        "width": "6"
+    },
+    {
+        "id": "a9912d64.97094",
+        "type": "ui_group",
+        "name": "System Information",
+        "tab": "e6013c6f.69328",
+        "order": 1,
+        "disp": true,
+        "width": "6"
+    },
+    {
+        "id": "e6013c6f.69328",
+        "type": "ui_tab",
+        "name": "System",
+        "icon": "computer"
+    },
+    {
         "id": "41c8ede2.3e7b84",
         "type": "rpi-srf",
         "z": "a49856a6.d10848",
@@ -197,7 +230,7 @@
         "id": "6129eac0.5bdec4",
         "type": "inject",
         "z": "9f3346aa.d4fc48",
-        "name": "5 sec tick",
+        "name": "10 sec tick",
         "props": [
             {
                 "p": "payload"
@@ -207,7 +240,7 @@
                 "vt": "str"
             }
         ],
-        "repeat": "5",
+        "repeat": "10",
         "crontab": "",
         "once": true,
         "onceDelay": "1",
@@ -219,14 +252,14 @@
         "wires": [
             [
                 "ab1a2405.584fd8",
-                "7805af15.1b74f",
                 "f2adaf57.d9a",
                 "57db43b6.37f54c",
                 "e91a3069.06e26",
-                "54f685c.dbdd67c",
                 "dfed6e13.50ff2",
                 "dade3cd6.7d9eb",
-                "8a2afb23.9bb668"
+                "6d9ce3f1.90469c",
+                "b2a8abb1.8af698",
+                "2bac96e4.7181ca"
             ]
         ]
     },
@@ -369,75 +402,6 @@
         ]
     },
     {
-        "id": "e2fad608.df29c8",
-        "type": "ui_gauge",
-        "z": "9f3346aa.d4fc48",
-        "name": "",
-        "group": "d07f30e0.c48a2",
-        "order": 2,
-        "width": "0",
-        "height": "0",
-        "gtype": "donut",
-        "title": "RAM usage",
-        "label": "%",
-        "format": "{{msg.payload}}",
-        "min": 0,
-        "max": "100",
-        "colors": [
-            "#00b500",
-            "#e6e600",
-            "#ca3838"
-        ],
-        "seg1": "60",
-        "seg2": "80",
-        "x": 870,
-        "y": 780,
-        "wires": []
-    },
-    {
-        "id": "542d167b.24a938",
-        "type": "ui_chart",
-        "z": "9f3346aa.d4fc48",
-        "name": "",
-        "group": "d07f30e0.c48a2",
-        "order": 3,
-        "width": 0,
-        "height": 0,
-        "label": "",
-        "chartType": "line",
-        "legend": "false",
-        "xformat": "HH:mm:ss",
-        "interpolate": "linear",
-        "nodata": "",
-        "dot": false,
-        "ymin": "0",
-        "ymax": "100",
-        "removeOlder": 1,
-        "removeOlderPoints": "",
-        "removeOlderUnit": "86400",
-        "cutout": 0,
-        "useOneColor": false,
-        "useUTC": false,
-        "colors": [
-            "#1f77b4",
-            "#aec7e8",
-            "#ff7f0e",
-            "#2ca02c",
-            "#98df8a",
-            "#d62728",
-            "#ff9896",
-            "#9467bd",
-            "#c5b0d5"
-        ],
-        "outputs": 1,
-        "useDifferentColor": false,
-        "x": 850,
-        "y": 820,
-        "wires": [
-            []
-        ]
-    },
-    {
         "id": "48b90ddd.e18714",
         "type": "ui_gauge",
         "z": "9f3346aa.d4fc48",
@@ -462,32 +426,6 @@
         "x": 870,
         "y": 1100,
         "wires": []
-    },
-    {
-        "id": "597cae13.db6de",
-        "type": "function",
-        "z": "9f3346aa.d4fc48",
-        "name": "extract",
-        "func": "var msg1,msg2,msg3;\nmsg1= {topic: 'Total', payload: msg.payload.totalmem};\nmsg2= {topic: 'Free', payload: msg.payload.freemem};\nmsg3= {topic: 'Usage', payload: msg.payload.memusage};\n\nreturn [msg1, msg2, msg3];",
-        "outputs": 3,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "x": 470,
-        "y": 680,
-        "wires": [
-            [
-                "5871770c.b8b6e8"
-            ],
-            [
-                "5a0ff673.299f78"
-            ],
-            [
-                "f01b86b9.d505a8",
-                "e2fad608.df29c8",
-                "542d167b.24a938"
-            ]
-        ]
     },
     {
         "id": "ba1907da.0fcf28",
@@ -529,20 +467,6 @@
             ],
             [],
             []
-        ]
-    },
-    {
-        "id": "7805af15.1b74f",
-        "type": "Memory",
-        "z": "9f3346aa.d4fc48",
-        "name": "",
-        "scale": "Gigabyte",
-        "x": 320,
-        "y": 680,
-        "wires": [
-            [
-                "597cae13.db6de"
-            ]
         ]
     },
     {
@@ -696,20 +620,9 @@
         "z": "9f3346aa.d4fc48",
         "name": "UI controls",
         "info": "",
-        "x": 540,
-        "y": 100,
+        "x": 640,
+        "y": 80,
         "wires": []
-    },
-    {
-        "id": "54f685c.dbdd67c",
-        "type": "NetworkIntf",
-        "z": "9f3346aa.d4fc48",
-        "name": "",
-        "x": 230,
-        "y": 1320,
-        "wires": [
-            []
-        ]
     },
     {
         "id": "46060731.19d8b8",
@@ -772,8 +685,8 @@
         "qos": "1",
         "retain": "true",
         "broker": "638fc478.4db30c",
-        "x": 880,
-        "y": 720,
+        "x": 1020,
+        "y": 800,
         "wires": []
     },
     {
@@ -800,13 +713,13 @@
         "id": "5a0ff673.299f78",
         "type": "mqtt out",
         "z": "9f3346aa.d4fc48",
-        "name": "Memory Free",
-        "topic": "Fermenta/System/Memory/Free",
+        "name": "Memory Available",
+        "topic": "Fermenta/System/Memory/Available",
         "qos": "1",
         "retain": "true",
         "broker": "638fc478.4db30c",
-        "x": 880,
-        "y": 660,
+        "x": 1030,
+        "y": 740,
         "wires": []
     },
     {
@@ -818,8 +731,8 @@
         "qos": "1",
         "retain": "true",
         "broker": "638fc478.4db30c",
-        "x": 880,
-        "y": 600,
+        "x": 1020,
+        "y": 640,
         "wires": []
     },
     {
@@ -829,7 +742,7 @@
         "name": "Memory",
         "info": "",
         "x": 320,
-        "y": 620,
+        "y": 540,
         "wires": []
     },
     {
@@ -877,7 +790,7 @@
         "y": 180,
         "wires": [
             [
-                "ac3dff59.0e23d"
+                "10434740.86af19"
             ]
         ]
     },
@@ -909,39 +822,10 @@
         "y": 120,
         "wires": [
             [
-                "ac3dff59.0e23d",
                 "bfc93db5.11c57"
             ],
             [],
             []
-        ]
-    },
-    {
-        "id": "ac3dff59.0e23d",
-        "type": "join",
-        "z": "9f3346aa.d4fc48",
-        "name": "",
-        "mode": "custom",
-        "build": "string",
-        "property": "payload",
-        "propertyType": "msg",
-        "key": "topic",
-        "joiner": "\\n",
-        "joinerType": "str",
-        "accumulate": false,
-        "timeout": "",
-        "count": "",
-        "reduceRight": false,
-        "reduceExp": "",
-        "reduceInit": "",
-        "reduceInitType": "",
-        "reduceFixup": "",
-        "x": 530,
-        "y": 140,
-        "wires": [
-            [
-                "10434740.86af19"
-            ]
         ]
     },
     {
@@ -961,6 +845,7 @@
         "id": "8a2afb23.9bb668",
         "type": "mqtt-check",
         "z": "9f3346aa.d4fc48",
+        "d": true,
         "host": "localhost",
         "port": "1883",
         "username": "Fermenta",
@@ -989,6 +874,206 @@
         "statusType": "auto",
         "x": 850,
         "y": 40,
+        "wires": []
+    },
+    {
+        "id": "83dbb22c.e12e8",
+        "type": "mqtt out",
+        "z": "9f3346aa.d4fc48",
+        "name": "Memory",
+        "topic": "Fermenta/System/MemoryData",
+        "qos": "1",
+        "retain": "true",
+        "broker": "638fc478.4db30c",
+        "x": 1000,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "dced7955.ce0058",
+        "type": "json",
+        "z": "9f3346aa.d4fc48",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": true,
+        "x": 770,
+        "y": 580,
+        "wires": [
+            [
+                "83dbb22c.e12e8"
+            ]
+        ]
+    },
+    {
+        "id": "6d9ce3f1.90469c",
+        "type": "memory",
+        "z": "9f3346aa.d4fc48",
+        "name": "Memory Total",
+        "relativeValues": false,
+        "unitType": "gb",
+        "totalMemory": true,
+        "usedMemory": false,
+        "freeMemory": false,
+        "availableMemory": false,
+        "activeMemory": false,
+        "buffersMemory": false,
+        "cachedMemory": false,
+        "slabMemory": false,
+        "buffcacheMemory": false,
+        "freeAvailableMemory": false,
+        "swapTotalMemory": false,
+        "swapUsedMemory": false,
+        "swapFreeMemory": false,
+        "x": 340,
+        "y": 600,
+        "wires": [
+            [
+                "2248d179.1543ae"
+            ]
+        ]
+    },
+    {
+        "id": "b2a8abb1.8af698",
+        "type": "memory",
+        "z": "9f3346aa.d4fc48",
+        "name": "Memory Free",
+        "relativeValues": false,
+        "unitType": "gb",
+        "totalMemory": false,
+        "usedMemory": false,
+        "freeMemory": false,
+        "availableMemory": true,
+        "activeMemory": false,
+        "buffersMemory": false,
+        "cachedMemory": false,
+        "slabMemory": false,
+        "buffcacheMemory": false,
+        "freeAvailableMemory": false,
+        "swapTotalMemory": false,
+        "swapUsedMemory": false,
+        "swapFreeMemory": false,
+        "x": 330,
+        "y": 660,
+        "wires": [
+            [
+                "2248d179.1543ae"
+            ]
+        ]
+    },
+    {
+        "id": "7f06399e.dd1c18",
+        "type": "join",
+        "z": "9f3346aa.d4fc48",
+        "name": "",
+        "mode": "custom",
+        "build": "object",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "accumulate": false,
+        "timeout": "",
+        "count": "3",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "",
+        "reduceFixup": "",
+        "x": 630,
+        "y": 620,
+        "wires": [
+            [
+                "274a1f32.73466",
+                "dced7955.ce0058"
+            ]
+        ]
+    },
+    {
+        "id": "2bac96e4.7181ca",
+        "type": "memory",
+        "z": "9f3346aa.d4fc48",
+        "name": "Memory Usage",
+        "relativeValues": false,
+        "unitType": "gb",
+        "totalMemory": false,
+        "usedMemory": false,
+        "freeMemory": false,
+        "availableMemory": false,
+        "activeMemory": true,
+        "buffersMemory": false,
+        "cachedMemory": false,
+        "slabMemory": false,
+        "buffcacheMemory": false,
+        "freeAvailableMemory": false,
+        "swapTotalMemory": false,
+        "swapUsedMemory": false,
+        "swapFreeMemory": false,
+        "x": 340,
+        "y": 720,
+        "wires": [
+            [
+                "2248d179.1543ae"
+            ]
+        ]
+    },
+    {
+        "id": "2248d179.1543ae",
+        "type": "function",
+        "z": "9f3346aa.d4fc48",
+        "name": "Round",
+        "func": "var rounded;\nrounded=parseFloat(msg.payload).toFixed(2);\nmsg={topic: msg.topic, payload: rounded}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 510,
+        "y": 620,
+        "wires": [
+            [
+                "7f06399e.dd1c18"
+            ]
+        ]
+    },
+    {
+        "id": "274a1f32.73466",
+        "type": "function",
+        "z": "9f3346aa.d4fc48",
+        "name": "",
+        "func": "var memtotal;\nvar memactive;\nvar memavailable;\nvar memactiverelative;\nmemtotal={topic:\"memory_total\",payload: msg.payload.memory_total};\nmemactive={topic:\"memory_active\",payload: msg.payload.memory_active};\nmemavailable={topic:\"memory_available\",payload: msg.payload.memory_available};\nmemactiverelative={topic:\"memory_activerel\",payload: parseFloat(msg.payload.memory_active/msg.payload.memory_total*100).toFixed(2)};\nmsg=[memtotal,memactive,memavailable,memactiverelative];\nreturn msg;",
+        "outputs": 4,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 780,
+        "y": 720,
+        "wires": [
+            [
+                "5871770c.b8b6e8"
+            ],
+            [
+                "b3664b6e.ad96b8"
+            ],
+            [
+                "5a0ff673.299f78"
+            ],
+            [
+                "f01b86b9.d505a8"
+            ]
+        ]
+    },
+    {
+        "id": "b3664b6e.ad96b8",
+        "type": "mqtt out",
+        "z": "9f3346aa.d4fc48",
+        "name": "Memory Active",
+        "topic": "Fermenta/System/Memory/Active",
+        "qos": "",
+        "retain": "",
+        "broker": "638fc478.4db30c",
+        "x": 1020,
+        "y": 700,
         "wires": []
     }
 ]
