@@ -24,7 +24,7 @@ class GaugeChart extends React.Component {
       {
         domain: { x: [0, 1], y: [0, 1] },
         value: this.props.data[0],
-        title: { text: this.props.Title },
+        title: { text: this.props.Title,font:{size:18, color:COLORS.dark} },
         type: "indicator",
         mode: "gauge+number",
         gauge: { axis: { range: [null, 100], tickmode:"linear",dtick:10},
@@ -42,7 +42,7 @@ class GaugeChart extends React.Component {
       }
     ];
     
-    var layout = { width:300,height:300, margin:{l:30,r:30,t:0,b:0, pad:30}, autosize:true};
+    var layout = { width:300,height:200, margin:{l:30,r:30,t:30,b:0, pad:0}, autosize:true};
     
     var config = {responsive: true, displayModeBar: false}
 
