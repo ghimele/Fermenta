@@ -203,7 +203,7 @@
         "name": "Distance01",
         "topic": "Fermenta/Sensors/Distance/1",
         "qos": "1",
-        "retain": "true",
+        "retain": "false",
         "broker": "638fc478.4db30c",
         "x": 460,
         "y": 140,
@@ -312,7 +312,7 @@
         "seg1": "60",
         "seg2": "80",
         "x": 850,
-        "y": 420,
+        "y": 440,
         "wires": []
     },
     {
@@ -396,7 +396,7 @@
         "outputs": 1,
         "useDifferentColor": false,
         "x": 860,
-        "y": 380,
+        "y": 400,
         "wires": [
             []
         ]
@@ -590,8 +590,8 @@
         "type": "function",
         "z": "9f3346aa.d4fc48",
         "name": "convert",
-        "func": "var msg1,msg2,msg3;\n\nl = msg.payload.split(/(\\s+)/).filter( function(e) { return e.trim().length > 0; } );\nmsg1 = {topic: 'Total', payload: Math.round(l[1] / 1000)};\nmsg2 = {topic: 'Free', payload: Math.round(l[3] / 1000)};\nmsg3 = {topic: 'Used%', payload: l[4].slice(0, -1)};\n\nreturn [msg1, msg2, msg3];",
-        "outputs": 3,
+        "func": "var msg1,msg2,msg3,msg4;\n\nl = msg.payload.split(/(\\s+)/).filter( function(e) { return e.trim().length > 0; } );\nmsg1 = {topic: 'Total', payload: parseFloat(l[1] / 1000).toFixed(2)};\nmsg2 = {topic: 'Used', payload:  parseFloat(l[2] / 1000).toFixed(2)};\nmsg3 = {topic: 'Free', payload:  parseFloat(l[3] / 1000).toFixed(2)};\nmsg4 = {topic: 'Usage',payload: l[4].slice(0, -1)};\nmsg5 = {topic: 'Data', payload: {disk_total: msg1.payload, disk_used:msg2.payload, disk_free:msg3.payload }};\nreturn [msg1, msg2,msg3, msg4,msg5];",
+        "outputs": 5,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
@@ -603,13 +603,19 @@
                 "46060731.19d8b8"
             ],
             [
-                "95df7e14.b6609",
-                "a2d3aceb.798a3"
+                "e5545102.dca79"
             ],
             [
-                "95df7e14.b6609",
+                "a2d3aceb.798a3",
+                "95df7e14.b6609"
+            ],
+            [
+                "8cefa9f3.fd45c8",
                 "23830467.dd874c",
-                "8cefa9f3.fd45c8"
+                "ab78c404.fa5158"
+            ],
+            [
+                "47fca7e5.a21d88"
             ]
         ],
         "info": " - msg1 is the total size of disk\n - msg2 is the free size\n - msg3 is the % usage"
@@ -628,12 +634,12 @@
         "id": "46060731.19d8b8",
         "type": "mqtt out",
         "z": "9f3346aa.d4fc48",
-        "name": "Disk Total1",
+        "name": "Disk Total",
         "topic": "Fermenta/System/Disk/Total",
         "qos": "1",
-        "retain": "true",
+        "retain": "false",
         "broker": "638fc478.4db30c",
-        "x": 870,
+        "x": 860,
         "y": 200,
         "wires": []
     },
@@ -644,20 +650,20 @@
         "name": "Disk Free",
         "topic": "Fermenta/System/Disk/Free",
         "qos": "1",
-        "retain": "true",
+        "retain": "false",
         "broker": "638fc478.4db30c",
         "x": 860,
-        "y": 260,
+        "y": 280,
         "wires": []
     },
     {
         "id": "8cefa9f3.fd45c8",
         "type": "mqtt out",
         "z": "9f3346aa.d4fc48",
-        "name": "Disk Used %",
-        "topic": "Fermenta/System/Disk/Used",
-        "qos": "",
-        "retain": "",
+        "name": "Disk Usage",
+        "topic": "Fermenta/System/Disk/Usage",
+        "qos": "1",
+        "retain": "false",
         "broker": "638fc478.4db30c",
         "x": 870,
         "y": 320,
@@ -669,8 +675,8 @@
         "z": "9f3346aa.d4fc48",
         "name": "Uptime",
         "topic": "Fermenta/System/Uptime/",
-        "qos": "",
-        "retain": "",
+        "qos": "1",
+        "retain": "false",
         "broker": "638fc478.4db30c",
         "x": 860,
         "y": 480,
@@ -683,7 +689,7 @@
         "name": "Memory Usage",
         "topic": "Fermenta/System/Memory/Usage",
         "qos": "1",
-        "retain": "true",
+        "retain": "false",
         "broker": "638fc478.4db30c",
         "x": 1020,
         "y": 800,
@@ -716,7 +722,7 @@
         "name": "Memory Available",
         "topic": "Fermenta/System/Memory/Available",
         "qos": "1",
-        "retain": "true",
+        "retain": "false",
         "broker": "638fc478.4db30c",
         "x": 1030,
         "y": 740,
@@ -729,7 +735,7 @@
         "name": "Memory Total",
         "topic": "Fermenta/System/Memory/Total",
         "qos": "1",
-        "retain": "true",
+        "retain": "false",
         "broker": "638fc478.4db30c",
         "x": 1020,
         "y": 640,
@@ -801,7 +807,7 @@
         "name": "Operating System",
         "topic": "Fermenta/System/OS",
         "qos": "1",
-        "retain": "true",
+        "retain": "false",
         "broker": "638fc478.4db30c",
         "x": 890,
         "y": 140,
@@ -835,7 +841,7 @@
         "name": "IP",
         "topic": "Fermenta/System/IP",
         "qos": "1",
-        "retain": "true",
+        "retain": "false",
         "broker": "638fc478.4db30c",
         "x": 850,
         "y": 100,
@@ -883,7 +889,7 @@
         "name": "Memory",
         "topic": "Fermenta/System/MemoryData",
         "qos": "1",
-        "retain": "true",
+        "retain": "false",
         "broker": "638fc478.4db30c",
         "x": 1000,
         "y": 580,
@@ -1069,11 +1075,53 @@
         "z": "9f3346aa.d4fc48",
         "name": "Memory Active",
         "topic": "Fermenta/System/Memory/Active",
-        "qos": "",
-        "retain": "",
+        "qos": "1",
+        "retain": "false",
         "broker": "638fc478.4db30c",
         "x": 1020,
         "y": 700,
+        "wires": []
+    },
+    {
+        "id": "e5545102.dca79",
+        "type": "mqtt out",
+        "z": "9f3346aa.d4fc48",
+        "name": "Disk Used",
+        "topic": "Fermenta/System/Disk/Used",
+        "qos": "1",
+        "retain": "false",
+        "broker": "638fc478.4db30c",
+        "x": 870,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "ab78c404.fa5158",
+        "type": "debug",
+        "z": "9f3346aa.d4fc48",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 660,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "47fca7e5.a21d88",
+        "type": "mqtt out",
+        "z": "9f3346aa.d4fc48",
+        "name": "Disk Data",
+        "topic": "Fermenta/System/DiskData",
+        "qos": "1",
+        "retain": "false",
+        "broker": "638fc478.4db30c",
+        "x": 860,
+        "y": 360,
         "wires": []
     }
 ]

@@ -14,13 +14,6 @@
         "info": "# System Monitor\nFlow to monitor the Raspberry Pi resources\n - CPU Load\n - CPU Temp\n - Memory\n - Disk\n - Uptime"
     },
     {
-        "id": "772e6979.67cd08",
-        "type": "tab",
-        "label": "System2",
-        "disabled": false,
-        "info": ""
-    },
-    {
         "id": "638fc478.4db30c",
         "type": "mqtt-broker",
         "name": "Fermenta",
@@ -319,7 +312,7 @@
         "seg1": "60",
         "seg2": "80",
         "x": 850,
-        "y": 420,
+        "y": 440,
         "wires": []
     },
     {
@@ -403,7 +396,7 @@
         "outputs": 1,
         "useDifferentColor": false,
         "x": 860,
-        "y": 380,
+        "y": 400,
         "wires": [
             []
         ]
@@ -597,8 +590,8 @@
         "type": "function",
         "z": "9f3346aa.d4fc48",
         "name": "convert",
-        "func": "var msg1,msg2,msg3;\n\nl = msg.payload.split(/(\\s+)/).filter( function(e) { return e.trim().length > 0; } );\nmsg1 = {topic: 'Total', payload: Math.round(l[1] / 1000)};\nmsg2 = {topic: 'Free', payload: Math.round(l[3] / 1000)};\nmsg3 = {topic: 'Used%', payload: l[4].slice(0, -1)};\n\nreturn [msg1, msg2, msg3];",
-        "outputs": 3,
+        "func": "var msg1,msg2,msg3,msg4;\n\nl = msg.payload.split(/(\\s+)/).filter( function(e) { return e.trim().length > 0; } );\nmsg1 = {topic: 'Total', payload: parseFloat(l[1] / 1000).toFixed(2)};\nmsg2 = {topic: 'Used', payload:  parseFloat(l[2] / 1000).toFixed(2)};\nmsg3 = {topic: 'Free', payload:  parseFloat(l[3] / 1000).toFixed(2)};\nmsg4 = {topic: 'Usage',payload: l[4].slice(0, -1)};\nmsg5 = {topic: 'Data', payload: {disk_total: msg1.payload, disk_used:msg2.payload, disk_free:msg3.payload }};\nreturn [msg1, msg2,msg3, msg4,msg5];",
+        "outputs": 5,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
@@ -610,13 +603,19 @@
                 "46060731.19d8b8"
             ],
             [
-                "95df7e14.b6609",
-                "a2d3aceb.798a3"
+                "e5545102.dca79"
             ],
             [
-                "95df7e14.b6609",
+                "a2d3aceb.798a3",
+                "95df7e14.b6609"
+            ],
+            [
+                "8cefa9f3.fd45c8",
                 "23830467.dd874c",
-                "8cefa9f3.fd45c8"
+                "ab78c404.fa5158"
+            ],
+            [
+                "47fca7e5.a21d88"
             ]
         ],
         "info": " - msg1 is the total size of disk\n - msg2 is the free size\n - msg3 is the % usage"
@@ -635,12 +634,12 @@
         "id": "46060731.19d8b8",
         "type": "mqtt out",
         "z": "9f3346aa.d4fc48",
-        "name": "Disk Total1",
+        "name": "Disk Total",
         "topic": "Fermenta/System/Disk/Total",
         "qos": "1",
         "retain": "true",
         "broker": "638fc478.4db30c",
-        "x": 870,
+        "x": 860,
         "y": 200,
         "wires": []
     },
@@ -654,17 +653,17 @@
         "retain": "true",
         "broker": "638fc478.4db30c",
         "x": 860,
-        "y": 260,
+        "y": 280,
         "wires": []
     },
     {
         "id": "8cefa9f3.fd45c8",
         "type": "mqtt out",
         "z": "9f3346aa.d4fc48",
-        "name": "Disk Used %",
-        "topic": "Fermenta/System/Disk/Used",
-        "qos": "",
-        "retain": "",
+        "name": "Disk Usage",
+        "topic": "Fermenta/System/Disk/Usage",
+        "qos": "1",
+        "retain": "true",
         "broker": "638fc478.4db30c",
         "x": 870,
         "y": 320,
@@ -676,8 +675,8 @@
         "z": "9f3346aa.d4fc48",
         "name": "Uptime",
         "topic": "Fermenta/System/Uptime/",
-        "qos": "",
-        "retain": "",
+        "qos": "1",
+        "retain": "true",
         "broker": "638fc478.4db30c",
         "x": 860,
         "y": 480,
@@ -884,702 +883,6 @@
         "wires": []
     },
     {
-        "id": "f25a9b1d.c6fce8",
-        "type": "OS",
-        "z": "772e6979.67cd08",
-        "name": "",
-        "x": 234,
-        "y": 398,
-        "wires": [
-            [
-                "f745cace.30f2d8",
-                "3153bd68.82b782",
-                "7eec4b7e.c15ad4",
-                "6b4d7f76.271fb"
-            ]
-        ]
-    },
-    {
-        "id": "c63cb373.ce94f",
-        "type": "Uptime",
-        "z": "772e6979.67cd08",
-        "name": "",
-        "x": 245,
-        "y": 353,
-        "wires": [
-            [
-                "20567afa.bd4466"
-            ]
-        ]
-    },
-    {
-        "id": "21faa622.8c25da",
-        "type": "CPUs",
-        "z": "772e6979.67cd08",
-        "name": "",
-        "x": 234,
-        "y": 443,
-        "wires": [
-            [
-                "8a945e71.8626b"
-            ]
-        ]
-    },
-    {
-        "id": "7780c9ca.7581b8",
-        "type": "Loadavg",
-        "z": "772e6979.67cd08",
-        "name": "",
-        "x": 171,
-        "y": 165,
-        "wires": [
-            [
-                "240a76f3.9953ea",
-                "5d85387c.957fb8",
-                "b33d4d45.a6673",
-                "a25b88bc.6ead88"
-            ]
-        ]
-    },
-    {
-        "id": "7cf01d46.a3cad4",
-        "type": "Memory",
-        "z": "772e6979.67cd08",
-        "name": "",
-        "x": 111,
-        "y": 531,
-        "wires": [
-            [
-                "e6b8a679.aff648",
-                "dd0cca19.6f90a8",
-                "308d683f.10ab08",
-                "fbd3e7db.8ca558"
-            ]
-        ]
-    },
-    {
-        "id": "ed27cae4.70b728",
-        "type": "inject",
-        "z": "772e6979.67cd08",
-        "name": "update",
-        "repeat": "30",
-        "crontab": "",
-        "once": true,
-        "topic": "",
-        "payload": "",
-        "payloadType": "date",
-        "x": 94,
-        "y": 245,
-        "wires": [
-            [
-                "f25a9b1d.c6fce8",
-                "c63cb373.ce94f",
-                "21faa622.8c25da",
-                "7780c9ca.7581b8",
-                "7cf01d46.a3cad4"
-            ]
-        ]
-    },
-    {
-        "id": "240a76f3.9953ea",
-        "type": "function",
-        "z": "772e6979.67cd08",
-        "name": "",
-        "func": "msg.payload = msg.payload.loadavg[0];\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "x": 333,
-        "y": 105,
-        "wires": [
-            [
-                "51dfac0c.fdc9c4"
-            ]
-        ]
-    },
-    {
-        "id": "5d85387c.957fb8",
-        "type": "function",
-        "z": "772e6979.67cd08",
-        "name": "",
-        "func": "msg.payload = msg.payload.loadavg[1];\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "x": 334,
-        "y": 143,
-        "wires": [
-            [
-                "79d3dbc8.390014"
-            ]
-        ]
-    },
-    {
-        "id": "b33d4d45.a6673",
-        "type": "function",
-        "z": "772e6979.67cd08",
-        "name": "",
-        "func": "msg.payload = msg.payload.loadavg[2];\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "x": 333,
-        "y": 186,
-        "wires": [
-            [
-                "1ff0080f.4e10c8"
-            ]
-        ]
-    },
-    {
-        "id": "51dfac0c.fdc9c4",
-        "type": "ui_gauge",
-        "z": "772e6979.67cd08",
-        "name": "CPU Load 1",
-        "group": "7853403.230cdc",
-        "order": 1,
-        "width": "0",
-        "height": "0",
-        "gtype": "gage",
-        "title": "1 Minute",
-        "label": "load",
-        "format": "{{value | number:2}}",
-        "min": 0,
-        "max": "4",
-        "colors": [
-            "#00b500",
-            "#e6e600",
-            "#ca3838"
-        ],
-        "x": 501,
-        "y": 104,
-        "wires": []
-    },
-    {
-        "id": "79d3dbc8.390014",
-        "type": "ui_gauge",
-        "z": "772e6979.67cd08",
-        "name": "CPU Load 2",
-        "group": "7853403.230cdc",
-        "order": 2,
-        "width": "3",
-        "height": "3",
-        "gtype": "gage",
-        "title": "5 Minutes",
-        "label": "load",
-        "format": "{{value | number:2}}",
-        "min": 0,
-        "max": "4",
-        "colors": [
-            "#00b500",
-            "#e6e600",
-            "#ca3838"
-        ],
-        "x": 501,
-        "y": 145,
-        "wires": []
-    },
-    {
-        "id": "1ff0080f.4e10c8",
-        "type": "ui_gauge",
-        "z": "772e6979.67cd08",
-        "name": "CPU Load 3",
-        "group": "7853403.230cdc",
-        "order": 4,
-        "width": "3",
-        "height": "3",
-        "gtype": "gage",
-        "title": "15 Minutes",
-        "label": "load",
-        "format": "{{value | number:2}}",
-        "min": 0,
-        "max": "4",
-        "colors": [
-            "#00b500",
-            "#e6e600",
-            "#ca3838"
-        ],
-        "x": 499,
-        "y": 187,
-        "wires": []
-    },
-    {
-        "id": "e6b8a679.aff648",
-        "type": "function",
-        "z": "772e6979.67cd08",
-        "name": "",
-        "func": "msg.payload = msg.payload.memusage;\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "x": 116,
-        "y": 699,
-        "wires": [
-            [
-                "cc57cdea.f9387"
-            ]
-        ]
-    },
-    {
-        "id": "cc57cdea.f9387",
-        "type": "ui_gauge",
-        "z": "772e6979.67cd08",
-        "name": "Memory Usage",
-        "group": "1d1da0fc.6ab84f",
-        "order": 1,
-        "width": "0",
-        "height": "0",
-        "gtype": "gage",
-        "title": "1 Minute",
-        "label": "Usage",
-        "format": "{{value | number:2}}",
-        "min": 0,
-        "max": "100",
-        "colors": [
-            "#00b500",
-            "#e6e600",
-            "#ca3838"
-        ],
-        "x": 300,
-        "y": 703,
-        "wires": []
-    },
-    {
-        "id": "dd0cca19.6f90a8",
-        "type": "function",
-        "z": "772e6979.67cd08",
-        "name": "",
-        "func": "function formatBytes(bytes,decimals) {\n   if(bytes === 0) return '0 Byte';\n   var k = 1000; // or 1024 for binary\n   var dm = decimals + 1 || 3;\n   var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];\n   var i = Math.floor(Math.log(bytes) / Math.log(k));\n   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];\n}\n\nmsg.payload = formatBytes(msg.payload.totalmem);\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "x": 118,
-        "y": 742,
-        "wires": [
-            [
-                "4aeaebd1.24f4c4"
-            ]
-        ]
-    },
-    {
-        "id": "308d683f.10ab08",
-        "type": "function",
-        "z": "772e6979.67cd08",
-        "name": "",
-        "func": "function formatBytes(bytes,decimals) {\n   if(bytes === 0) return '0 Byte';\n   var k = 1000; // or 1024 for binary\n   var dm = decimals + 1 || 3;\n   var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];\n   var i = Math.floor(Math.log(bytes) / Math.log(k));\n   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];\n}\n\nmsg.payload = formatBytes(msg.payload.freemem);\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "x": 116,
-        "y": 788,
-        "wires": [
-            [
-                "ef649e9b.dce7d"
-            ]
-        ]
-    },
-    {
-        "id": "4aeaebd1.24f4c4",
-        "type": "ui_text",
-        "z": "772e6979.67cd08",
-        "group": "1d1da0fc.6ab84f",
-        "order": 2,
-        "width": "0",
-        "height": "0",
-        "name": "",
-        "label": "Total Memory",
-        "format": "{{msg.payload}}",
-        "layout": "row-spread",
-        "x": 299,
-        "y": 746,
-        "wires": []
-    },
-    {
-        "id": "ef649e9b.dce7d",
-        "type": "ui_text",
-        "z": "772e6979.67cd08",
-        "group": "1d1da0fc.6ab84f",
-        "order": 3,
-        "width": "0",
-        "height": "0",
-        "name": "",
-        "label": "Free Memory",
-        "format": "{{msg.payload}}",
-        "layout": "row-spread",
-        "x": 303,
-        "y": 789,
-        "wires": []
-    },
-    {
-        "id": "20567afa.bd4466",
-        "type": "function",
-        "z": "772e6979.67cd08",
-        "name": "",
-        "func": "function timeConversion(millisec) {\n\n    var seconds = (millisec / 1000).toFixed(1);\n\n    var minutes = (millisec / (1000 * 60)).toFixed(1);\n\n    var hours = (millisec / (1000 * 60 * 60)).toFixed(1);\n\n    var days = (millisec / (1000 * 60 * 60 * 24)).toFixed(1);\n\n    if (seconds < 60) {\n        return seconds + \" Sec\";\n    } else if (minutes < 60) {\n        return minutes + \" Min\";\n    } else if (hours < 24) {\n        return hours + \" Hrs\";\n    } else {\n        return days + \" Days\"\n    }\n}\n\nmsg.payload = timeConversion(msg.payload.uptime * 1000);\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "x": 406,
-        "y": 353,
-        "wires": [
-            [
-                "91bb24ba.6dba48"
-            ]
-        ]
-    },
-    {
-        "id": "91bb24ba.6dba48",
-        "type": "ui_text",
-        "z": "772e6979.67cd08",
-        "group": "a9912d64.97094",
-        "order": 1,
-        "width": "0",
-        "height": "0",
-        "name": "",
-        "label": "Uptime",
-        "format": "{{msg.payload}}",
-        "layout": "row-spread",
-        "x": 561,
-        "y": 352,
-        "wires": []
-    },
-    {
-        "id": "f745cace.30f2d8",
-        "type": "function",
-        "z": "772e6979.67cd08",
-        "name": "",
-        "func": "msg.payload = msg.payload.hostname;\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "x": 405,
-        "y": 390,
-        "wires": [
-            [
-                "f9bfd652.4be908"
-            ]
-        ]
-    },
-    {
-        "id": "f9bfd652.4be908",
-        "type": "ui_text",
-        "z": "772e6979.67cd08",
-        "group": "a9912d64.97094",
-        "order": 1,
-        "width": "0",
-        "height": "0",
-        "name": "",
-        "label": "Hostname",
-        "format": "{{msg.payload}}",
-        "layout": "row-spread",
-        "x": 573,
-        "y": 392,
-        "wires": []
-    },
-    {
-        "id": "3153bd68.82b782",
-        "type": "function",
-        "z": "772e6979.67cd08",
-        "name": "",
-        "func": "msg.payload = msg.payload.platform;\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "x": 407,
-        "y": 428,
-        "wires": [
-            [
-                "6c7dc269.a0180c"
-            ]
-        ]
-    },
-    {
-        "id": "6c7dc269.a0180c",
-        "type": "ui_text",
-        "z": "772e6979.67cd08",
-        "group": "a9912d64.97094",
-        "order": 1,
-        "width": "0",
-        "height": "0",
-        "name": "",
-        "label": "Platform",
-        "format": "{{msg.payload}}",
-        "layout": "row-spread",
-        "x": 569,
-        "y": 431,
-        "wires": []
-    },
-    {
-        "id": "7eec4b7e.c15ad4",
-        "type": "function",
-        "z": "772e6979.67cd08",
-        "name": "",
-        "func": "msg.payload = msg.payload.arch;\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "x": 408,
-        "y": 467,
-        "wires": [
-            [
-                "a6e5bcd3.7c90e"
-            ]
-        ]
-    },
-    {
-        "id": "a6e5bcd3.7c90e",
-        "type": "ui_text",
-        "z": "772e6979.67cd08",
-        "group": "a9912d64.97094",
-        "order": 1,
-        "width": "0",
-        "height": "0",
-        "name": "",
-        "label": "Arch",
-        "format": "{{msg.payload}}",
-        "layout": "row-spread",
-        "x": 557,
-        "y": 471,
-        "wires": []
-    },
-    {
-        "id": "6b4d7f76.271fb",
-        "type": "function",
-        "z": "772e6979.67cd08",
-        "name": "",
-        "func": "msg.payload = msg.payload.release;\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "x": 409,
-        "y": 503,
-        "wires": [
-            [
-                "f7e2d4a1.f3acf8"
-            ]
-        ]
-    },
-    {
-        "id": "f7e2d4a1.f3acf8",
-        "type": "ui_text",
-        "z": "772e6979.67cd08",
-        "group": "a9912d64.97094",
-        "order": 1,
-        "width": "0",
-        "height": "0",
-        "name": "",
-        "label": "Release",
-        "format": "{{msg.payload}}",
-        "layout": "row-spread",
-        "x": 569,
-        "y": 509,
-        "wires": []
-    },
-    {
-        "id": "8a945e71.8626b",
-        "type": "function",
-        "z": "772e6979.67cd08",
-        "name": "",
-        "func": "msg.payload = msg.payload.cpus[0].model;\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "x": 408,
-        "y": 544,
-        "wires": [
-            [
-                "6ce3fe6a.0088f",
-                "6ed6930f.dfaa0c",
-                "2cf68a4b.2caef6",
-                "6ad00145.d0875"
-            ]
-        ]
-    },
-    {
-        "id": "6ce3fe6a.0088f",
-        "type": "ui_text",
-        "z": "772e6979.67cd08",
-        "group": "a9912d64.97094",
-        "order": 1,
-        "width": "0",
-        "height": "0",
-        "name": "",
-        "label": "CPU 1",
-        "format": "{{msg.payload}}",
-        "layout": "row-spread",
-        "x": 560,
-        "y": 552,
-        "wires": []
-    },
-    {
-        "id": "6ed6930f.dfaa0c",
-        "type": "ui_text",
-        "z": "772e6979.67cd08",
-        "group": "a9912d64.97094",
-        "order": 1,
-        "width": "0",
-        "height": "0",
-        "name": "",
-        "label": "CPU 2",
-        "format": "{{msg.payload}}",
-        "layout": "row-spread",
-        "x": 562,
-        "y": 591,
-        "wires": []
-    },
-    {
-        "id": "2cf68a4b.2caef6",
-        "type": "ui_text",
-        "z": "772e6979.67cd08",
-        "group": "a9912d64.97094",
-        "order": 1,
-        "width": "0",
-        "height": "0",
-        "name": "",
-        "label": "CPU 3",
-        "format": "{{msg.payload}}",
-        "layout": "row-spread",
-        "x": 564,
-        "y": 632,
-        "wires": []
-    },
-    {
-        "id": "6ad00145.d0875",
-        "type": "ui_text",
-        "z": "772e6979.67cd08",
-        "group": "a9912d64.97094",
-        "order": 1,
-        "width": "0",
-        "height": "0",
-        "name": "",
-        "label": "CPU 4",
-        "format": "{{msg.payload}}",
-        "layout": "row-spread",
-        "x": 566,
-        "y": 672,
-        "wires": []
-    },
-    {
-        "id": "a25b88bc.6ead88",
-        "type": "function",
-        "z": "772e6979.67cd08",
-        "name": "",
-        "func": "msg.payload = msg.payload.loadavg[0];\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "x": 338,
-        "y": 229,
-        "wires": [
-            [
-                "a978ef7f.6851a"
-            ]
-        ]
-    },
-    {
-        "id": "a978ef7f.6851a",
-        "type": "ui_chart",
-        "z": "772e6979.67cd08",
-        "name": "CPU Load - Historical",
-        "group": "7853403.230cdc",
-        "order": 0,
-        "width": "0",
-        "height": "0",
-        "label": "24 Hours",
-        "chartType": "line",
-        "legend": "false",
-        "xformat": "%H:%M:%S",
-        "interpolate": "linear",
-        "nodata": "",
-        "ymin": "",
-        "ymax": "",
-        "removeOlder": 1,
-        "removeOlderUnit": "86400",
-        "outputs": 2,
-        "x": 530,
-        "y": 229,
-        "wires": [
-            [],
-            []
-        ]
-    },
-    {
-        "id": "fbd3e7db.8ca558",
-        "type": "function",
-        "z": "772e6979.67cd08",
-        "name": "",
-        "func": "msg.payload = msg.payload.memusage;\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "x": 113,
-        "y": 660,
-        "wires": [
-            [
-                "ae72c338.cf1ff"
-            ]
-        ]
-    },
-    {
-        "id": "ae72c338.cf1ff",
-        "type": "ui_chart",
-        "z": "772e6979.67cd08",
-        "name": "Memory - 24 Hours",
-        "group": "1d1da0fc.6ab84f",
-        "order": 0,
-        "width": "0",
-        "height": "0",
-        "label": "24 Hours",
-        "chartType": "line",
-        "legend": "false",
-        "xformat": "%H:%M:%S",
-        "interpolate": "linear",
-        "nodata": "",
-        "ymin": "",
-        "ymax": "",
-        "removeOlder": 1,
-        "removeOlderUnit": "86400",
-        "outputs": 2,
-        "x": 311,
-        "y": 663,
-        "wires": [
-            [],
-            []
-        ]
-    },
-    {
-        "id": "6d8c1a68.736494",
-        "type": "comment",
-        "z": "772e6979.67cd08",
-        "name": "CPU Load",
-        "info": "",
-        "x": 488,
-        "y": 57,
-        "wires": []
-    },
-    {
-        "id": "c759448a.854258",
-        "type": "comment",
-        "z": "772e6979.67cd08",
-        "name": "Memory Usage",
-        "info": "",
-        "x": 296,
-        "y": 613,
-        "wires": []
-    },
-    {
-        "id": "ff2b3794.382148",
-        "type": "comment",
-        "z": "772e6979.67cd08",
-        "name": "System Information",
-        "info": "",
-        "x": 587,
-        "y": 302,
-        "wires": []
-    },
-    {
         "id": "83dbb22c.e12e8",
         "type": "mqtt out",
         "z": "9f3346aa.d4fc48",
@@ -1772,11 +1075,53 @@
         "z": "9f3346aa.d4fc48",
         "name": "Memory Active",
         "topic": "Fermenta/System/Memory/Active",
-        "qos": "",
-        "retain": "",
+        "qos": "1",
+        "retain": "true",
         "broker": "638fc478.4db30c",
         "x": 1020,
         "y": 700,
+        "wires": []
+    },
+    {
+        "id": "e5545102.dca79",
+        "type": "mqtt out",
+        "z": "9f3346aa.d4fc48",
+        "name": "Disk Used",
+        "topic": "Fermenta/System/Disk/Used",
+        "qos": "1",
+        "retain": "true",
+        "broker": "638fc478.4db30c",
+        "x": 870,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "ab78c404.fa5158",
+        "type": "debug",
+        "z": "9f3346aa.d4fc48",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 660,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "47fca7e5.a21d88",
+        "type": "mqtt out",
+        "z": "9f3346aa.d4fc48",
+        "name": "Disk Data",
+        "topic": "Fermenta/System/DiskData",
+        "qos": "1",
+        "retain": "true",
+        "broker": "638fc478.4db30c",
+        "x": 860,
+        "y": 360,
         "wires": []
     }
 ]
