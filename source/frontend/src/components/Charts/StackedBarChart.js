@@ -16,26 +16,28 @@ class StackedBarChart extends React.Component {
     if(datatoplot != undefined)
     {
       trace1 = {
-        x: [''],
-        y: [datatoplot[this.props.field1]],
+        y: [''],
+        x: [datatoplot[this.props.field1]],
         name: this.props.field1,
         type: 'bar',
         text: datatoplot[this.props.field1],
         textposition: 'inside',
         hoverinfo: 'none',
+        orientation: 'h',
         marker: {
           color: COLORS.danger
         }
       };
       
       trace2 = {
-        x: [''],
-        y: [datatoplot[this.props.field2]],
+        y: [''],
+        x: [datatoplot[this.props.field2]],
         name: this.props.field2,
         type: 'bar',
         text: datatoplot[this.props.field2],
         textposition: 'inside',
         hoverinfo: 'none',
+        orientation: 'h',
         marker: {
           color: COLORS.green
           }
@@ -45,17 +47,19 @@ class StackedBarChart extends React.Component {
     }
 
     
+    
+
     var layout = {
-        title: this.props.Title,
+        title: { text: this.props.Title, font:{size:18, color:COLORS.dark}},
         barmode: 'stack',
         bargap: 0,
         width:300,
-        height:300, 
-        margin:{l:40,r:40,t:30,b:30}, 
+        height:200, 
+        margin:{l:40,r:40,t:50,b:0}, 
         autosize:true, 
-        xaxis: {title: 'Memory'},
-        yaxis: {title: 'GB', domain:[0,10], tickmode:'linear', dtick:'0.5'},
-        "showlegend": true
+        xaxis: {title: 'GB',tickmode:'auto', automargin:true},
+        yaxis: {title: '',automargin:true},
+        showlegend: false
     };
     
     
