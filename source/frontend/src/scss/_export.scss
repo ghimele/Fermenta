@@ -1,0 +1,13 @@
+@import './constants';
+
+:export {
+    primary:    $primary;
+    secondary:  $secondary;
+    third:      $yellow;
+    danger:     $danger;
+    warning:    $warning;
+    green:      $green;
+    black:      $black;
+    dark:       $dark;
+    gray:       $gray;
+}

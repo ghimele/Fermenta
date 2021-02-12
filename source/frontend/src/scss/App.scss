@@ -1,0 +1,203 @@
+
+//@import "~bootstrap/scss/_variables.scss";
+
+@import "~bootstrap/scss/functions";
+@import "./variables.scss";
+@import "~bootstrap/scss/mixins/_box-shadow.scss";
+@import "~bootstrap/scss/mixins/_hover.scss";
+@import "~bootstrap/scss/mixins/_buttons.scss";
+@import "~bootstrap/scss/mixins/_transition.scss";
+
+
+$main-padding-left: 20px;
+$main-padding-top: 70px;
+
+
+// $theme-colors: (
+//   "primary": #3B5998
+// );
+
+/* Main */
+.main {
+    padding-top: $main-padding-top;
+  }
+  
+/* Main */
+
+/* 
+*** SIDEBAR
+*/
+$card-spacer-x: 0.5rem;
+$btn-padding-x: 0px;
+
+$sidebar-width: 300px;
+$sidebar-mini-width: 50px;
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 100;
+  padding: 48px 0 0;
+  width: $sidebar-width;
+  box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+}
+
+.sidebar.mini {
+  min-width: $sidebar-mini-width;
+  max-width: $sidebar-mini-width;
+}
+
+.sidebarfooter {
+  bottom: 0;
+  min-width: $sidebar-width;
+  max-width: $sidebar-width;
+}
+
+.sidebarfooter.mini {
+  bottom: 0;
+  min-width: $sidebar-mini-width;
+  max-width: $sidebar-mini-width;
+}
+
+.btn-sidebar {
+    display: inline-block;
+    font-family: $btn-font-family;
+    font-weight: $btn-font-weight;
+    color: $body-color;
+    text-align: center;
+    text-decoration: if($link-decoration == none, null, none);
+    white-space: $btn-white-space;
+    vertical-align: middle;
+    user-select: none;
+    background-color: transparent;
+    border: $btn-border-width solid transparent;
+    padding: $btn-padding-y 5;
+    //@include button-size($btn-padding-y, 5, $btn-font-size, $btn-line-height, $btn-border-radius);
+    line-height: $btn-line-height;
+    @include transition($btn-transition);
+  
+    @include hover() {
+       color: theme-color("primary"); 
+       text-decoration: none;
+    }
+  
+    &:focus,
+    &.focus {
+      outline: 0;
+      box-shadow: $btn-focus-box-shadow;
+    }
+  
+    // Disabled comes first so active can properly restyle
+    &.disabled,
+    &:disabled {
+      opacity: $btn-disabled-opacity;
+      @include box-shadow(none);
+    }
+  
+    &:not(:disabled):not(.disabled) {
+      cursor: if($enable-pointer-cursor-for-buttons, pointer, null);
+  
+      &:active,
+      &.active {
+        @include box-shadow($btn-active-box-shadow);
+        border-left: 2px solid #db3d44;
+
+        &:focus {
+          @include box-shadow($btn-focus-box-shadow, $btn-active-box-shadow);
+        }
+      }
+    }
+  }
+
+.SideBarTitle{
+    padding-left:5px;
+}
+
+.SideBarTitle.mini{
+  display:none;
+}
+
+.card-body-sidebar {
+    flex: 1 1 auto;
+    min-height: 1px;
+    padding: 0; 
+    color: $body-color;
+}
+
+.list-selected {
+    border-left: 2px rgb(255, 0, 0) solid;
+}
+
+.card-header-sidebar {
+    padding-left:6px;
+    padding-right: 0;
+}
+
+.list-group-item-sidebar {
+    position: relative;
+    display: block;
+    padding: .75rem 0;
+    padding-left:6px;
+    background-color: #fff;
+    border: 1px solid rgba(0,0,0,.125);
+}
+
+.mini{
+    //display:none;
+}
+/* SIDEBAR */
+
+@media (max-width: 767.98px) {
+    .main
+    .main.mini  {
+      padding-left: 10px;
+    }
+  
+    .disclaimer{
+      display: inline-block;
+      color: gray;
+      padding-left: 5px;
+    }
+  
+    .sidebar.mini {
+      min-width: $sidebar-width;
+      max-width: $sidebar-width;
+    }
+  
+    .disclaimer.mini{
+      display: none;
+    }
+  }
+  
+  @media (min-width: 768px) {
+    .main.container-fluid {
+      padding-left: $sidebar-width + $main-padding-left;
+    }
+  
+    .disclaimer{
+      display: inline-block;
+      color: gray;
+      padding-left: 5px;
+    }
+  
+    .main.mini{
+      padding-left: $sidebar-mini-width + $main-padding-left;
+    }
+  
+    .disclaimer.mini{
+      display: none;
+    }
+  }
+
+.DateTime{
+  color: white;
+  margin:0px;
+  font-size: small;
+  text-align: center;
+}
+
+// 
+
+@import "~bootstrap/scss/bootstrap";
