@@ -14,6 +14,13 @@
         "info": "# System Monitor\nFlow to monitor the Raspberry Pi resources\n - CPU Load\n - CPU Temp\n - Memory\n - Disk\n - Uptime"
     },
     {
+        "id": "772e6979.67cd08",
+        "type": "tab",
+        "label": "System2",
+        "disabled": false,
+        "info": ""
+    },
+    {
         "id": "638fc478.4db30c",
         "type": "mqtt-broker",
         "name": "Fermenta",
@@ -147,6 +154,39 @@
         }
     },
     {
+        "id": "7853403.230cdc",
+        "type": "ui_group",
+        "name": "CPU Load",
+        "tab": "e6013c6f.69328",
+        "order": 2,
+        "disp": true,
+        "width": "6"
+    },
+    {
+        "id": "1d1da0fc.6ab84f",
+        "type": "ui_group",
+        "name": "Memory",
+        "tab": "e6013c6f.69328",
+        "order": 3,
+        "disp": true,
+        "width": "6"
+    },
+    {
+        "id": "a9912d64.97094",
+        "type": "ui_group",
+        "name": "System Information",
+        "tab": "e6013c6f.69328",
+        "order": 1,
+        "disp": true,
+        "width": "6"
+    },
+    {
+        "id": "e6013c6f.69328",
+        "type": "ui_tab",
+        "name": "System",
+        "icon": "computer"
+    },
+    {
         "id": "41c8ede2.3e7b84",
         "type": "rpi-srf",
         "z": "a49856a6.d10848",
@@ -168,7 +208,7 @@
         "type": "mqtt out",
         "z": "a49856a6.d10848",
         "name": "Distance01",
-        "topic": "Sensors/Distance/1",
+        "topic": "Fermenta/Sensors/Distance/1",
         "qos": "1",
         "retain": "true",
         "broker": "638fc478.4db30c",
@@ -197,7 +237,7 @@
         "id": "6129eac0.5bdec4",
         "type": "inject",
         "z": "9f3346aa.d4fc48",
-        "name": "5 sec tick",
+        "name": "10 sec tick",
         "props": [
             {
                 "p": "payload"
@@ -207,7 +247,7 @@
                 "vt": "str"
             }
         ],
-        "repeat": "5",
+        "repeat": "10",
         "crontab": "",
         "once": true,
         "onceDelay": "1",
@@ -219,14 +259,14 @@
         "wires": [
             [
                 "ab1a2405.584fd8",
-                "7805af15.1b74f",
                 "f2adaf57.d9a",
                 "57db43b6.37f54c",
                 "e91a3069.06e26",
-                "54f685c.dbdd67c",
                 "dfed6e13.50ff2",
                 "dade3cd6.7d9eb",
-                "8a2afb23.9bb668"
+                "6d9ce3f1.90469c",
+                "b2a8abb1.8af698",
+                "2bac96e4.7181ca"
             ]
         ]
     },
@@ -369,75 +409,6 @@
         ]
     },
     {
-        "id": "e2fad608.df29c8",
-        "type": "ui_gauge",
-        "z": "9f3346aa.d4fc48",
-        "name": "",
-        "group": "d07f30e0.c48a2",
-        "order": 2,
-        "width": "0",
-        "height": "0",
-        "gtype": "donut",
-        "title": "RAM usage",
-        "label": "%",
-        "format": "{{msg.payload}}",
-        "min": 0,
-        "max": "100",
-        "colors": [
-            "#00b500",
-            "#e6e600",
-            "#ca3838"
-        ],
-        "seg1": "60",
-        "seg2": "80",
-        "x": 870,
-        "y": 780,
-        "wires": []
-    },
-    {
-        "id": "542d167b.24a938",
-        "type": "ui_chart",
-        "z": "9f3346aa.d4fc48",
-        "name": "",
-        "group": "d07f30e0.c48a2",
-        "order": 3,
-        "width": 0,
-        "height": 0,
-        "label": "",
-        "chartType": "line",
-        "legend": "false",
-        "xformat": "HH:mm:ss",
-        "interpolate": "linear",
-        "nodata": "",
-        "dot": false,
-        "ymin": "0",
-        "ymax": "100",
-        "removeOlder": 1,
-        "removeOlderPoints": "",
-        "removeOlderUnit": "86400",
-        "cutout": 0,
-        "useOneColor": false,
-        "useUTC": false,
-        "colors": [
-            "#1f77b4",
-            "#aec7e8",
-            "#ff7f0e",
-            "#2ca02c",
-            "#98df8a",
-            "#d62728",
-            "#ff9896",
-            "#9467bd",
-            "#c5b0d5"
-        ],
-        "outputs": 1,
-        "useDifferentColor": false,
-        "x": 850,
-        "y": 820,
-        "wires": [
-            []
-        ]
-    },
-    {
         "id": "48b90ddd.e18714",
         "type": "ui_gauge",
         "z": "9f3346aa.d4fc48",
@@ -462,32 +433,6 @@
         "x": 870,
         "y": 1100,
         "wires": []
-    },
-    {
-        "id": "597cae13.db6de",
-        "type": "function",
-        "z": "9f3346aa.d4fc48",
-        "name": "extract",
-        "func": "var msg1,msg2,msg3;\nmsg1= {topic: 'Total', payload: msg.payload.totalmem};\nmsg2= {topic: 'Free', payload: msg.payload.freemem};\nmsg3= {topic: 'Usage', payload: msg.payload.memusage};\n\nreturn [msg1, msg2, msg3];",
-        "outputs": 3,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "x": 470,
-        "y": 680,
-        "wires": [
-            [
-                "5871770c.b8b6e8"
-            ],
-            [
-                "5a0ff673.299f78"
-            ],
-            [
-                "f01b86b9.d505a8",
-                "e2fad608.df29c8",
-                "542d167b.24a938"
-            ]
-        ]
     },
     {
         "id": "ba1907da.0fcf28",
@@ -529,20 +474,6 @@
             ],
             [],
             []
-        ]
-    },
-    {
-        "id": "7805af15.1b74f",
-        "type": "Memory",
-        "z": "9f3346aa.d4fc48",
-        "name": "",
-        "scale": "Gigabyte",
-        "x": 320,
-        "y": 680,
-        "wires": [
-            [
-                "597cae13.db6de"
-            ]
         ]
     },
     {
@@ -696,27 +627,16 @@
         "z": "9f3346aa.d4fc48",
         "name": "UI controls",
         "info": "",
-        "x": 540,
-        "y": 100,
+        "x": 640,
+        "y": 80,
         "wires": []
-    },
-    {
-        "id": "54f685c.dbdd67c",
-        "type": "NetworkIntf",
-        "z": "9f3346aa.d4fc48",
-        "name": "",
-        "x": 230,
-        "y": 1320,
-        "wires": [
-            []
-        ]
     },
     {
         "id": "46060731.19d8b8",
         "type": "mqtt out",
         "z": "9f3346aa.d4fc48",
         "name": "Disk Total1",
-        "topic": "System/Disk/Total",
+        "topic": "Fermenta/System/Disk/Total",
         "qos": "1",
         "retain": "true",
         "broker": "638fc478.4db30c",
@@ -729,7 +649,7 @@
         "type": "mqtt out",
         "z": "9f3346aa.d4fc48",
         "name": "Disk Free",
-        "topic": "System/Disk/Free",
+        "topic": "Fermenta/System/Disk/Free",
         "qos": "1",
         "retain": "true",
         "broker": "638fc478.4db30c",
@@ -742,7 +662,7 @@
         "type": "mqtt out",
         "z": "9f3346aa.d4fc48",
         "name": "Disk Used %",
-        "topic": "System/Disk/Used",
+        "topic": "Fermenta/System/Disk/Used",
         "qos": "",
         "retain": "",
         "broker": "638fc478.4db30c",
@@ -755,7 +675,7 @@
         "type": "mqtt out",
         "z": "9f3346aa.d4fc48",
         "name": "Uptime",
-        "topic": "System/Uptime/",
+        "topic": "Fermenta/System/Uptime/",
         "qos": "",
         "retain": "",
         "broker": "638fc478.4db30c",
@@ -768,12 +688,12 @@
         "type": "mqtt out",
         "z": "9f3346aa.d4fc48",
         "name": "Memory Usage",
-        "topic": "System/Memory/Usage",
+        "topic": "Fermenta/System/Memory/Usage",
         "qos": "1",
         "retain": "true",
         "broker": "638fc478.4db30c",
-        "x": 880,
-        "y": 720,
+        "x": 1020,
+        "y": 800,
         "wires": []
     },
     {
@@ -800,13 +720,13 @@
         "id": "5a0ff673.299f78",
         "type": "mqtt out",
         "z": "9f3346aa.d4fc48",
-        "name": "Memory Free",
-        "topic": "System/Memory/Free",
+        "name": "Memory Available",
+        "topic": "Fermenta/System/Memory/Available",
         "qos": "1",
         "retain": "true",
         "broker": "638fc478.4db30c",
-        "x": 880,
-        "y": 660,
+        "x": 1030,
+        "y": 740,
         "wires": []
     },
     {
@@ -814,12 +734,12 @@
         "type": "mqtt out",
         "z": "9f3346aa.d4fc48",
         "name": "Memory Total",
-        "topic": "System/Memory/Total",
+        "topic": "Fermenta/System/Memory/Total",
         "qos": "1",
         "retain": "true",
         "broker": "638fc478.4db30c",
-        "x": 880,
-        "y": 600,
+        "x": 1020,
+        "y": 640,
         "wires": []
     },
     {
@@ -829,7 +749,7 @@
         "name": "Memory",
         "info": "",
         "x": 320,
-        "y": 620,
+        "y": 540,
         "wires": []
     },
     {
@@ -847,7 +767,7 @@
         "type": "mqtt out",
         "z": "9f3346aa.d4fc48",
         "name": "CPU Load",
-        "topic": "System/CPU/Load",
+        "topic": "Fermenta/System/CPU/Load",
         "qos": "1",
         "retain": "true",
         "broker": "638fc478.4db30c",
@@ -860,7 +780,7 @@
         "type": "mqtt out",
         "z": "9f3346aa.d4fc48",
         "name": "CPU Temp",
-        "topic": "System/CPU/Temp",
+        "topic": "Fermenta/System/CPU/Temp",
         "qos": "1",
         "retain": "true",
         "broker": "638fc478.4db30c",
@@ -877,7 +797,7 @@
         "y": 180,
         "wires": [
             [
-                "ac3dff59.0e23d"
+                "10434740.86af19"
             ]
         ]
     },
@@ -886,7 +806,7 @@
         "type": "mqtt out",
         "z": "9f3346aa.d4fc48",
         "name": "Operating System",
-        "topic": "System/OS",
+        "topic": "Fermenta/System/OS",
         "qos": "1",
         "retain": "true",
         "broker": "638fc478.4db30c",
@@ -909,7 +829,6 @@
         "y": 120,
         "wires": [
             [
-                "ac3dff59.0e23d",
                 "bfc93db5.11c57"
             ],
             [],
@@ -917,39 +836,11 @@
         ]
     },
     {
-        "id": "ac3dff59.0e23d",
-        "type": "join",
-        "z": "9f3346aa.d4fc48",
-        "name": "",
-        "mode": "custom",
-        "build": "string",
-        "property": "payload",
-        "propertyType": "msg",
-        "key": "topic",
-        "joiner": "\\n",
-        "joinerType": "str",
-        "accumulate": false,
-        "timeout": "",
-        "count": "",
-        "reduceRight": false,
-        "reduceExp": "",
-        "reduceInit": "",
-        "reduceInitType": "",
-        "reduceFixup": "",
-        "x": 530,
-        "y": 140,
-        "wires": [
-            [
-                "10434740.86af19"
-            ]
-        ]
-    },
-    {
         "id": "bfc93db5.11c57",
         "type": "mqtt out",
         "z": "9f3346aa.d4fc48",
         "name": "IP",
-        "topic": "System/IP",
+        "topic": "Fermenta/System/IP",
         "qos": "1",
         "retain": "true",
         "broker": "638fc478.4db30c",
@@ -961,6 +852,7 @@
         "id": "8a2afb23.9bb668",
         "type": "mqtt-check",
         "z": "9f3346aa.d4fc48",
+        "d": true,
         "host": "localhost",
         "port": "1883",
         "username": "Fermenta",
@@ -989,6 +881,902 @@
         "statusType": "auto",
         "x": 850,
         "y": 40,
+        "wires": []
+    },
+    {
+        "id": "f25a9b1d.c6fce8",
+        "type": "OS",
+        "z": "772e6979.67cd08",
+        "name": "",
+        "x": 234,
+        "y": 398,
+        "wires": [
+            [
+                "f745cace.30f2d8",
+                "3153bd68.82b782",
+                "7eec4b7e.c15ad4",
+                "6b4d7f76.271fb"
+            ]
+        ]
+    },
+    {
+        "id": "c63cb373.ce94f",
+        "type": "Uptime",
+        "z": "772e6979.67cd08",
+        "name": "",
+        "x": 245,
+        "y": 353,
+        "wires": [
+            [
+                "20567afa.bd4466"
+            ]
+        ]
+    },
+    {
+        "id": "21faa622.8c25da",
+        "type": "CPUs",
+        "z": "772e6979.67cd08",
+        "name": "",
+        "x": 234,
+        "y": 443,
+        "wires": [
+            [
+                "8a945e71.8626b"
+            ]
+        ]
+    },
+    {
+        "id": "7780c9ca.7581b8",
+        "type": "Loadavg",
+        "z": "772e6979.67cd08",
+        "name": "",
+        "x": 171,
+        "y": 165,
+        "wires": [
+            [
+                "240a76f3.9953ea",
+                "5d85387c.957fb8",
+                "b33d4d45.a6673",
+                "a25b88bc.6ead88"
+            ]
+        ]
+    },
+    {
+        "id": "7cf01d46.a3cad4",
+        "type": "Memory",
+        "z": "772e6979.67cd08",
+        "name": "",
+        "x": 111,
+        "y": 531,
+        "wires": [
+            [
+                "e6b8a679.aff648",
+                "dd0cca19.6f90a8",
+                "308d683f.10ab08",
+                "fbd3e7db.8ca558"
+            ]
+        ]
+    },
+    {
+        "id": "ed27cae4.70b728",
+        "type": "inject",
+        "z": "772e6979.67cd08",
+        "name": "update",
+        "repeat": "30",
+        "crontab": "",
+        "once": true,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 94,
+        "y": 245,
+        "wires": [
+            [
+                "f25a9b1d.c6fce8",
+                "c63cb373.ce94f",
+                "21faa622.8c25da",
+                "7780c9ca.7581b8",
+                "7cf01d46.a3cad4"
+            ]
+        ]
+    },
+    {
+        "id": "240a76f3.9953ea",
+        "type": "function",
+        "z": "772e6979.67cd08",
+        "name": "",
+        "func": "msg.payload = msg.payload.loadavg[0];\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 333,
+        "y": 105,
+        "wires": [
+            [
+                "51dfac0c.fdc9c4"
+            ]
+        ]
+    },
+    {
+        "id": "5d85387c.957fb8",
+        "type": "function",
+        "z": "772e6979.67cd08",
+        "name": "",
+        "func": "msg.payload = msg.payload.loadavg[1];\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 334,
+        "y": 143,
+        "wires": [
+            [
+                "79d3dbc8.390014"
+            ]
+        ]
+    },
+    {
+        "id": "b33d4d45.a6673",
+        "type": "function",
+        "z": "772e6979.67cd08",
+        "name": "",
+        "func": "msg.payload = msg.payload.loadavg[2];\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 333,
+        "y": 186,
+        "wires": [
+            [
+                "1ff0080f.4e10c8"
+            ]
+        ]
+    },
+    {
+        "id": "51dfac0c.fdc9c4",
+        "type": "ui_gauge",
+        "z": "772e6979.67cd08",
+        "name": "CPU Load 1",
+        "group": "7853403.230cdc",
+        "order": 1,
+        "width": "0",
+        "height": "0",
+        "gtype": "gage",
+        "title": "1 Minute",
+        "label": "load",
+        "format": "{{value | number:2}}",
+        "min": 0,
+        "max": "4",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "x": 501,
+        "y": 104,
+        "wires": []
+    },
+    {
+        "id": "79d3dbc8.390014",
+        "type": "ui_gauge",
+        "z": "772e6979.67cd08",
+        "name": "CPU Load 2",
+        "group": "7853403.230cdc",
+        "order": 2,
+        "width": "3",
+        "height": "3",
+        "gtype": "gage",
+        "title": "5 Minutes",
+        "label": "load",
+        "format": "{{value | number:2}}",
+        "min": 0,
+        "max": "4",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "x": 501,
+        "y": 145,
+        "wires": []
+    },
+    {
+        "id": "1ff0080f.4e10c8",
+        "type": "ui_gauge",
+        "z": "772e6979.67cd08",
+        "name": "CPU Load 3",
+        "group": "7853403.230cdc",
+        "order": 4,
+        "width": "3",
+        "height": "3",
+        "gtype": "gage",
+        "title": "15 Minutes",
+        "label": "load",
+        "format": "{{value | number:2}}",
+        "min": 0,
+        "max": "4",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "x": 499,
+        "y": 187,
+        "wires": []
+    },
+    {
+        "id": "e6b8a679.aff648",
+        "type": "function",
+        "z": "772e6979.67cd08",
+        "name": "",
+        "func": "msg.payload = msg.payload.memusage;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 116,
+        "y": 699,
+        "wires": [
+            [
+                "cc57cdea.f9387"
+            ]
+        ]
+    },
+    {
+        "id": "cc57cdea.f9387",
+        "type": "ui_gauge",
+        "z": "772e6979.67cd08",
+        "name": "Memory Usage",
+        "group": "1d1da0fc.6ab84f",
+        "order": 1,
+        "width": "0",
+        "height": "0",
+        "gtype": "gage",
+        "title": "1 Minute",
+        "label": "Usage",
+        "format": "{{value | number:2}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "x": 300,
+        "y": 703,
+        "wires": []
+    },
+    {
+        "id": "dd0cca19.6f90a8",
+        "type": "function",
+        "z": "772e6979.67cd08",
+        "name": "",
+        "func": "function formatBytes(bytes,decimals) {\n   if(bytes === 0) return '0 Byte';\n   var k = 1000; // or 1024 for binary\n   var dm = decimals + 1 || 3;\n   var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];\n   var i = Math.floor(Math.log(bytes) / Math.log(k));\n   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];\n}\n\nmsg.payload = formatBytes(msg.payload.totalmem);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 118,
+        "y": 742,
+        "wires": [
+            [
+                "4aeaebd1.24f4c4"
+            ]
+        ]
+    },
+    {
+        "id": "308d683f.10ab08",
+        "type": "function",
+        "z": "772e6979.67cd08",
+        "name": "",
+        "func": "function formatBytes(bytes,decimals) {\n   if(bytes === 0) return '0 Byte';\n   var k = 1000; // or 1024 for binary\n   var dm = decimals + 1 || 3;\n   var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];\n   var i = Math.floor(Math.log(bytes) / Math.log(k));\n   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];\n}\n\nmsg.payload = formatBytes(msg.payload.freemem);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 116,
+        "y": 788,
+        "wires": [
+            [
+                "ef649e9b.dce7d"
+            ]
+        ]
+    },
+    {
+        "id": "4aeaebd1.24f4c4",
+        "type": "ui_text",
+        "z": "772e6979.67cd08",
+        "group": "1d1da0fc.6ab84f",
+        "order": 2,
+        "width": "0",
+        "height": "0",
+        "name": "",
+        "label": "Total Memory",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 299,
+        "y": 746,
+        "wires": []
+    },
+    {
+        "id": "ef649e9b.dce7d",
+        "type": "ui_text",
+        "z": "772e6979.67cd08",
+        "group": "1d1da0fc.6ab84f",
+        "order": 3,
+        "width": "0",
+        "height": "0",
+        "name": "",
+        "label": "Free Memory",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 303,
+        "y": 789,
+        "wires": []
+    },
+    {
+        "id": "20567afa.bd4466",
+        "type": "function",
+        "z": "772e6979.67cd08",
+        "name": "",
+        "func": "function timeConversion(millisec) {\n\n    var seconds = (millisec / 1000).toFixed(1);\n\n    var minutes = (millisec / (1000 * 60)).toFixed(1);\n\n    var hours = (millisec / (1000 * 60 * 60)).toFixed(1);\n\n    var days = (millisec / (1000 * 60 * 60 * 24)).toFixed(1);\n\n    if (seconds < 60) {\n        return seconds + \" Sec\";\n    } else if (minutes < 60) {\n        return minutes + \" Min\";\n    } else if (hours < 24) {\n        return hours + \" Hrs\";\n    } else {\n        return days + \" Days\"\n    }\n}\n\nmsg.payload = timeConversion(msg.payload.uptime * 1000);\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 406,
+        "y": 353,
+        "wires": [
+            [
+                "91bb24ba.6dba48"
+            ]
+        ]
+    },
+    {
+        "id": "91bb24ba.6dba48",
+        "type": "ui_text",
+        "z": "772e6979.67cd08",
+        "group": "a9912d64.97094",
+        "order": 1,
+        "width": "0",
+        "height": "0",
+        "name": "",
+        "label": "Uptime",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 561,
+        "y": 352,
+        "wires": []
+    },
+    {
+        "id": "f745cace.30f2d8",
+        "type": "function",
+        "z": "772e6979.67cd08",
+        "name": "",
+        "func": "msg.payload = msg.payload.hostname;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 405,
+        "y": 390,
+        "wires": [
+            [
+                "f9bfd652.4be908"
+            ]
+        ]
+    },
+    {
+        "id": "f9bfd652.4be908",
+        "type": "ui_text",
+        "z": "772e6979.67cd08",
+        "group": "a9912d64.97094",
+        "order": 1,
+        "width": "0",
+        "height": "0",
+        "name": "",
+        "label": "Hostname",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 573,
+        "y": 392,
+        "wires": []
+    },
+    {
+        "id": "3153bd68.82b782",
+        "type": "function",
+        "z": "772e6979.67cd08",
+        "name": "",
+        "func": "msg.payload = msg.payload.platform;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 407,
+        "y": 428,
+        "wires": [
+            [
+                "6c7dc269.a0180c"
+            ]
+        ]
+    },
+    {
+        "id": "6c7dc269.a0180c",
+        "type": "ui_text",
+        "z": "772e6979.67cd08",
+        "group": "a9912d64.97094",
+        "order": 1,
+        "width": "0",
+        "height": "0",
+        "name": "",
+        "label": "Platform",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 569,
+        "y": 431,
+        "wires": []
+    },
+    {
+        "id": "7eec4b7e.c15ad4",
+        "type": "function",
+        "z": "772e6979.67cd08",
+        "name": "",
+        "func": "msg.payload = msg.payload.arch;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 408,
+        "y": 467,
+        "wires": [
+            [
+                "a6e5bcd3.7c90e"
+            ]
+        ]
+    },
+    {
+        "id": "a6e5bcd3.7c90e",
+        "type": "ui_text",
+        "z": "772e6979.67cd08",
+        "group": "a9912d64.97094",
+        "order": 1,
+        "width": "0",
+        "height": "0",
+        "name": "",
+        "label": "Arch",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 557,
+        "y": 471,
+        "wires": []
+    },
+    {
+        "id": "6b4d7f76.271fb",
+        "type": "function",
+        "z": "772e6979.67cd08",
+        "name": "",
+        "func": "msg.payload = msg.payload.release;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 409,
+        "y": 503,
+        "wires": [
+            [
+                "f7e2d4a1.f3acf8"
+            ]
+        ]
+    },
+    {
+        "id": "f7e2d4a1.f3acf8",
+        "type": "ui_text",
+        "z": "772e6979.67cd08",
+        "group": "a9912d64.97094",
+        "order": 1,
+        "width": "0",
+        "height": "0",
+        "name": "",
+        "label": "Release",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 569,
+        "y": 509,
+        "wires": []
+    },
+    {
+        "id": "8a945e71.8626b",
+        "type": "function",
+        "z": "772e6979.67cd08",
+        "name": "",
+        "func": "msg.payload = msg.payload.cpus[0].model;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 408,
+        "y": 544,
+        "wires": [
+            [
+                "6ce3fe6a.0088f",
+                "6ed6930f.dfaa0c",
+                "2cf68a4b.2caef6",
+                "6ad00145.d0875"
+            ]
+        ]
+    },
+    {
+        "id": "6ce3fe6a.0088f",
+        "type": "ui_text",
+        "z": "772e6979.67cd08",
+        "group": "a9912d64.97094",
+        "order": 1,
+        "width": "0",
+        "height": "0",
+        "name": "",
+        "label": "CPU 1",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 560,
+        "y": 552,
+        "wires": []
+    },
+    {
+        "id": "6ed6930f.dfaa0c",
+        "type": "ui_text",
+        "z": "772e6979.67cd08",
+        "group": "a9912d64.97094",
+        "order": 1,
+        "width": "0",
+        "height": "0",
+        "name": "",
+        "label": "CPU 2",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 562,
+        "y": 591,
+        "wires": []
+    },
+    {
+        "id": "2cf68a4b.2caef6",
+        "type": "ui_text",
+        "z": "772e6979.67cd08",
+        "group": "a9912d64.97094",
+        "order": 1,
+        "width": "0",
+        "height": "0",
+        "name": "",
+        "label": "CPU 3",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 564,
+        "y": 632,
+        "wires": []
+    },
+    {
+        "id": "6ad00145.d0875",
+        "type": "ui_text",
+        "z": "772e6979.67cd08",
+        "group": "a9912d64.97094",
+        "order": 1,
+        "width": "0",
+        "height": "0",
+        "name": "",
+        "label": "CPU 4",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 566,
+        "y": 672,
+        "wires": []
+    },
+    {
+        "id": "a25b88bc.6ead88",
+        "type": "function",
+        "z": "772e6979.67cd08",
+        "name": "",
+        "func": "msg.payload = msg.payload.loadavg[0];\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 338,
+        "y": 229,
+        "wires": [
+            [
+                "a978ef7f.6851a"
+            ]
+        ]
+    },
+    {
+        "id": "a978ef7f.6851a",
+        "type": "ui_chart",
+        "z": "772e6979.67cd08",
+        "name": "CPU Load - Historical",
+        "group": "7853403.230cdc",
+        "order": 0,
+        "width": "0",
+        "height": "0",
+        "label": "24 Hours",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "%H:%M:%S",
+        "interpolate": "linear",
+        "nodata": "",
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderUnit": "86400",
+        "outputs": 2,
+        "x": 530,
+        "y": 229,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
+        "id": "fbd3e7db.8ca558",
+        "type": "function",
+        "z": "772e6979.67cd08",
+        "name": "",
+        "func": "msg.payload = msg.payload.memusage;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 113,
+        "y": 660,
+        "wires": [
+            [
+                "ae72c338.cf1ff"
+            ]
+        ]
+    },
+    {
+        "id": "ae72c338.cf1ff",
+        "type": "ui_chart",
+        "z": "772e6979.67cd08",
+        "name": "Memory - 24 Hours",
+        "group": "1d1da0fc.6ab84f",
+        "order": 0,
+        "width": "0",
+        "height": "0",
+        "label": "24 Hours",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "%H:%M:%S",
+        "interpolate": "linear",
+        "nodata": "",
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderUnit": "86400",
+        "outputs": 2,
+        "x": 311,
+        "y": 663,
+        "wires": [
+            [],
+            []
+        ]
+    },
+    {
+        "id": "6d8c1a68.736494",
+        "type": "comment",
+        "z": "772e6979.67cd08",
+        "name": "CPU Load",
+        "info": "",
+        "x": 488,
+        "y": 57,
+        "wires": []
+    },
+    {
+        "id": "c759448a.854258",
+        "type": "comment",
+        "z": "772e6979.67cd08",
+        "name": "Memory Usage",
+        "info": "",
+        "x": 296,
+        "y": 613,
+        "wires": []
+    },
+    {
+        "id": "ff2b3794.382148",
+        "type": "comment",
+        "z": "772e6979.67cd08",
+        "name": "System Information",
+        "info": "",
+        "x": 587,
+        "y": 302,
+        "wires": []
+    },
+    {
+        "id": "83dbb22c.e12e8",
+        "type": "mqtt out",
+        "z": "9f3346aa.d4fc48",
+        "name": "Memory",
+        "topic": "Fermenta/System/MemoryData",
+        "qos": "1",
+        "retain": "true",
+        "broker": "638fc478.4db30c",
+        "x": 1000,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "dced7955.ce0058",
+        "type": "json",
+        "z": "9f3346aa.d4fc48",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": true,
+        "x": 770,
+        "y": 580,
+        "wires": [
+            [
+                "83dbb22c.e12e8"
+            ]
+        ]
+    },
+    {
+        "id": "6d9ce3f1.90469c",
+        "type": "memory",
+        "z": "9f3346aa.d4fc48",
+        "name": "Memory Total",
+        "relativeValues": false,
+        "unitType": "gb",
+        "totalMemory": true,
+        "usedMemory": false,
+        "freeMemory": false,
+        "availableMemory": false,
+        "activeMemory": false,
+        "buffersMemory": false,
+        "cachedMemory": false,
+        "slabMemory": false,
+        "buffcacheMemory": false,
+        "freeAvailableMemory": false,
+        "swapTotalMemory": false,
+        "swapUsedMemory": false,
+        "swapFreeMemory": false,
+        "x": 340,
+        "y": 600,
+        "wires": [
+            [
+                "2248d179.1543ae"
+            ]
+        ]
+    },
+    {
+        "id": "b2a8abb1.8af698",
+        "type": "memory",
+        "z": "9f3346aa.d4fc48",
+        "name": "Memory Free",
+        "relativeValues": false,
+        "unitType": "gb",
+        "totalMemory": false,
+        "usedMemory": false,
+        "freeMemory": false,
+        "availableMemory": true,
+        "activeMemory": false,
+        "buffersMemory": false,
+        "cachedMemory": false,
+        "slabMemory": false,
+        "buffcacheMemory": false,
+        "freeAvailableMemory": false,
+        "swapTotalMemory": false,
+        "swapUsedMemory": false,
+        "swapFreeMemory": false,
+        "x": 330,
+        "y": 660,
+        "wires": [
+            [
+                "2248d179.1543ae"
+            ]
+        ]
+    },
+    {
+        "id": "7f06399e.dd1c18",
+        "type": "join",
+        "z": "9f3346aa.d4fc48",
+        "name": "",
+        "mode": "custom",
+        "build": "object",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "joinerType": "str",
+        "accumulate": false,
+        "timeout": "",
+        "count": "3",
+        "reduceRight": false,
+        "reduceExp": "",
+        "reduceInit": "",
+        "reduceInitType": "",
+        "reduceFixup": "",
+        "x": 630,
+        "y": 620,
+        "wires": [
+            [
+                "274a1f32.73466",
+                "dced7955.ce0058"
+            ]
+        ]
+    },
+    {
+        "id": "2bac96e4.7181ca",
+        "type": "memory",
+        "z": "9f3346aa.d4fc48",
+        "name": "Memory Usage",
+        "relativeValues": false,
+        "unitType": "gb",
+        "totalMemory": false,
+        "usedMemory": false,
+        "freeMemory": false,
+        "availableMemory": false,
+        "activeMemory": true,
+        "buffersMemory": false,
+        "cachedMemory": false,
+        "slabMemory": false,
+        "buffcacheMemory": false,
+        "freeAvailableMemory": false,
+        "swapTotalMemory": false,
+        "swapUsedMemory": false,
+        "swapFreeMemory": false,
+        "x": 340,
+        "y": 720,
+        "wires": [
+            [
+                "2248d179.1543ae"
+            ]
+        ]
+    },
+    {
+        "id": "2248d179.1543ae",
+        "type": "function",
+        "z": "9f3346aa.d4fc48",
+        "name": "Round",
+        "func": "var rounded;\nrounded=parseFloat(msg.payload).toFixed(2);\nmsg={topic: msg.topic, payload: rounded}\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 510,
+        "y": 620,
+        "wires": [
+            [
+                "7f06399e.dd1c18"
+            ]
+        ]
+    },
+    {
+        "id": "274a1f32.73466",
+        "type": "function",
+        "z": "9f3346aa.d4fc48",
+        "name": "",
+        "func": "var memtotal;\nvar memactive;\nvar memavailable;\nvar memactiverelative;\nmemtotal={topic:\"memory_total\",payload: msg.payload.memory_total};\nmemactive={topic:\"memory_active\",payload: msg.payload.memory_active};\nmemavailable={topic:\"memory_available\",payload: msg.payload.memory_available};\nmemactiverelative={topic:\"memory_activerel\",payload: parseFloat(msg.payload.memory_active/msg.payload.memory_total*100).toFixed(2)};\nmsg=[memtotal,memactive,memavailable,memactiverelative];\nreturn msg;",
+        "outputs": 4,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 780,
+        "y": 720,
+        "wires": [
+            [
+                "5871770c.b8b6e8"
+            ],
+            [
+                "b3664b6e.ad96b8"
+            ],
+            [
+                "5a0ff673.299f78"
+            ],
+            [
+                "f01b86b9.d505a8"
+            ]
+        ]
+    },
+    {
+        "id": "b3664b6e.ad96b8",
+        "type": "mqtt out",
+        "z": "9f3346aa.d4fc48",
+        "name": "Memory Active",
+        "topic": "Fermenta/System/Memory/Active",
+        "qos": "",
+        "retain": "",
+        "broker": "638fc478.4db30c",
+        "x": 1020,
+        "y": 700,
         "wires": []
     }
 ]
