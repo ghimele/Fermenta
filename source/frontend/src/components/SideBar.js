@@ -84,7 +84,7 @@ class SideBar extends React.Component {
                                 <div className="list-group card-body-sidebar">
                                 <a className={ListItem} href="/Monitor" onClick={this.toggleSelected}><RiDashboardLine fontSize="1.5em"/><span className={SidebarTitle}>Monitor</span></a>
                                 <a className={ListItem} href="/"><RiSensorLine fontSize="1.5em"/><span className={SidebarTitle}>Sensors</span></a>
-                                <a className={ListItem} href="/"><RiInformationLine fontSize="1.5em"/><span className={SidebarTitle}>Info</span></a>
+                                <a className={ListItem} href="/Info"><RiInformationLine fontSize="1.5em"/><span className={SidebarTitle}>Info</span></a>
                                 </div>
                             </Accordion.Collapse>
                         </Card>
