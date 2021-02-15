@@ -26,6 +26,7 @@ class App extends React.Component {
     clean: true,
     reconnectPeriod: 1000,
     connectTimeout: 30 * 1000,
+    qos: 1,
     will: {
       topic: "WillMsg",
       payload: "Connection Closed abnormally..!",
