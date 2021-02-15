@@ -248,184 +248,17 @@
         "payload": "",
         "payloadType": "date",
         "x": 110,
-        "y": 540,
+        "y": 620,
         "wires": [
             [
                 "ab1a2405.584fd8",
-                "f2adaf57.d9a",
                 "57db43b6.37f54c",
                 "e91a3069.06e26",
-                "dfed6e13.50ff2",
-                "dade3cd6.7d9eb",
                 "6d9ce3f1.90469c",
                 "b2a8abb1.8af698",
                 "2bac96e4.7181ca"
             ]
         ]
-    },
-    {
-        "id": "f4fc2799.51b558",
-        "type": "ui_gauge",
-        "z": "9f3346aa.d4fc48",
-        "name": "",
-        "group": "d07f30e0.c48a2",
-        "order": 1,
-        "width": "3",
-        "height": "3",
-        "gtype": "gage",
-        "title": "CPU load",
-        "label": "%",
-        "format": "{{ msg.payload }}",
-        "min": 0,
-        "max": "100",
-        "colors": [
-            "#00b500",
-            "#e6e600",
-            "#ca3838"
-        ],
-        "seg1": "60",
-        "seg2": "80",
-        "x": 860,
-        "y": 940,
-        "wires": []
-    },
-    {
-        "id": "23830467.dd874c",
-        "type": "ui_gauge",
-        "z": "9f3346aa.d4fc48",
-        "name": "",
-        "group": "d07f30e0.c48a2",
-        "order": 2,
-        "width": "6",
-        "height": "4",
-        "gtype": "donut",
-        "title": "Used",
-        "label": "%",
-        "format": "{{msg.payload}}",
-        "min": 0,
-        "max": "100",
-        "colors": [
-            "#00b500",
-            "#e6e600",
-            "#ca3838"
-        ],
-        "seg1": "60",
-        "seg2": "80",
-        "x": 850,
-        "y": 440,
-        "wires": []
-    },
-    {
-        "id": "10934589.87f3ca",
-        "type": "ui_chart",
-        "z": "9f3346aa.d4fc48",
-        "name": "",
-        "group": "d07f30e0.c48a2",
-        "order": 3,
-        "width": "6",
-        "height": "4",
-        "label": "Load, %",
-        "chartType": "line",
-        "legend": "false",
-        "xformat": "HH:mm:ss",
-        "interpolate": "bezier",
-        "nodata": "",
-        "dot": false,
-        "ymin": "",
-        "ymax": "",
-        "removeOlder": 1,
-        "removeOlderPoints": "",
-        "removeOlderUnit": "86400",
-        "cutout": 0,
-        "useOneColor": false,
-        "useUTC": false,
-        "colors": [
-            "#ff8000",
-            "#aec7e8",
-            "#0080ff",
-            "#2ca02c",
-            "#98df8a",
-            "#d62728",
-            "#ff9896",
-            "#9467bd",
-            "#c5b0d5"
-        ],
-        "outputs": 1,
-        "useDifferentColor": false,
-        "x": 860,
-        "y": 980,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "95df7e14.b6609",
-        "type": "ui_chart",
-        "z": "9f3346aa.d4fc48",
-        "name": "",
-        "group": "d07f30e0.c48a2",
-        "order": 1,
-        "width": "6",
-        "height": "6",
-        "label": "Storage",
-        "chartType": "line",
-        "legend": "true",
-        "xformat": "HH:mm:ss",
-        "interpolate": "step",
-        "nodata": "",
-        "dot": false,
-        "ymin": "0",
-        "ymax": "",
-        "removeOlder": 1,
-        "removeOlderPoints": "",
-        "removeOlderUnit": "86400",
-        "cutout": 0,
-        "useOneColor": false,
-        "useUTC": false,
-        "colors": [
-            "#1f77b4",
-            "#aec7e8",
-            "#ff7f0e",
-            "#2ca02c",
-            "#98df8a",
-            "#d62728",
-            "#ff9896",
-            "#9467bd",
-            "#c5b0d5"
-        ],
-        "outputs": 1,
-        "useDifferentColor": false,
-        "x": 860,
-        "y": 400,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "48b90ddd.e18714",
-        "type": "ui_gauge",
-        "z": "9f3346aa.d4fc48",
-        "name": "",
-        "group": "d07f30e0.c48a2",
-        "order": 2,
-        "width": "3",
-        "height": "3",
-        "gtype": "gage",
-        "title": "CPU Temp",
-        "label": "°C",
-        "format": "{{ msg.payload }}",
-        "min": 0,
-        "max": "100",
-        "colors": [
-            "#00b500",
-            "#f0f000",
-            "#ca3838"
-        ],
-        "seg1": "50",
-        "seg2": "75",
-        "x": 870,
-        "y": 1100,
-        "wires": []
     },
     {
         "id": "ba1907da.0fcf28",
@@ -438,10 +271,9 @@
         "initialize": "",
         "finalize": "",
         "x": 560,
-        "y": 480,
+        "y": 100,
         "wires": [
             [
-                "fb58a432.8d29b8",
                 "1124fc93.b3fd23"
             ]
         ]
@@ -458,11 +290,9 @@
         "oldrc": false,
         "name": "read_T",
         "x": 320,
-        "y": 980,
+        "y": 1060,
         "wires": [
             [
-                "48b90ddd.e18714",
-                "72d1796e.c403e8",
                 "74a85f1.53128a"
             ],
             [],
@@ -475,71 +305,12 @@
         "z": "9f3346aa.d4fc48",
         "name": "Uptime",
         "x": 320,
-        "y": 480,
+        "y": 100,
         "wires": [
             [
                 "ba1907da.0fcf28"
             ]
         ]
-    },
-    {
-        "id": "72d1796e.c403e8",
-        "type": "ui_chart",
-        "z": "9f3346aa.d4fc48",
-        "name": "",
-        "group": "d07f30e0.c48a2",
-        "order": 4,
-        "width": "6",
-        "height": "3",
-        "label": "Temperature, °C",
-        "chartType": "line",
-        "legend": "false",
-        "xformat": "HH:mm:ss",
-        "interpolate": "bezier",
-        "nodata": "",
-        "dot": false,
-        "ymin": "",
-        "ymax": "",
-        "removeOlder": 1,
-        "removeOlderPoints": "",
-        "removeOlderUnit": "86400",
-        "cutout": 0,
-        "useOneColor": false,
-        "useUTC": false,
-        "colors": [
-            "#1f77b4",
-            "#aec7e8",
-            "#ff7f0e",
-            "#2ca02c",
-            "#98df8a",
-            "#d62728",
-            "#ff9896",
-            "#9467bd",
-            "#c5b0d5"
-        ],
-        "outputs": 1,
-        "useDifferentColor": false,
-        "x": 880,
-        "y": 1140,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "fb58a432.8d29b8",
-        "type": "ui_text",
-        "z": "9f3346aa.d4fc48",
-        "group": "d07f30e0.c48a2",
-        "order": 1,
-        "width": 0,
-        "height": 0,
-        "name": "",
-        "label": "Uptime, d:h:m:s",
-        "format": "{{ msg.payload }}",
-        "layout": "row-spread",
-        "x": 880,
-        "y": 520,
-        "wires": []
     },
     {
         "id": "57db43b6.37f54c",
@@ -553,11 +324,9 @@
         "oldrc": false,
         "name": "cpu_load",
         "x": 320,
-        "y": 900,
+        "y": 980,
         "wires": [
             [
-                "f4fc2799.51b558",
-                "10934589.87f3ca",
                 "f5775c49.18ece"
             ],
             [],
@@ -576,7 +345,7 @@
         "oldrc": false,
         "name": "read_sd_usage",
         "x": 340,
-        "y": 300,
+        "y": 480,
         "wires": [
             [
                 "527cb653.bbcfe8"
@@ -596,23 +365,19 @@
         "initialize": "",
         "finalize": "",
         "x": 520,
-        "y": 300,
+        "y": 480,
         "wires": [
             [
-                "95df7e14.b6609",
                 "46060731.19d8b8"
             ],
             [
                 "e5545102.dca79"
             ],
             [
-                "a2d3aceb.798a3",
-                "95df7e14.b6609"
+                "a2d3aceb.798a3"
             ],
             [
-                "8cefa9f3.fd45c8",
-                "23830467.dd874c",
-                "ab78c404.fa5158"
+                "8cefa9f3.fd45c8"
             ],
             [
                 "47fca7e5.a21d88"
@@ -624,10 +389,10 @@
         "id": "c7e500f1.0b382",
         "type": "comment",
         "z": "9f3346aa.d4fc48",
-        "name": "UI controls",
+        "name": "OS Info",
         "info": "",
-        "x": 640,
-        "y": 80,
+        "x": 310,
+        "y": 40,
         "wires": []
     },
     {
@@ -640,7 +405,7 @@
         "retain": "false",
         "broker": "638fc478.4db30c",
         "x": 860,
-        "y": 200,
+        "y": 380,
         "wires": []
     },
     {
@@ -653,7 +418,7 @@
         "retain": "false",
         "broker": "638fc478.4db30c",
         "x": 860,
-        "y": 280,
+        "y": 460,
         "wires": []
     },
     {
@@ -666,7 +431,7 @@
         "retain": "false",
         "broker": "638fc478.4db30c",
         "x": 870,
-        "y": 320,
+        "y": 500,
         "wires": []
     },
     {
@@ -674,12 +439,12 @@
         "type": "mqtt out",
         "z": "9f3346aa.d4fc48",
         "name": "Uptime",
-        "topic": "Fermenta/System/Uptime/",
+        "topic": "Fermenta/System/Uptime",
         "qos": "1",
-        "retain": "false",
+        "retain": "true",
         "broker": "638fc478.4db30c",
         "x": 860,
-        "y": 480,
+        "y": 100,
         "wires": []
     },
     {
@@ -692,7 +457,7 @@
         "retain": "false",
         "broker": "638fc478.4db30c",
         "x": 1020,
-        "y": 800,
+        "y": 880,
         "wires": []
     },
     {
@@ -702,17 +467,7 @@
         "name": "Disk Usage",
         "info": "",
         "x": 330,
-        "y": 240,
-        "wires": []
-    },
-    {
-        "id": "c5c1ef60.f56d9",
-        "type": "comment",
-        "z": "9f3346aa.d4fc48",
-        "name": "Uptime",
-        "info": "",
-        "x": 310,
-        "y": 420,
+        "y": 380,
         "wires": []
     },
     {
@@ -725,7 +480,7 @@
         "retain": "false",
         "broker": "638fc478.4db30c",
         "x": 1030,
-        "y": 740,
+        "y": 820,
         "wires": []
     },
     {
@@ -738,7 +493,7 @@
         "retain": "false",
         "broker": "638fc478.4db30c",
         "x": 1020,
-        "y": 640,
+        "y": 720,
         "wires": []
     },
     {
@@ -748,7 +503,7 @@
         "name": "Memory",
         "info": "",
         "x": 320,
-        "y": 540,
+        "y": 620,
         "wires": []
     },
     {
@@ -758,7 +513,7 @@
         "name": "CPU",
         "info": "",
         "x": 310,
-        "y": 840,
+        "y": 920,
         "wires": []
     },
     {
@@ -771,7 +526,7 @@
         "retain": "true",
         "broker": "638fc478.4db30c",
         "x": 870,
-        "y": 900,
+        "y": 960,
         "wires": []
     },
     {
@@ -784,7 +539,7 @@
         "retain": "true",
         "broker": "638fc478.4db30c",
         "x": 870,
-        "y": 1040,
+        "y": 1060,
         "wires": []
     },
     {
@@ -793,10 +548,10 @@
         "z": "9f3346aa.d4fc48",
         "name": "",
         "x": 310,
-        "y": 180,
+        "y": 260,
         "wires": [
             [
-                "10434740.86af19"
+                "85ba8993.2b7608"
             ]
         ]
     },
@@ -810,7 +565,7 @@
         "retain": "false",
         "broker": "638fc478.4db30c",
         "x": 890,
-        "y": 140,
+        "y": 260,
         "wires": []
     },
     {
@@ -825,7 +580,7 @@
         "oldrc": false,
         "name": "IP",
         "x": 310,
-        "y": 120,
+        "y": 200,
         "wires": [
             [
                 "bfc93db5.11c57"
@@ -844,42 +599,7 @@
         "retain": "false",
         "broker": "638fc478.4db30c",
         "x": 850,
-        "y": 100,
-        "wires": []
-    },
-    {
-        "id": "8a2afb23.9bb668",
-        "type": "mqtt-check",
-        "z": "9f3346aa.d4fc48",
-        "d": true,
-        "host": "localhost",
-        "port": "1883",
-        "username": "Fermenta",
-        "password": "Ferment@21",
-        "name": "",
-        "x": 340,
-        "y": 40,
-        "wires": [
-            [
-                "bedd465d.12aa88"
-            ]
-        ]
-    },
-    {
-        "id": "bedd465d.12aa88",
-        "type": "debug",
-        "z": "9f3346aa.d4fc48",
-        "name": "",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 850,
-        "y": 40,
+        "y": 180,
         "wires": []
     },
     {
@@ -892,7 +612,7 @@
         "retain": "false",
         "broker": "638fc478.4db30c",
         "x": 1000,
-        "y": 580,
+        "y": 660,
         "wires": []
     },
     {
@@ -904,7 +624,7 @@
         "action": "",
         "pretty": true,
         "x": 770,
-        "y": 580,
+        "y": 660,
         "wires": [
             [
                 "83dbb22c.e12e8"
@@ -932,7 +652,7 @@
         "swapUsedMemory": false,
         "swapFreeMemory": false,
         "x": 340,
-        "y": 600,
+        "y": 680,
         "wires": [
             [
                 "2248d179.1543ae"
@@ -960,7 +680,7 @@
         "swapUsedMemory": false,
         "swapFreeMemory": false,
         "x": 330,
-        "y": 660,
+        "y": 740,
         "wires": [
             [
                 "2248d179.1543ae"
@@ -988,7 +708,7 @@
         "reduceInitType": "",
         "reduceFixup": "",
         "x": 630,
-        "y": 620,
+        "y": 700,
         "wires": [
             [
                 "274a1f32.73466",
@@ -1017,7 +737,7 @@
         "swapUsedMemory": false,
         "swapFreeMemory": false,
         "x": 340,
-        "y": 720,
+        "y": 800,
         "wires": [
             [
                 "2248d179.1543ae"
@@ -1035,7 +755,7 @@
         "initialize": "",
         "finalize": "",
         "x": 510,
-        "y": 620,
+        "y": 700,
         "wires": [
             [
                 "7f06399e.dd1c18"
@@ -1053,7 +773,7 @@
         "initialize": "",
         "finalize": "",
         "x": 780,
-        "y": 720,
+        "y": 800,
         "wires": [
             [
                 "5871770c.b8b6e8"
@@ -1079,7 +799,7 @@
         "retain": "false",
         "broker": "638fc478.4db30c",
         "x": 1020,
-        "y": 700,
+        "y": 780,
         "wires": []
     },
     {
@@ -1092,22 +812,6 @@
         "retain": "false",
         "broker": "638fc478.4db30c",
         "x": 870,
-        "y": 240,
-        "wires": []
-    },
-    {
-        "id": "ab78c404.fa5158",
-        "type": "debug",
-        "z": "9f3346aa.d4fc48",
-        "name": "",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 660,
         "y": 420,
         "wires": []
     },
@@ -1121,7 +825,54 @@
         "retain": "false",
         "broker": "638fc478.4db30c",
         "x": 860,
-        "y": 360,
+        "y": 540,
         "wires": []
+    },
+    {
+        "id": "85ba8993.2b7608",
+        "type": "json",
+        "z": "9f3346aa.d4fc48",
+        "name": "",
+        "property": "payload",
+        "action": "str",
+        "pretty": true,
+        "x": 550,
+        "y": 260,
+        "wires": [
+            [
+                "10434740.86af19"
+            ]
+        ]
+    },
+    {
+        "id": "67ae0067.a84ab",
+        "type": "inject",
+        "z": "9f3346aa.d4fc48",
+        "name": "1 minute tick",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "60",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "1",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 120,
+        "y": 200,
+        "wires": [
+            [
+                "dade3cd6.7d9eb",
+                "dfed6e13.50ff2",
+                "f2adaf57.d9a"
+            ]
+        ]
     }
 ]

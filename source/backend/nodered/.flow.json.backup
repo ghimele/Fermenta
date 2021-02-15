@@ -203,7 +203,7 @@
         "name": "Distance01",
         "topic": "Fermenta/Sensors/Distance/1",
         "qos": "1",
-        "retain": "true",
+        "retain": "false",
         "broker": "638fc478.4db30c",
         "x": 460,
         "y": 140,
@@ -248,15 +248,12 @@
         "payload": "",
         "payloadType": "date",
         "x": 110,
-        "y": 540,
+        "y": 620,
         "wires": [
             [
                 "ab1a2405.584fd8",
-                "f2adaf57.d9a",
                 "57db43b6.37f54c",
                 "e91a3069.06e26",
-                "dfed6e13.50ff2",
-                "dade3cd6.7d9eb",
                 "6d9ce3f1.90469c",
                 "b2a8abb1.8af698",
                 "2bac96e4.7181ca"
@@ -286,7 +283,7 @@
         "seg1": "60",
         "seg2": "80",
         "x": 860,
-        "y": 940,
+        "y": 1020,
         "wires": []
     },
     {
@@ -312,7 +309,7 @@
         "seg1": "60",
         "seg2": "80",
         "x": 850,
-        "y": 440,
+        "y": 620,
         "wires": []
     },
     {
@@ -353,7 +350,7 @@
         "outputs": 1,
         "useDifferentColor": false,
         "x": 860,
-        "y": 980,
+        "y": 1060,
         "wires": [
             []
         ]
@@ -396,7 +393,7 @@
         "outputs": 1,
         "useDifferentColor": false,
         "x": 860,
-        "y": 400,
+        "y": 580,
         "wires": [
             []
         ]
@@ -424,7 +421,7 @@
         "seg1": "50",
         "seg2": "75",
         "x": 870,
-        "y": 1100,
+        "y": 1180,
         "wires": []
     },
     {
@@ -438,11 +435,12 @@
         "initialize": "",
         "finalize": "",
         "x": 560,
-        "y": 480,
+        "y": 100,
         "wires": [
             [
                 "fb58a432.8d29b8",
-                "1124fc93.b3fd23"
+                "1124fc93.b3fd23",
+                "8e407b66.6b04f8"
             ]
         ]
     },
@@ -458,7 +456,7 @@
         "oldrc": false,
         "name": "read_T",
         "x": 320,
-        "y": 980,
+        "y": 1060,
         "wires": [
             [
                 "48b90ddd.e18714",
@@ -475,7 +473,7 @@
         "z": "9f3346aa.d4fc48",
         "name": "Uptime",
         "x": 320,
-        "y": 480,
+        "y": 100,
         "wires": [
             [
                 "ba1907da.0fcf28"
@@ -520,7 +518,7 @@
         "outputs": 1,
         "useDifferentColor": false,
         "x": 880,
-        "y": 1140,
+        "y": 1220,
         "wires": [
             []
         ]
@@ -538,7 +536,7 @@
         "format": "{{ msg.payload }}",
         "layout": "row-spread",
         "x": 880,
-        "y": 520,
+        "y": 140,
         "wires": []
     },
     {
@@ -553,7 +551,7 @@
         "oldrc": false,
         "name": "cpu_load",
         "x": 320,
-        "y": 900,
+        "y": 980,
         "wires": [
             [
                 "f4fc2799.51b558",
@@ -576,7 +574,7 @@
         "oldrc": false,
         "name": "read_sd_usage",
         "x": 340,
-        "y": 300,
+        "y": 480,
         "wires": [
             [
                 "527cb653.bbcfe8"
@@ -596,7 +594,7 @@
         "initialize": "",
         "finalize": "",
         "x": 520,
-        "y": 300,
+        "y": 480,
         "wires": [
             [
                 "95df7e14.b6609",
@@ -624,10 +622,10 @@
         "id": "c7e500f1.0b382",
         "type": "comment",
         "z": "9f3346aa.d4fc48",
-        "name": "UI controls",
+        "name": "OS Info",
         "info": "",
-        "x": 640,
-        "y": 80,
+        "x": 490,
+        "y": 60,
         "wires": []
     },
     {
@@ -637,10 +635,10 @@
         "name": "Disk Total",
         "topic": "Fermenta/System/Disk/Total",
         "qos": "1",
-        "retain": "true",
+        "retain": "false",
         "broker": "638fc478.4db30c",
         "x": 860,
-        "y": 200,
+        "y": 380,
         "wires": []
     },
     {
@@ -650,10 +648,10 @@
         "name": "Disk Free",
         "topic": "Fermenta/System/Disk/Free",
         "qos": "1",
-        "retain": "true",
+        "retain": "false",
         "broker": "638fc478.4db30c",
         "x": 860,
-        "y": 280,
+        "y": 460,
         "wires": []
     },
     {
@@ -663,10 +661,10 @@
         "name": "Disk Usage",
         "topic": "Fermenta/System/Disk/Usage",
         "qos": "1",
-        "retain": "true",
+        "retain": "false",
         "broker": "638fc478.4db30c",
         "x": 870,
-        "y": 320,
+        "y": 500,
         "wires": []
     },
     {
@@ -674,12 +672,12 @@
         "type": "mqtt out",
         "z": "9f3346aa.d4fc48",
         "name": "Uptime",
-        "topic": "Fermenta/System/Uptime/",
+        "topic": "Fermenta/System/Uptime",
         "qos": "1",
         "retain": "true",
         "broker": "638fc478.4db30c",
         "x": 860,
-        "y": 480,
+        "y": 100,
         "wires": []
     },
     {
@@ -689,10 +687,10 @@
         "name": "Memory Usage",
         "topic": "Fermenta/System/Memory/Usage",
         "qos": "1",
-        "retain": "true",
+        "retain": "false",
         "broker": "638fc478.4db30c",
         "x": 1020,
-        "y": 800,
+        "y": 880,
         "wires": []
     },
     {
@@ -702,17 +700,7 @@
         "name": "Disk Usage",
         "info": "",
         "x": 330,
-        "y": 240,
-        "wires": []
-    },
-    {
-        "id": "c5c1ef60.f56d9",
-        "type": "comment",
-        "z": "9f3346aa.d4fc48",
-        "name": "Uptime",
-        "info": "",
-        "x": 310,
-        "y": 420,
+        "y": 320,
         "wires": []
     },
     {
@@ -722,10 +710,10 @@
         "name": "Memory Available",
         "topic": "Fermenta/System/Memory/Available",
         "qos": "1",
-        "retain": "true",
+        "retain": "false",
         "broker": "638fc478.4db30c",
         "x": 1030,
-        "y": 740,
+        "y": 820,
         "wires": []
     },
     {
@@ -735,10 +723,10 @@
         "name": "Memory Total",
         "topic": "Fermenta/System/Memory/Total",
         "qos": "1",
-        "retain": "true",
+        "retain": "false",
         "broker": "638fc478.4db30c",
         "x": 1020,
-        "y": 640,
+        "y": 720,
         "wires": []
     },
     {
@@ -748,7 +736,7 @@
         "name": "Memory",
         "info": "",
         "x": 320,
-        "y": 540,
+        "y": 620,
         "wires": []
     },
     {
@@ -758,7 +746,7 @@
         "name": "CPU",
         "info": "",
         "x": 310,
-        "y": 840,
+        "y": 920,
         "wires": []
     },
     {
@@ -771,7 +759,7 @@
         "retain": "true",
         "broker": "638fc478.4db30c",
         "x": 870,
-        "y": 900,
+        "y": 980,
         "wires": []
     },
     {
@@ -784,7 +772,7 @@
         "retain": "true",
         "broker": "638fc478.4db30c",
         "x": 870,
-        "y": 1040,
+        "y": 1120,
         "wires": []
     },
     {
@@ -793,10 +781,11 @@
         "z": "9f3346aa.d4fc48",
         "name": "",
         "x": 310,
-        "y": 180,
+        "y": 260,
         "wires": [
             [
-                "10434740.86af19"
+                "85ba8993.2b7608",
+                "b8977684.2805f8"
             ]
         ]
     },
@@ -807,10 +796,10 @@
         "name": "Operating System",
         "topic": "Fermenta/System/OS",
         "qos": "1",
-        "retain": "true",
+        "retain": "false",
         "broker": "638fc478.4db30c",
         "x": 890,
-        "y": 140,
+        "y": 220,
         "wires": []
     },
     {
@@ -825,7 +814,7 @@
         "oldrc": false,
         "name": "IP",
         "x": 310,
-        "y": 120,
+        "y": 200,
         "wires": [
             [
                 "bfc93db5.11c57"
@@ -841,10 +830,10 @@
         "name": "IP",
         "topic": "Fermenta/System/IP",
         "qos": "1",
-        "retain": "true",
+        "retain": "false",
         "broker": "638fc478.4db30c",
         "x": 850,
-        "y": 100,
+        "y": 180,
         "wires": []
     },
     {
@@ -889,10 +878,10 @@
         "name": "Memory",
         "topic": "Fermenta/System/MemoryData",
         "qos": "1",
-        "retain": "true",
+        "retain": "false",
         "broker": "638fc478.4db30c",
         "x": 1000,
-        "y": 580,
+        "y": 660,
         "wires": []
     },
     {
@@ -904,7 +893,7 @@
         "action": "",
         "pretty": true,
         "x": 770,
-        "y": 580,
+        "y": 660,
         "wires": [
             [
                 "83dbb22c.e12e8"
@@ -932,7 +921,7 @@
         "swapUsedMemory": false,
         "swapFreeMemory": false,
         "x": 340,
-        "y": 600,
+        "y": 680,
         "wires": [
             [
                 "2248d179.1543ae"
@@ -960,7 +949,7 @@
         "swapUsedMemory": false,
         "swapFreeMemory": false,
         "x": 330,
-        "y": 660,
+        "y": 740,
         "wires": [
             [
                 "2248d179.1543ae"
@@ -988,7 +977,7 @@
         "reduceInitType": "",
         "reduceFixup": "",
         "x": 630,
-        "y": 620,
+        "y": 700,
         "wires": [
             [
                 "274a1f32.73466",
@@ -1017,7 +1006,7 @@
         "swapUsedMemory": false,
         "swapFreeMemory": false,
         "x": 340,
-        "y": 720,
+        "y": 800,
         "wires": [
             [
                 "2248d179.1543ae"
@@ -1035,7 +1024,7 @@
         "initialize": "",
         "finalize": "",
         "x": 510,
-        "y": 620,
+        "y": 700,
         "wires": [
             [
                 "7f06399e.dd1c18"
@@ -1053,7 +1042,7 @@
         "initialize": "",
         "finalize": "",
         "x": 780,
-        "y": 720,
+        "y": 800,
         "wires": [
             [
                 "5871770c.b8b6e8"
@@ -1076,10 +1065,10 @@
         "name": "Memory Active",
         "topic": "Fermenta/System/Memory/Active",
         "qos": "1",
-        "retain": "true",
+        "retain": "false",
         "broker": "638fc478.4db30c",
         "x": 1020,
-        "y": 700,
+        "y": 780,
         "wires": []
     },
     {
@@ -1089,14 +1078,125 @@
         "name": "Disk Used",
         "topic": "Fermenta/System/Disk/Used",
         "qos": "1",
-        "retain": "true",
+        "retain": "false",
         "broker": "638fc478.4db30c",
         "x": 870,
-        "y": 240,
+        "y": 420,
         "wires": []
     },
     {
         "id": "ab78c404.fa5158",
+        "type": "debug",
+        "z": "9f3346aa.d4fc48",
+        "name": "",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 660,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "47fca7e5.a21d88",
+        "type": "mqtt out",
+        "z": "9f3346aa.d4fc48",
+        "name": "Disk Data",
+        "topic": "Fermenta/System/DiskData",
+        "qos": "1",
+        "retain": "false",
+        "broker": "638fc478.4db30c",
+        "x": 860,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "85ba8993.2b7608",
+        "type": "json",
+        "z": "9f3346aa.d4fc48",
+        "name": "",
+        "property": "payload",
+        "action": "str",
+        "pretty": true,
+        "x": 560,
+        "y": 240,
+        "wires": [
+            [
+                "10434740.86af19",
+                "7c2fa8cf.ca8008"
+            ]
+        ]
+    },
+    {
+        "id": "7c2fa8cf.ca8008",
+        "type": "debug",
+        "z": "9f3346aa.d4fc48",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 720,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "b8977684.2805f8",
+        "type": "debug",
+        "z": "9f3346aa.d4fc48",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 540,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "67ae0067.a84ab",
+        "type": "inject",
+        "z": "9f3346aa.d4fc48",
+        "name": "1 minute tick",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "60",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "1",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 120,
+        "y": 200,
+        "wires": [
+            [
+                "dade3cd6.7d9eb",
+                "dfed6e13.50ff2",
+                "f2adaf57.d9a"
+            ]
+        ]
+    },
+    {
+        "id": "8e407b66.6b04f8",
         "type": "debug",
         "z": "9f3346aa.d4fc48",
         "name": "",
@@ -1107,21 +1207,8 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 660,
-        "y": 420,
-        "wires": []
-    },
-    {
-        "id": "47fca7e5.a21d88",
-        "type": "mqtt out",
-        "z": "9f3346aa.d4fc48",
-        "name": "Disk Data",
-        "topic": "Fermenta/System/DiskData",
-        "qos": "1",
-        "retain": "true",
-        "broker": "638fc478.4db30c",
-        "x": 860,
-        "y": 360,
+        "x": 720,
+        "y": 180,
         "wires": []
     }
 ]
