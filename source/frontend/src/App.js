@@ -9,6 +9,7 @@ import SideBar from './components/SideBar';
 import Main from './components/Main';
 import Monitor from './components/Monitor';
 import Info from './ui/Info/Info';
+import Sensors from './ui/Sensors';
 import classNames from 'classnames';
 import MQTTConnector from './components/mqtt-client/connector';
 
@@ -70,6 +71,7 @@ class App extends React.Component {
                 <Route path="/" exact component={() => <Main />} />
                 <Route path="/Monitor" exact component={() => <Monitor mqttClient={this.state.mqttClient}/>} />
                 <Route path="/Info" exact component={() => <Info />} />
+                <Route path="/Sensors" exact component={() => <Sensors />} />
               </Switch>
             </Router>
             </MQTTConnector>
