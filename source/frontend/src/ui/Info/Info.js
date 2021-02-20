@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import Card from 'react-bootstrap/Card';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -37,9 +37,9 @@ const customDispatchUpTime = function(topic, message, packet) {
     const tmpmess=parse(message);
     var re = /:/;
     var newstr = tmpmess.replace(re, " Day, ");
-    var newstr = newstr.replace(re, " Hours, ");
-    var newstr = newstr.replace(re, " Minutes, ");
-    var newstr = newstr.replace(re, " Seconds, ");
+    newstr = newstr.replace(re, " Hours, ");
+    newstr = newstr.replace(re, " Minutes, ");
+    newstr = newstr.replace(re, " Seconds, ");
     
     m["UpTime"]=newstr;
 

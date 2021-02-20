@@ -1,11 +1,11 @@
-import React, {Component} from 'react';
+import React from 'react';
 //import MQTTConnection from './MQTT/MQTTConnection';
 
 class Main extends React.Component {
     render() {
       return (
         <main className="main flex-shrink-0" id="Main"> 
-          <h1 className="header">Welcome To React-Bootstrap</h1> 
+          <h1 className="header">Welcome to Fermenta</h1> 
         </main>
       );
     }

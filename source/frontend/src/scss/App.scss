@@ -12,11 +12,6 @@
 $main-padding-left: 20px;
 $main-padding-top: 70px;
 
-
-// $theme-colors: (
-//   "primary": #3B5998
-// );
-
 /* Main */
 .main {
     padding-top: $main-padding-top;
@@ -28,7 +23,7 @@ $main-padding-top: 70px;
 *** SIDEBAR
 */
 $card-spacer-x: 0.5rem;
-$btn-padding-x: 0px;
+$card-spacer-y: 0.5rem;
 
 $sidebar-width: 300px;
 $sidebar-mini-width: 50px;
@@ -73,7 +68,7 @@ $sidebar-mini-width: 50px;
     user-select: none;
     background-color: transparent;
     border: $btn-border-width solid transparent;
-    padding: $btn-padding-y 5;
+    padding: 0px;
     //@include button-size($btn-padding-y, 5, $btn-font-size, $btn-line-height, $btn-border-radius);
     line-height: $btn-line-height;
     @include transition($btn-transition);
@@ -109,7 +104,7 @@ $sidebar-mini-width: 50px;
         }
       }
     }
-  }
+}
 
 .SideBarTitle{
     padding-left:5px;
@@ -144,9 +139,6 @@ $sidebar-mini-width: 50px;
     border: 1px solid rgba(0,0,0,.125);
 }
 
-.mini{
-    //display:none;
-}
 /* SIDEBAR */
 
 @media (max-width: 767.98px) {
@@ -161,10 +153,10 @@ $sidebar-mini-width: 50px;
       padding-left: 5px;
     }
   
-    .sidebar.mini {
-      min-width: $sidebar-width;
-      max-width: $sidebar-width;
-    }
+    // .sidebar.mini {
+    //   min-width: $sidebar-width;
+    //   max-width: $sidebar-width;
+    // }
   
     .disclaimer.mini{
       display: none;
@@ -198,6 +190,59 @@ $sidebar-mini-width: 50px;
   text-align: center;
 }
 
-// 
+#dropdown-programs{
+  width: 300px !important;
+  text-align: left;
+  padding-left: 5px;
+  padding-right: 20px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  position: static;
+}
+
+#dropdown-programs::after {
+  position: absolute;
+  right: 10px;
+  top: 15px;
+}
+
+#dropdown-programs-menu{
+  width: 100% !important;
+  
+}
+a.dropdown-item{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.btn.btn-fermenta:hover {
+  color: $yellow;
+}
+
+.show>.btn.btn-fermenta.dropdown-toggle {
+  color: $yellow;
+}
+
+.btn.btn-icon {
+  margin: 0px;
+  padding: 0px;
+  max-width: calc(1.5em + 0.75rem + 2px);
+  max-height: calc(1.5em + 0.75rem + 2px);
+  text-align: center;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
 
 @import "~bootstrap/scss/bootstrap";
