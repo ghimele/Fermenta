@@ -5,7 +5,7 @@ import Col from 'react-bootstrap/Col';
 
 
 class ProgramFormVolume extends React.Component {
-    state = { Width:'', Length:'', Height:''};
+    state = { width:this.props.width, length:this.props.length, height:this.props.height};
 
     constructor(props) {
         super(props);
@@ -16,44 +16,43 @@ class ProgramFormVolume extends React.Component {
     }
 
     handleWidthChange=(e)=>{
-        this.setState({ Width: e.target.value});
-        this.props.onVolumeSizechange(e.target.value,"Width")
+        this.setState({ width: e.target.value});
+        this.props.onVolumeSizechange(e.target.value,"Width");
     }
 
     handleLengthChange=(e)=>{
-        this.setState({ Length: e.target.value});
-        this.props.onVolumeSizechange(e.target.value,"Length")
+        this.setState({ length: e.target.value});
+        this.props.onVolumeSizechange(e.target.value,"Length");
     }
 
     handleHeightChange=(e)=>{
-        this.setState({ Height: e.target.value});
-        this.props.onVolumeSizechange(e.target.value,"Height")
+        this.setState({ height: e.target.value});
+        this.props.onVolumeSizechange(e.target.value,"Height");
     }
 
     /* This event will fire on next properties update */    
-    componentWillReceiveProps(nextProps) {    
+    componentDidUpdate(prevProps) {    
         try{  
 
-            if (nextProps.Height!==undefined) {        
-                this.setState({ Height: nextProps.Height });    
+            if (prevProps.width!== this.props.width) {    
+                this.setState({ width: this.props.width });    
             }
 
-            if (nextProps.Width!==undefined) {    
-                this.setState({ Width: nextProps.Width });    
+            if (prevProps.length!== this.props.length) {        
+                this.setState({ length: this.props.length });    
             }
 
-            if (nextProps.Length!==undefined) {        
-                this.setState({ Length: nextProps.Length });    
+            if (prevProps.height!== this.props.height) {        
+                this.setState({ height: this.props.height });    
             }
 
-            
         }catch(error){    
-    
+
             console.log("Error in React Table component will receive props : " + error);    
    
         }            
-    }  
-
+    } 
+    
     render() {
         if(this.props.useVolume){
             return (
@@ -64,15 +63,15 @@ class ProgramFormVolume extends React.Component {
                 <Form.Row >
                     <Form.Group controlId="formVolumeWidth" as={Col}>
                         <Form.Label>Width</Form.Label>
-                        <Form.Control required type="number" placeholder="Width in cm" value={this.state.Width} onChange={this.handleWidthChange}/>
+                        <Form.Control required type="number" placeholder="Width in cm" value={this.state.width} onChange={this.handleWidthChange}/>
                     </Form.Group>
                     <Form.Group controlId="formVolumeLength" as={Col}>
                         <Form.Label>Length</Form.Label>
-                        <Form.Control required type="number" placeholder="Length in cm" value={this.state.Length} onChange={this.handleLengthChange}/>
+                        <Form.Control required type="number" placeholder="Length in cm" value={this.state.length} onChange={this.handleLengthChange}/>
                     </Form.Group>
                     <Form.Group controlId="formVolumeHeight" as={Col}>
                         <Form.Label>Height</Form.Label>
-                        <Form.Control required type="number" placeholder="Height in cm" value={this.state.Height} onChange={this.handleHeightChange}/>
+                        <Form.Control required type="number" placeholder="Height in cm" value={this.state.height} onChange={this.handleHeightChange}/>
                     </Form.Group>
                 </Form.Row>
             </div>
