@@ -1,12 +1,10 @@
-import React, {Component} from 'react';
+import React from 'react';
 import Plot from 'react-plotly.js';
 import {COLORS} from '../utilities/Color';
 
 class GaugeNumberChart extends React.Component {
   
-  render() {
-    const dataList = this.props.data.map((d) => <li>{d}</li>);
-    
+  render() {    
     var data = [
       {
         domain: { x: [0, 1], y: [0, 1] },
