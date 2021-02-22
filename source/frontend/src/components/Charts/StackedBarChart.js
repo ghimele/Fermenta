@@ -1,6 +1,4 @@
-import React, {Component} from 'react';
-import Card from 'react-bootstrap/Card';
-import Col from 'react-bootstrap/Col';
+import React from 'react';
 import Plot from 'react-plotly.js';
 import {COLORS} from '../utilities/Color';
 
@@ -8,12 +6,11 @@ class StackedBarChart extends React.Component {
    
   render() {
     const datatoplot=this.props.data[0];
-    var color="green";
     var trace1;
     var trace2;
     var data;
 
-    if(datatoplot != undefined)
+    if(datatoplot !== undefined)
     {
       trace1 = {
         y: [''],

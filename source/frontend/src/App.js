@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import logo from './logo.svg';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import Container from 'react-bootstrap/Container';
@@ -8,9 +7,11 @@ import Navbar from './components/NavBar';
 import SideBar from './components/SideBar';
 import Main from './components/Main';
 import Monitor from './components/Monitor';
+import Info from './ui/Info/Info';
+import Sensors from './ui/Sensors';
 import classNames from 'classnames';
 import MQTTConnector from './components/mqtt-client/connector';
-
+import ProgramConfig from './ui/ProgramConfig';
 import './scss/App.scss';
 
 class App extends React.Component {
@@ -68,6 +69,9 @@ class App extends React.Component {
               <Switch>
                 <Route path="/" exact component={() => <Main />} />
                 <Route path="/Monitor" exact component={() => <Monitor mqttClient={this.state.mqttClient}/>} />
+                <Route path="/Info" exact component={() => <Info />} />
+                <Route path="/Sensors" exact component={() => <Sensors />} />
+                <Route path="/ProgramConfig" exact component={() => <ProgramConfig />} />
               </Switch>
             </Router>
             </MQTTConnector>

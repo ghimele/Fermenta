@@ -1,14 +1,10 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import Nav from 'react-bootstrap/Nav';
 import Accordion from 'react-bootstrap/Accordion';
-import useAccordionToggle from 'react-bootstrap/AccordionToggle';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
-import AccordionContext from 'react-bootstrap/AccordionContext';
 import { RiComputerLine, RiArrowLeftSLine,RiArrowRightSLine, RiDashboardLine,RiSensorLine,RiInformationLine,RiMiniProgramLine,RiRunLine,RiStackLine} from "react-icons/ri";
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import classNames from 'classnames';
-import Tooltip from 'react-bootstrap/Tooltip';
 import Disclaimer from './Disclaimer';
 
 class SideBar extends React.Component {
@@ -47,8 +43,8 @@ class SideBar extends React.Component {
     render() {
         const isMinimized = this.state.isMinimized;
         const isSelected = this.state.isSelected;
-        const SidebarClass = classNames( "d-md-block", "bg-light", "sidebar", "collapse",{"mini": isMinimized} );
-        const SidebarFooter = classNames("sidebarfooter", "fixed-bottom", "d-md-block", "bg-light collapse",{"mini": isMinimized});
+        const SidebarClass = classNames( "d-md-block", "bg-light", "sidebar","collapse", {"mini": isMinimized} );
+        const SidebarFooter = classNames("sidebarfooter", "fixed-bottom", "d-md-block", "bg-light", "collapse",{"mini": isMinimized});
         const SidebarTitle = classNames("SideBarTitle", {"mini": isMinimized});
         const ListItem = classNames("list-group-item-sidebar","list-group-item-action","light", "text-left", {"list-selected": isSelected});
         let SidebarButton;
@@ -72,7 +68,7 @@ class SideBar extends React.Component {
                             <Accordion.Collapse eventKey="0">
                                 <div className="list-group card-body-sidebar">
                                 <a className={ListItem} href="/"><RiRunLine fontSize="1.5em"/><span className={SidebarTitle}>Active</span></a>
-                                <a className={ListItem} href="/"><RiStackLine fontSize="1.5em"/><span className={SidebarTitle}>Configure</span></a>
+                                <a className={ListItem} href="/ProgramConfig"><RiStackLine fontSize="1.5em"/><span className={SidebarTitle}>Configure</span></a>
                                 </div>
                             </Accordion.Collapse>
                         </Card>
@@ -83,8 +79,8 @@ class SideBar extends React.Component {
                             <Accordion.Collapse eventKey="1">
                                 <div className="list-group card-body-sidebar">
                                 <a className={ListItem} href="/Monitor" onClick={this.toggleSelected}><RiDashboardLine fontSize="1.5em"/><span className={SidebarTitle}>Monitor</span></a>
-                                <a className={ListItem} href="/"><RiSensorLine fontSize="1.5em"/><span className={SidebarTitle}>Sensors</span></a>
-                                <a className={ListItem} href="/"><RiInformationLine fontSize="1.5em"/><span className={SidebarTitle}>Info</span></a>
+                                <a className={ListItem} href="/Sensors"><RiSensorLine fontSize="1.5em"/><span className={SidebarTitle}>Sensors</span></a>
+                                <a className={ListItem} href="/Info"><RiInformationLine fontSize="1.5em"/><span className={SidebarTitle}>Info</span></a>
                                 </div>
                             </Accordion.Collapse>
                         </Card>
