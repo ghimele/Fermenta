@@ -11,11 +11,7 @@ const UPDATE_TABLE_VERSION = maindb.prepare('UPDATE VERSION SET VERSION = ? WHER
 const SELECT_VERSION = maindb.prepare('SELECT * FROM VERSION where ID=1');
 const SELECT_PROGRAM = maindb.prepare('SELECT * FROM PROGRAM');
 
-let sqlSelectVersion='SELECT * FROM VERSION where ID=?';
-let sqlDeleteMenu='DELETE FROM MENU WHERE BUSINESSID=';
-let sqlInsertMenu='INSERT INTO MENU(BUSINESSID,NAME,ACTIVE,ROW_INDEX) ';
-let sqlUdateMenu='UPDATE MENU ';
-let sqlGetMenuItem='SELECT * FROM MENU WHERE BUSINESSID=? AND ID=?';
+const UPDATE_PROGRAM = maindb.prepare('UPDATE PROGRAM SET NAME=?, DATA=? WHERE ID = ?');
 
 
 function errorCB(err,data){
@@ -84,9 +80,33 @@ function GetPrograms(){
     }
 }
 
+function UpdateProgram(ID, DATA){
+    var res;
+    try{
+        console.log('UpdateProgram');
+        console.log("got ID: %d", ID);
+        console.log("got DATA: %s", DATA);
+        console.log("got DATA.DATA: %s", JSON.stringify(DATA.DATA));
+        const Transaction = maindb.transaction(() => {
+            res=UPDATE_PROGRAM.run(DATA.NAME,JSON.stringify(DATA.DATA),ID);
+        });
+
+        Transaction.apply();
+
+        console.log(res);
+        return res;
+    }
+    catch(err){
+        console.log("Error during UpdateProgram: %s", err);
+
+        return err.message;
+    }
+}
+
 const db = {
     UpdateMainDB: UpdateMainDB,
-    GetPrograms:GetPrograms
+    GetPrograms: GetPrograms,
+    UpdateProgram: UpdateProgram
 };
 
 module.exports = db;
