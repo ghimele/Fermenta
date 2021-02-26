@@ -8,7 +8,7 @@ import Col from 'react-bootstrap/Col';
 
 
 class ProgramsDropDown extends React.Component {
-    state = { DropDowntitle:'',Programs:'', SelectedProgram:''};
+    state = { DropDowntitle:'',Programs:this.props.programs, SelectedProgram:''};
 
     handleSelect=(e)=>{
         console.log(e);
@@ -16,14 +16,14 @@ class ProgramsDropDown extends React.Component {
         if(this.props.programs.length>0){
             
             this.props.programs.map(p =>{
-                if(p.Id===parseInt(e)){
+                if(p.ID===parseInt(e)){
                     selectedp=p;
                 }
             });
         }
 
         if(selectedp!==undefined){
-            this.setState({ DropDowntitle: selectedp.Name });
+            this.setState({ DropDowntitle: selectedp.NAME });
             this.props.onSelectedProgramChange(selectedp);
         }
     }
@@ -34,13 +34,21 @@ class ProgramsDropDown extends React.Component {
 
     render() {
     const DropDownTitleValue=this.state.DropDowntitle == '' ? "Select a program" : this.state.DropDowntitle;
-    const Programs = this.props.programs;
+    const Programs = this.state.Programs;
 
-    var list= Programs.map((item,idx) =>{ 
-        return (   
-            <Dropdown.Item eventKey={item.Id} title={item.Name}>{item.Name}</Dropdown.Item>
-        );      
-    });
+    var list;
+    if(!this.props.isLoading && Programs!==undefined){
+        list= Programs.map((item) =>{ 
+            const description= (item.DATA!=null && item.DATA.Description!=null) ? item.DATA.Description : item.NAME;
+            return (   
+                <Dropdown.Item eventKey={item.ID} title={description} aria-label={item.ID}>{item.NAME}</Dropdown.Item>
+            );      
+        });
+    }
+    else{
+        list= null;
+    }
+        
 
     return (
         <div>
