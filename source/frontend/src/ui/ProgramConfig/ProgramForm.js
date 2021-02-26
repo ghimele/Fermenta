@@ -23,37 +23,46 @@ class ProgramForm extends React.Component {
 
     handleNameChange=(e)=>{
         const p=this.state.selectedProgram;
-        p.Name= e.target.value;
+        p.NAME= e.target.value;
+        if(p.DATA!=null){
+            p.DATA.Name=p.NAME;
+        }
         this.setState({ selectedProgram: p});
     }
 
     handleDescriptionChange=(e)=>{
         const p=this.state.selectedProgram;
-        p.Description= e.target.value;
-        this.setState({ selectedProgram: p});
+        if (p.DATA!=null){
+            p.DATA.Description= e.target.value;
+            this.setState({ selectedProgram: p});
+        }
     }
 
     handleVolumeChange=(e)=>{
         const p=this.state.selectedProgram;
-        p.UseVolume=e.target.checked;
-        this.setState({ useVolume: e.target.checked, selectedProgram: p  });
+        if(p.DATA!=null){
+            p.DATA.UseVolume=e.target.checked;
+            this.setState({ useVolume: e.target.checked, selectedProgram: p  });
+        }
     }
 
     handleVolumeSizeChange=(v,type)=>{
         const p=this.state.selectedProgram;
-        if(type==="Width"){
-            p.Width=v;
-        }
-        
-        if(type==="Length"){
-            p.Length=v;
-        }
+        if(p.DATA!=null){
+            if(type==="Width"){
+                p.DATA.Width=v;
+            }
+            
+            if(type==="Length"){
+                p.DATA.Length=v;
+            }
 
-        if(type==="Height"){
-            p.Height=v;
+            if(type==="Height"){
+                p.DATA.Height=v;
+            }
+            
+            this.setState({ selectedProgram: p  });
         }
-        
-        this.setState({ selectedProgram: p  });
     }
 
     componentDidUpdate(prevProps) {    
@@ -62,13 +71,11 @@ class ProgramForm extends React.Component {
                 this.setState({ selectedProgram: this.props.program });    
             }
 
-            if (prevProps.program.UseVolume !== this.props.program.UseVolume) {        
-                this.setState({ useVolume: this.props.program.UseVolume });    
+            if (prevProps.program.DATA.UseVolume !== this.props.program.DATA.UseVolume) {        
+                this.setState({ useVolume: this.props.program.DATA.UseVolume });    
             }
         }catch(error){    
-
             console.log("Error in React Table component will receive props : " + error);    
-   
         }            
     } 
 
@@ -80,12 +87,12 @@ class ProgramForm extends React.Component {
         <Form>
             <Form.Group controlId="formName">
                 <Form.Label>Name</Form.Label>
-                <Form.Control required type="text" placeholder="Enter Name" value={this.state.selectedProgram.Name} onChange={this.handleNameChange}/>
+                <Form.Control required type="text" placeholder="Enter Name" value={this.state.selectedProgram.NAME} onChange={this.handleNameChange}/>
             </Form.Group>
 
             <Form.Group controlId="formDesciprtion">
                 <Form.Label>Description</Form.Label>
-                <Form.Control type="text" placeholder="Enter Description" value={this.state.selectedProgram.Description} onChange={this.handleDescriptionChange}/>
+                <Form.Control type="text" placeholder="Enter Description" value={this.state.selectedProgram.DATA.Description} onChange={this.handleDescriptionChange}/>
             </Form.Group>
             <br />
             <Card>
@@ -101,14 +108,14 @@ class ProgramForm extends React.Component {
                         className="m-2"
                 />
                 <FormVolume useVolume={useVolume} 
-                            width={this.state.selectedProgram.Width} 
-                            length={this.state.selectedProgram.Length} 
-                            height={this.state.selectedProgram.Height}
+                            width={this.state.selectedProgram.DATA.Width} 
+                            length={this.state.selectedProgram.DATA.Length} 
+                            height={this.state.selectedProgram.DATA.Height}
                             onVolumeSizechange={this.handleVolumeSizeChange}
                 />
             </Card>
             <br />
-            <TableCycles cycleRows={this.state.selectedProgram.Cycles} useVolume={useVolume} />
+            <TableCycles cycleRows={this.state.selectedProgram.DATA.Cycles} useVolume={useVolume} />
             <br />
             <Button variant="primary" type="submit" className="btn-fermenta">
                 Submit

@@ -68,16 +68,19 @@ function updateMainDB0_0_0(cb){
 
 function GetPrograms(){
     var res;
-    
     try{
         console.log('GetPrograms');
         res=SELECT_PROGRAM.all();
+        for(const i in res){
+            if(res[i].DATA!=null){
+                res[i].DATA=JSON.parse(res[i].DATA);
+            }
+        }
         console.log(res);
         return res;
     }
     catch(err){
         console.log("Error during GetPrograms: %s", err);
-        cb(err,"");
     }
 }
 
