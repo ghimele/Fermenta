@@ -8,7 +8,7 @@ import TableCycles from './TableCycles';
 
 
 class ProgramForm extends React.Component {
-    state = { useVolume:this.props.program.UseVolume, selectedProgram:this.props.program};
+    state = { useVolume:this.props.program.UseVolume, selectedProgram:this.props.program, error: false, message:"" };
 
     /* Initial loading of program properties */      
     ProgramEmpty={
@@ -20,6 +20,24 @@ class ProgramForm extends React.Component {
         Height: 0,
         Cycles: ""
     }
+
+    handleSaveClick=(e)=>{
+        const requestOptions = {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(this.state.selectedProgram)
+        };
+
+        e.preventDefault();
+
+        fetch("http://192.168.1.122:3000/api/program/"+ this.state.selectedProgram.ID,requestOptions).then((res) => res.json())
+        .then((message=>{
+            this.setState({message:message})
+        }))
+        .catch((error => {
+            console.error('There was an error!', error);
+        }));
+        }
 
     handleNameChange=(e)=>{
         const p=this.state.selectedProgram;
@@ -117,8 +135,8 @@ class ProgramForm extends React.Component {
             <br />
             <TableCycles cycleRows={this.state.selectedProgram.DATA.Cycles} useVolume={useVolume} />
             <br />
-            <Button variant="primary" type="submit" className="btn-fermenta">
-                Submit
+            <Button variant="primary" type="submit" className="btn-fermenta" onClick={this.handleSaveClick}>
+                Save
             </Button>
         </Form>
       </div>
