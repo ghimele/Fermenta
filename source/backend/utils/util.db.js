@@ -63,43 +63,54 @@ function updateMainDB0_0_0(cb){
 }
 
 function GetPrograms(){
-    var res;
+    var retval= new Object();
+    retval.error=false;
+    retval.message="";
+    retval.data=null;
+
+    var data;
     try{
         console.log('GetPrograms');
-        res=SELECT_PROGRAM.all();
-        for(const i in res){
-            if(res[i].DATA!=null){
-                res[i].DATA=JSON.parse(res[i].DATA);
+        data=SELECT_PROGRAM.all();
+        for(const i in data){
+            if(data[i].DATA!=null){
+                data[i].DATA=JSON.parse(data[i].DATA);
             }
         }
-        console.log(res);
-        return res;
+        console.log(data);
+        retval.data=data;
+        return retval;
     }
     catch(err){
         console.log("Error during GetPrograms: %s", err);
+        retval.error=true;
+        retval.message=err.message;
+        return retval;
     }
 }
 
 function UpdateProgram(ID, DATA){
-    var res;
+    var retval= new Object();
+    retval.error=false;
+    retval.message="";
     try{
         console.log('UpdateProgram');
         console.log("got ID: %d", ID);
-        console.log("got DATA: %s", DATA);
-        console.log("got DATA.DATA: %s", JSON.stringify(DATA.DATA));
+        console.log("got DATA: %s", JSON.stringify(DATA.DATA));
         const Transaction = maindb.transaction(() => {
-            res=UPDATE_PROGRAM.run(DATA.NAME,JSON.stringify(DATA.DATA),ID);
+            retval.message=UPDATE_PROGRAM.run(DATA.NAME,JSON.stringify(DATA.DATA),ID);
         });
 
         Transaction.apply();
 
-        console.log(res);
-        return res;
+        console.log(retval);
+        return retval;
     }
     catch(err){
         console.log("Error during UpdateProgram: %s", err);
-
-        return err.message;
+        retval.error=true;
+        retval.message=err.message;
+        return retval;
     }
 }
 
