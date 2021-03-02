@@ -33,7 +33,6 @@ class ProgramFormVolume extends React.Component {
     /* This event will fire on next properties update */    
     componentDidUpdate(prevProps) {    
         try{  
-
             if (prevProps.width!== this.props.width) {    
                 this.setState({ width: this.props.width });    
             }
@@ -45,11 +44,8 @@ class ProgramFormVolume extends React.Component {
             if (prevProps.height!== this.props.height) {        
                 this.setState({ height: this.props.height });    
             }
-
         }catch(error){    
-
             console.log("Error in React Table component will receive props : " + error);    
-   
         }            
     } 
     

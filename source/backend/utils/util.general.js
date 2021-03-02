@@ -1,8 +1,13 @@
-const { version } = require('./package.json');
 
+function isEmpty(s){
+    if(!s || s.length==0){
+        return true;
+    }
 
-// const utilgeneral = {
-//     version: version
-// };
+    return false;
+}
+const utilgeneral = {
+    isEmpty: isEmpty
+};
 
-// module.exports = utilgeneral;
+module.exports = utilgeneral;

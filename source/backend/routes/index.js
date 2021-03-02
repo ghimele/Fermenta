@@ -13,9 +13,18 @@ router.get('/programs',middleware.programs.getPrograms, function(req, res, next)
   res.json({ error: false, programs: req.data });
 });
 
-//utils.db.UpdateProgram(req.params.id, req.body)
+// Create new program
+router.post('/program',middleware.programs.createProgram, function(req, res, next) {
+  res.json({ error: false, message: req.message });
+});
+
 // Update program by ID
 router.put('/program/:id',middleware.programs.updateProgram, function(req, res, next) {
+  res.json({ error: false, message: req.message });
+});
+
+// Update program by ID
+router.delete('/program/:id',middleware.programs.deleteProgram, function(req, res, next) {
   res.json({ error: false, message: req.message });
 });
 

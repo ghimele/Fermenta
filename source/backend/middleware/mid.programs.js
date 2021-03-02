@@ -3,7 +3,7 @@ var utils = require('../utils');
 const getPrograms = (req, res, next) => {
     var ret;
     ret = utils.db.GetPrograms();
-    
+
     if (ret.error) {
         return res.status(400).json({
           error: true,
@@ -30,9 +30,41 @@ const updateProgram = (req,res,next)=>{
     }
 }
 
+
+const createProgram = (req,res,next)=>{
+    var ret;
+    ret = utils.db.AddProgram(req.body);
+
+    if (ret.error) {
+        return res.status(400).json({
+          error: true,
+          message: ret.message
+        });
+    } else {
+        req.message = ret.message;
+        next();
+    }
+}
+
+const deleteProgram = (req,res,next)=>{
+    var ret;
+    ret = utils.db.DeleteProgram(req.params.id);
+
+    if (ret.error) {
+        return res.status(400).json({
+          error: true,
+          message: ret.message
+        });
+    } else {
+        req.message = ret.message;
+        next();
+    }
+}
 const programs = {
     getPrograms: getPrograms,
-    updateProgram: updateProgram
+    updateProgram: updateProgram,
+    createProgram: createProgram,
+    deleteProgram: deleteProgram
 };
 
 module.exports = programs;

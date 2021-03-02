@@ -1,6 +1,7 @@
 const path = require("path");
 const fs = require("fs");
 const { version } = require('../package.json');
+const utilgeneral = require('./util.general');
 const sqliteDB = require('better-sqlite3');
 
 const maindbPath=path.join(__dirname,'..','database', 'main.db');
@@ -12,7 +13,8 @@ const SELECT_VERSION = maindb.prepare('SELECT * FROM VERSION where ID=1');
 const SELECT_PROGRAM = maindb.prepare('SELECT * FROM PROGRAM');
 
 const UPDATE_PROGRAM = maindb.prepare('UPDATE PROGRAM SET NAME=?, DATA=? WHERE ID = ?');
-
+const INSERT_PROGRAM = maindb.prepare('INSERT INTO PROGRAM (NAME,DATA) VALUES(?,?)');
+const DELETE_PROGRAM = maindb.prepare('DELETE FROM PROGRAM WHERE ID = ?');
 
 function errorCB(err,data){
     if(err){
@@ -97,6 +99,13 @@ function UpdateProgram(ID, DATA){
         console.log('UpdateProgram');
         console.log("got ID: %d", ID);
         console.log("got DATA: %s", JSON.stringify(DATA.DATA));
+
+        if(utilgeneral.isEmpty(ID)){
+            retval.error=true;
+            retval.message="ID must not be empty";
+            return retval;
+        }
+        
         const Transaction = maindb.transaction(() => {
             retval.message=UPDATE_PROGRAM.run(DATA.NAME,JSON.stringify(DATA.DATA),ID);
         });
@@ -114,10 +123,65 @@ function UpdateProgram(ID, DATA){
     }
 }
 
+function AddProgram(DATA){
+    var retval= new Object();
+    retval.error=false;
+    retval.message="";
+    try{
+        console.log('AddProgram');
+        console.log("got DATA: %s", JSON.stringify(DATA.DATA));
+        const Transaction = maindb.transaction(() => {
+            retval.message=INSERT_PROGRAM.run(DATA.NAME,JSON.stringify(DATA.DATA));
+        });
+
+        Transaction.apply();
+
+        console.log(retval);
+        return retval;
+    }
+    catch(err){
+        console.log("Error during AddProgram: %s", err);
+        retval.error=true;
+        retval.message=err.message;
+        return retval;
+    }
+}
+
+function DeleteProgram(ID){
+    var retval= new Object();
+    retval.error=false;
+    retval.message="";
+    try{
+        console.log('DeleteProgram');
+        
+        if(utilgeneral.isEmpty(ID)){
+            retval.error=true;
+            retval.message="ID must not be empty";
+            return retval;
+        }
+
+        const Transaction = maindb.transaction(() => {
+            retval.message=DELETE_PROGRAM.run(ID);
+        });
+
+        Transaction.apply();
+
+        console.log(retval);
+        return retval;
+    }
+    catch(err){
+        console.log("Error during DeleteProgram: %s", err);
+        retval.error=true;
+        retval.message=err.message;
+        return retval;
+    }
+}
 const db = {
     UpdateMainDB: UpdateMainDB,
     GetPrograms: GetPrograms,
-    UpdateProgram: UpdateProgram
+    UpdateProgram: UpdateProgram,
+    AddProgram: AddProgram,
+    DeleteProgram: DeleteProgram
 };
 
 module.exports = db;

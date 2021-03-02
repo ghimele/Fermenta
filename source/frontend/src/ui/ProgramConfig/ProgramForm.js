@@ -5,7 +5,7 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import FormVolume from './ProgramFormVolume';
 import TableCycles from './TableCycles';
-
+import Services from '../../services';
 
 class ProgramForm extends React.Component {
     state = { useVolume:this.props.program.UseVolume, selectedProgram:this.props.program, error: false, message:"" };
@@ -30,14 +30,14 @@ class ProgramForm extends React.Component {
 
         e.preventDefault();
 
-        fetch("http://192.168.1.122:3000/api/program/"+ this.state.selectedProgram.ID,requestOptions).then((res) => res.json())
+        Services.Programs.saveProgram(this.state.selectedProgram.ID,this.state.selectedProgram)
         .then((message=>{
             this.setState({message:message})
         }))
         .catch((error => {
             console.error('There was an error!', error);
         }));
-        }
+    }
 
     handleNameChange=(e)=>{
         const p=this.state.selectedProgram;
@@ -99,6 +99,10 @@ class ProgramForm extends React.Component {
 
     render() {
     const useVolume=this.state.useVolume;
+    
+    if(this.state.selectedProgram===''){
+        return (null);
+    }
 
     return (
     <div>

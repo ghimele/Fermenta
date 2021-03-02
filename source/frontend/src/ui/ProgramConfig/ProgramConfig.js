@@ -4,9 +4,10 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import ProgramsDropDown from './ProgramsDropDown';
 import ProgramForm from './ProgramForm';
+import Services from '../../services';
 
 class ProgramConfig extends React.Component {
-  state = { programs:'', selectedProgram:'', isProgramSelected:false, isLoading:true};
+  state = { programs:'', selectedProgram:'', isProgramSelected:false};
 
   ProgramsProps=[
     {
@@ -51,27 +52,17 @@ class ProgramConfig extends React.Component {
         }
       ]
     }
-    ]
+  ]
 
   handleSelectedProgramChange=(program)=>{
-      this.setState({ selectedProgram: program,isProgramSelected:true });
-  }
-
-  componentDidMount(){
-
-    fetch("http://192.168.1.122:3000/api/programs").then((res) => res.json())
-    .then((programs=>{
-      this.setState({programs, isLoading:false})
-    }));
-
+    this.setState({ selectedProgram: program,isProgramSelected:true });
   }
 
   render() {
-    if(!this.state.isLoading){
       return (
         <Row> 
           <Col>
-            <ProgramsDropDown programs={this.state.programs.programs} onSelectedProgramChange={this.handleSelectedProgramChange} isLaoding={this.state.isLoading} programs2={this.ProgramsProps}/>
+            <ProgramsDropDown programs={this.state.programs.programs} onSelectedProgramChange={this.handleSelectedProgramChange} />
             <br />
             {
               this.state.isProgramSelected ? <ProgramForm program={this.state.selectedProgram}/> : <div></div>
@@ -79,10 +70,6 @@ class ProgramConfig extends React.Component {
           </Col>
         </Row>
       );
-    }
-    else{
-      return (null);
-    }
   }
 }
 
