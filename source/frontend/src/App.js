@@ -12,6 +12,8 @@ import Sensors from './ui/Sensors';
 import classNames from 'classnames';
 import MQTTConnector from './components/mqtt-client/connector';
 import ProgramConfig from './ui/ProgramConfig';
+import { Alert } from './components/Alert';
+
 import './scss/App.scss';
 
 class App extends React.Component {
@@ -65,15 +67,18 @@ class App extends React.Component {
           
           <main className={MainClass} id="Main"> 
           <MQTTConnector mqttProps={{ url: this.url,options: this.options}}>
-            <Router>
-              <Switch>
-                <Route path="/" exact component={() => <Main />} />
-                <Route path="/Monitor" exact component={() => <Monitor mqttClient={this.state.mqttClient}/>} />
-                <Route path="/Info" exact component={() => <Info />} />
-                <Route path="/Sensors" exact component={() => <Sensors />} />
-                <Route path="/ProgramConfig" exact component={() => <ProgramConfig />} />
-              </Switch>
-            </Router>
+            <div>
+              <Alert/>
+              <Router>
+                <Switch>
+                  <Route path="/" exact component={() => <Main />} />
+                  <Route path="/Monitor" exact component={() => <Monitor mqttClient={this.state.mqttClient}/>} />
+                  <Route path="/Info" exact component={() => <Info />} />
+                  <Route path="/Sensors" exact component={() => <Sensors />} />
+                  <Route path="/ProgramConfig" exact component={() => <ProgramConfig />} />
+                </Switch>
+              </Router>
+            </div>
             </MQTTConnector>
           </main>
           

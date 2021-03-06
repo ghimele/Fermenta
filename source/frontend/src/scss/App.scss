@@ -284,8 +284,13 @@ input[type=number] {
 }
 
 .loading-frame{
-  position:relative;
+  position: relative;
   height: 100%;
 }
 
+.alert.alert-fermenta{
+  position: absolute;
+  top: 100px;
+  right: 10px;
+}
 @import "~bootstrap/scss/bootstrap";

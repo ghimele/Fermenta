@@ -1,8 +1,7 @@
-import React,{useState} from 'react';
-//import 'bootstrap/dist/css/bootstrap.min.css';
+import React from 'react';
 import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
+import Button from 'react-bootstrap/Button';
 import FormVolume from './ProgramFormVolume';
 import TableCycles from './TableCycles';
 import Services from '../../services';
@@ -22,17 +21,17 @@ class ProgramForm extends React.Component {
     }
 
     handleSaveClick=(e)=>{
-        const requestOptions = {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(this.state.selectedProgram)
-        };
-
         e.preventDefault();
 
         Services.Programs.saveProgram(this.state.selectedProgram.ID,this.state.selectedProgram)
-        .then((message=>{
-            this.setState({message:message})
+        .then((res=>{
+            if(res.error){
+                Services.ServiceAlert.AlertService.error(res.message, {autoClose: true,keepAfterRouteChange:false});
+            }
+            else{
+                Services.ServiceAlert.AlertService.success('Program ' + this.state.selectedProgram.NAME + ' saved!', {autoClose: true});
+                this.setState({message:res})
+            }
         }))
         .catch((error => {
             console.error('There was an error!', error);

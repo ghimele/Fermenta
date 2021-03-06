@@ -1,6 +1,10 @@
-import ServiceProgram from './programs';
+import ServiceProgram from './programs.service';
+import ServiceAlert from './alert.service';
 
 const Services = {
-    Programs: ServiceProgram
+    Programs: ServiceProgram,
+    ServiceAlert: ServiceAlert
 };
+
+
 export default Services;

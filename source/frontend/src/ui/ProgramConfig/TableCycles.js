@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React from 'react';
 import Table from 'react-bootstrap/Table';
 import { RiAddBoxLine,RiDeleteBin2Line,RiArrowUpSFill,RiArrowDownSFill} from "react-icons/ri";
 import Button from 'react-bootstrap/Button';
@@ -30,7 +30,7 @@ class TableCycles extends React.Component {
               var rowsArray = this.state.rows;    
               var newRow = rowsArray.map((row, i) => {    
                   for (var key in row) {    
-                      if (key == item.name && i == index) {    
+                      if (key === item.name && i === index) {    
                           row[key] = item.value;    
                       }    
                   }    
@@ -65,11 +65,8 @@ class TableCycles extends React.Component {
              var rowsArray = this.state.rows;    
              if (index >= 0) {     
                 var newRow = rowsArray.splice(index, 1);  
-                //this.setState({ rows: newRow});    
-                this.state.rows=newRow;
-                // this.setState(() => ({
-                //     rows: rowsArray.splice(index, 1)
-                //   }));
+   
+                this.state.rows = newRow;
             }    
             this.setState();
         } catch (error) {    
@@ -87,7 +84,7 @@ class TableCycles extends React.Component {
               }  
               var newRow = rowsArray.map((row, i) => {    
                   for (var key in row) {    
-                      if (key == keyname && i == index) { 
+                      if (key === keyname && i === index) { 
                         if(row[key]==="")
                         {
                             row[key]=0;
@@ -97,8 +94,8 @@ class TableCycles extends React.Component {
                             row[key] = newvalue; 
                         }  
                       }    
-                  }    
-                  return row;    
+                }    
+                return row;    
               });    
               this.setState({ rows: newRow });    
               //this.props.cycleRows=rowsArray;    
@@ -117,7 +114,7 @@ class TableCycles extends React.Component {
               }    
               var newRow = rowsArray.map((row, i) => {    
                   for (var key in row) {    
-                      if (key == keyname && i == index) {  
+                      if (key === keyname && i === index) {  
                         if(row[key]==="")
                         {
                             row[key]=min;
