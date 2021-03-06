@@ -293,4 +293,9 @@ input[type=number] {
   top: 100px;
   right: 10px;
 }
+
+.dropdown-item.selected{
+  background-color: $light;
+  border-left: 2px $yellow solid;
+}
 @import "~bootstrap/scss/bootstrap";

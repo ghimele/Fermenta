@@ -6,11 +6,13 @@ import {RiNewspaperLine, RiDeleteBinLine} from "react-icons/ri";
 import Button from 'react-bootstrap/Button';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Services from '../../services';
+import UtilsDom from '../../components/utilities/utils.dom';
 //import LoadingFrame from '../../components/LoadingFrame';
 
 class ProgramsDropDown extends React.Component {
     state = { DropDowntitle:'',Programs:'', SelectedProgram:'', isLoading: true, programselected: false,
     options: {autoClose: true,keepAfterRouteChange:false}};
+    ref= React.createRef();
 
     newProgram= {
         ID:"",
@@ -81,6 +83,11 @@ class ProgramsDropDown extends React.Component {
 
     handleSelect=(e)=>{
         console.log(e);
+        console.log(this.ref);
+
+        UtilsDom.UnselectItems(this.ref.current.children[1].children);
+        UtilsDom.SelectItem(e,this.ref.current.children[1].children);
+        
         var selectedp;
         if(this.state.Programs.length>0){
             
@@ -137,7 +144,7 @@ class ProgramsDropDown extends React.Component {
         list= Programs.map((item) =>{ 
             const description= (item.DATA!=null && item.DATA.Description!=null) ? item.DATA.Description : item.NAME;
             return (   
-                <Dropdown.Item eventKey={item.ID} title={description} aria-label={item.ID}>{item.NAME}</Dropdown.Item>
+                <Dropdown.Item id={item.ID} eventKey={item.ID} title={description} aria-label={item.ID}>{item.NAME}</Dropdown.Item>
             );      
         });
     }
@@ -155,6 +162,7 @@ class ProgramsDropDown extends React.Component {
                     as={ButtonGroup}
                     id="dropdown-programs"
                     className="mr-2"
+                    ref={this.ref}
                 >
                     {list}
                 </DropdownButton>
