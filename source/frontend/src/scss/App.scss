@@ -121,10 +121,6 @@ $sidebar-mini-width: 50px;
     color: $body-color;
 }
 
-.list-selected {
-    border-left: 2px rgb(255, 0, 0) solid;
-}
-
 .card-header-sidebar {
     padding-left:6px;
     padding-right: 0;
@@ -137,6 +133,11 @@ $sidebar-mini-width: 50px;
     padding-left:6px;
     background-color: #fff;
     border: 1px solid rgba(0,0,0,.125);
+}
+
+.list-group-item-sidebar.selected {
+  background-color: $light;
+  border-left: 2px $yellow solid;
 }
 
 /* SIDEBAR */

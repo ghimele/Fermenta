@@ -18,6 +18,7 @@ import './scss/App.scss';
 
 class App extends React.Component {
   state = { isMinimized: localStorage.getItem("isMinimized"),mqttClient:undefined};
+  ref= React.createRef();
 
   mqttClient=undefined;
   url=  "ws://" + window.location.hostname + ":1884";
@@ -44,7 +45,13 @@ class App extends React.Component {
   };
 
   toggleSidebar(newisMinimized){
-    this.setState({ isMinimized: newisMinimized });
+    //this.setState({ isMinimized: newisMinimized });
+    if(newisMinimized){
+      this.ref.current.classList.add("mini");
+    }
+    else{
+      this.ref.current.classList.remove("mini");
+    }
   }
 
   handleError = (error) =>{
@@ -53,7 +60,8 @@ class App extends React.Component {
 
   render() {
     const isMinimized = this.state.isMinimized;
-    const MainClass = classNames("main", "container-fluid", "flex-shrink-0", {"mini": isMinimized});
+    const MainClass = classNames("main", "container-fluid", "flex-shrink-0");
+    //, {"mini": isMinimized}
 
     return (
     <div className="App">
@@ -63,24 +71,25 @@ class App extends React.Component {
       
       <Container fluid className="flex-shrink-0">
         <Row className="h-100">
-          <SideBar isMinimized={this.toggleSidebar.bind(this)}></SideBar>
-          
-          <main className={MainClass} id="Main"> 
+
           <MQTTConnector mqttProps={{ url: this.url,options: this.options}}>
             <div>
               <Alert/>
               <Router>
-                <Switch>
-                  <Route path="/" exact component={() => <Main />} />
-                  <Route path="/Monitor" exact component={() => <Monitor mqttClient={this.state.mqttClient}/>} />
-                  <Route path="/Info" exact component={() => <Info />} />
-                  <Route path="/Sensors" exact component={() => <Sensors />} />
-                  <Route path="/ProgramConfig" exact component={() => <ProgramConfig />} />
-                </Switch>
+                <SideBar isMinimized={this.toggleSidebar.bind(this)}/>
+                <main className={MainClass} id="Main" ref={this.ref}> 
+                  <Switch>
+                    <Route path="/" exact component={() => <Main />} />
+                    <Route path="/Monitor" exact component={() => <Monitor mqttClient={this.state.mqttClient}/>} />
+                    <Route path="/Info" exact component={() => <Info />} />
+                    <Route path="/Sensors" exact component={() => <Sensors />} />
+                    <Route path="/ProgramConfig" exact component={() => <ProgramConfig />} />
+                  </Switch>
+                </main>
               </Router>
             </div>
-            </MQTTConnector>
-          </main>
+          </MQTTConnector>
+          
           
         </Row>
       </Container>
