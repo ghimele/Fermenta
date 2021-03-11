@@ -3,7 +3,7 @@ const fs = require("fs");
 const { version } = require('../package.json');
 const utilgeneral = require('./util.general');
 const sqliteDB = require('better-sqlite3');
-
+var log = require('log4js').getLogger("default");
 const maindbPath=path.join(__dirname,'..','database', 'main.db');
 
 const maindb= new sqliteDB(maindbPath, { verbose: console.log });
@@ -18,22 +18,25 @@ const DELETE_PROGRAM = maindb.prepare('DELETE FROM PROGRAM WHERE ID = ?');
 
 function errorCB(err,data){
     if(err){
-        console.log("errorCB: ",data, err);
+        log.error("errorCB: ",data, err);
     }
     return "";
 }
 
 function UpdateMainDB(cb){
     try{
-            console.log("Main DB path: %s", maindb);
-            console.log("Version: %s", version);
+            log.info("Main DB path: %s", maindb);
+            log.info("Version: %s", version);
             const curr_version=SELECT_VERSION.get();
-            console.log("Current Version: %s", curr_version);
+            log.info("Current Version: %s", curr_version);
             if(curr_version.VERSION!=version){
 
                 switch (curr_version.VERSION){
                         case '0.0.0':
-                            updateMainDB0_0_0(errorCB);
+                            updateMainDBTo0_1_0(errorCB);
+                            updateMainDBTo0_2_0(errorCB);
+                        case '0.1.0':
+                            updateMainDBTo0_2_0(errorCB);
                 }
             }
     }
@@ -43,13 +46,13 @@ function UpdateMainDB(cb){
 }
 
 
-function updateMainDB0_0_0(cb){
+function updateMainDBTo0_1_0(cb){
     var res;
     
     try{
-        console.log('updateMainDB0_0_0');
+        log.info('updateMainDBTo0_1_0');
         const Transaction = maindb.transaction(() => {
-        const CREATE_TABLE_PROGRAM = maindb.prepare('CREATE TABLE IF NOT EXISTS PROGRAM (ID INTEGER NOT NULL UNIQUE, NAME TEXT NOT NULL, DATA JSON, PRIMARY KEY("ID" AUTOINCREMENT)');
+        const CREATE_TABLE_PROGRAM = maindb.prepare('CREATE TABLE IF NOT EXISTS PROGRAM (ID INTEGER NOT NULL UNIQUE, NAME TEXT NOT NULL, DATA JSON, PRIMARY KEY("ID" AUTOINCREMENT))');
         CREATE_TABLE_PROGRAM.run();
 
         res=UPDATE_TABLE_VERSION.run(version);
@@ -58,7 +61,29 @@ function updateMainDB0_0_0(cb){
         Transaction.apply();
     }
     catch(err){
-        console.log("Error during updateMainDB0_0_0: %s", err);
+        log.error("Error during updateMainDBTo0_1_0: %s", err);
+        cb(err,"");
+    }
+
+}
+
+function updateMainDBTo0_2_0(cb){
+    var res;
+    
+    try{
+        log.info('updateMainDBTo0_2_0');
+        const Transaction = maindb.transaction(() => {
+
+        const CREATE_TABLE_SCHEDULEDPROGRAM = maindb.prepare('CREATE TABLE IF NOT EXISTS SCHEDULEDPROGRAM (ID INTEGER NOT NULL UNIQUE, NAME TEXT NOT NULL, ENABLED TEXT NOT NULL, STARTDATE DATE, ENDDATE DATE,PROGRAMID NUMBER NOT NULL,CYCLEID NUMBER NOT NULL, PRIMARY KEY("ID" AUTOINCREMENT))');
+        CREATE_TABLE_SCHEDULEDPROGRAM.run();
+
+        res=UPDATE_TABLE_VERSION.run(version);
+        });
+
+        Transaction.apply();
+    }
+    catch(err){
+        log.error("Error during updateMainDBTo0_2_0: %s", err);
         cb(err,"");
     }
 
@@ -72,19 +97,19 @@ function GetPrograms(){
 
     var data;
     try{
-        console.log('GetPrograms');
+        log.info('GetPrograms');
         data=SELECT_PROGRAM.all();
         for(const i in data){
             if(data[i].DATA!=null){
                 data[i].DATA=JSON.parse(data[i].DATA);
             }
         }
-        console.log(data);
+        log.info(data);
         retval.data=data;
         return retval;
     }
     catch(err){
-        console.log("Error during GetPrograms: %s", err);
+        log.error("Error during GetPrograms: %s", err);
         retval.error=true;
         retval.message=err.message;
         return retval;
@@ -96,9 +121,9 @@ function UpdateProgram(ID, DATA){
     retval.error=false;
     retval.message="";
     try{
-        console.log('UpdateProgram');
-        console.log("got ID: %d", ID);
-        console.log("got DATA: %s", JSON.stringify(DATA.DATA));
+        log.info('UpdateProgram');
+        log.info("got ID: %d", ID);
+        log.info("got DATA: %s", JSON.stringify(DATA.DATA));
 
         if(utilgeneral.isEmpty(ID)){
             retval.error=true;
@@ -112,11 +137,11 @@ function UpdateProgram(ID, DATA){
 
         Transaction.apply();
 
-        console.log(retval);
+        log.info(retval);
         return retval;
     }
     catch(err){
-        console.log("Error during UpdateProgram: %s", err);
+        log.error("Error during UpdateProgram: %s", err);
         retval.error=true;
         retval.message=err.message;
         return retval;
@@ -128,19 +153,19 @@ function AddProgram(DATA){
     retval.error=false;
     retval.message="";
     try{
-        console.log('AddProgram');
-        console.log("got DATA: %s", JSON.stringify(DATA.DATA));
+        log.info('AddProgram');
+        log.info("got DATA: %s", JSON.stringify(DATA.DATA));
         const Transaction = maindb.transaction(() => {
             retval.message=INSERT_PROGRAM.run(DATA.NAME,JSON.stringify(DATA.DATA));
         });
 
         Transaction.apply();
 
-        console.log(retval);
+        log.info(retval);
         return retval;
     }
     catch(err){
-        console.log("Error during AddProgram: %s", err);
+        log.error("Error during AddProgram: %s", err);
         retval.error=true;
         retval.message=err.message;
         return retval;
@@ -152,7 +177,7 @@ function DeleteProgram(ID){
     retval.error=false;
     retval.message="";
     try{
-        console.log('DeleteProgram');
+        log.info('DeleteProgram');
         
         if(utilgeneral.isEmpty(ID)){
             retval.error=true;
@@ -166,11 +191,11 @@ function DeleteProgram(ID){
 
         Transaction.apply();
 
-        console.log(retval);
+        log.info(retval);
         return retval;
     }
     catch(err){
-        console.log("Error during DeleteProgram: %s", err);
+        log.error("Error during DeleteProgram: %s", err);
         retval.error=true;
         retval.message=err.message;
         return retval;

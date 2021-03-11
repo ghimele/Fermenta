@@ -137,7 +137,7 @@ $sidebar-mini-width: 50px;
 
 .list-group-item-sidebar.selected {
   background-color: $light;
-  border-left: 2px $yellow solid;
+  border-left: 3px $yellow solid;
 }
 
 /* SIDEBAR */
@@ -297,6 +297,6 @@ input[type=number] {
 
 .dropdown-item.selected{
   background-color: $light;
-  border-left: 2px $yellow solid;
+  border-left: 3px $yellow solid;
 }
 @import "~bootstrap/scss/bootstrap";

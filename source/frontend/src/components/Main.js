@@ -4,9 +4,7 @@ import React from 'react';
 class Main extends React.Component {
     render() {
       return (
-        <main className="main flex-shrink-0" id="Main"> 
           <h1 className="header">Welcome to Fermenta</h1> 
-        </main>
       );
     }
   }

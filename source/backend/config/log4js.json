@@ -1,0 +1,41 @@
+{
+    "appenders": {
+        "console": { 
+            "type": "console" 
+        },
+        "access": {
+        "type": "dateFile",
+        "filename": "logs/access.log",
+        "pattern": "-yyyy-MM-dd",
+        "category": "http"
+        },
+        "backend": {
+            "type": "file",
+            "filename": "logs/backend.log",
+            "maxLogSize": 5242880,
+            "numBackups": 5
+        },
+        "job": {
+            "type": "file",
+            "filename": "logs/job.log",
+            "maxLogSize": 5242880,
+            "numBackups": 10
+        },
+        "errorFile": {
+            "type": "file",
+            "filename": "logs/errors.log",
+            "maxLogSize": 5242880,
+            "numBackups": 5
+        },
+        "errors": {
+            "type": "logLevelFilter",
+            "level": "ERROR",
+            "appender": "errorFile"
+        }
+    },
+    "categories": {
+        "default": { "appenders": [ "console","backend", "errors" ], "level": "DEBUG" },
+        "http": { "appenders": [ "access" ], "level": "DEBUG" },
+        "job": { "appenders": [ "job" ], "level": "DEBUG" }
+    }
+  }

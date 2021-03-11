@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 /**
  * Module dependencies.
  */
@@ -7,6 +5,21 @@
 var app = require('./app');
 var debug = require('debug')('server:server');
 var http = require('http');
+const Bree = require('bree');
+
+/**
+ * Initialise log4js first, so we don't miss any log messages
+ */
+var log4js = require('log4js');
+log4js.configure('./config/log4js.json');
+ 
+var log = log4js.getLogger("startup"); 
+var joblog = log4js.getLogger("job"); 
+
+// Initilized jobscheduler
+var bree = new Bree({ logger: joblog});
+
+bree.start();
 
 /**
  * Get port from environment and store in Express.
@@ -14,7 +27,6 @@ var http = require('http');
 
 var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
-
 
 var env = app.get('env');
 var host = app.get('hostname');
@@ -71,11 +83,11 @@ function onError(error) {
   // handle specific listen errors with friendly messages
   switch (error.code) {
     case 'EACCES':
-      console.error(bind + ' requires elevated privileges');
+      log.error(bind + ' requires elevated privileges');
       process.exit(1);
       break;
     case 'EADDRINUSE':
-      console.error(bind + ' is already in use');
+      log.error(bind + ' is already in use');
       process.exit(1);
       break;
     default:
