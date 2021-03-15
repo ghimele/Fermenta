@@ -9,8 +9,11 @@ const maindbPath=path.join(__dirname,'..','database', 'main.db');
 const maindb= new sqliteDB(maindbPath, { verbose: console.log });
 
 const UPDATE_TABLE_VERSION = maindb.prepare('UPDATE VERSION SET VERSION = ? WHERE ID = 1');
-const SELECT_VERSION = maindb.prepare('SELECT * FROM VERSION where ID=1');
-const SELECT_PROGRAM = maindb.prepare('SELECT * FROM PROGRAM');
+const SELECT_VERSION = maindb.prepare('SELECT * FROM VERSION WHERE ID=1');
+const SELECT_PROGRAMS = maindb.prepare('SELECT * FROM PROGRAM');
+
+const SELECT_PROGRAM = maindb.prepare('SELECT * FROM PROGRAM WHERE ID = ?');
+const SELECT_SCHEDULEDPROGRAM = maindb.prepare("SELECT * FROM SCHEDULEDPROGRAM WHERE ENABLED = 'TRUE'");
 
 const UPDATE_PROGRAM = maindb.prepare('UPDATE PROGRAM SET NAME=?, DATA=? WHERE ID = ?');
 const INSERT_PROGRAM = maindb.prepare('INSERT INTO PROGRAM (NAME,DATA) VALUES(?,?)');
@@ -44,7 +47,6 @@ function UpdateMainDB(cb){
         cb(error);
     }
 }
-
 
 function updateMainDBTo0_1_0(cb){
     var res;
@@ -98,7 +100,7 @@ function GetPrograms(){
     var data;
     try{
         log.info('GetPrograms');
-        data=SELECT_PROGRAM.all();
+        data=SELECT_PROGRAMS.all();
         for(const i in data){
             if(data[i].DATA!=null){
                 data[i].DATA=JSON.parse(data[i].DATA);
@@ -201,12 +203,68 @@ function DeleteProgram(ID){
         return retval;
     }
 }
+
+function GetScheduledProgram(){
+    var retval= new Object();
+    retval.error=false;
+    retval.message="";
+    retval.data=null;
+
+    var data;
+    try{
+        log.info('GetScheduledProgram');
+        data=SELECT_SCHEDULEDPROGRAM.get();
+        log.info(data);
+        retval.data=data;
+        return retval;
+    }
+    catch(err){
+        log.error("Error during GetScheduledProgram: %s", err);
+        retval.error=true;
+        retval.message=err.message;
+        return retval;
+    }
+}
+
+
+function GetProgram(ID){
+    var retval= new Object();
+    retval.error=false;
+    retval.message="";
+    retval.data=null;
+
+    var data;
+    try{
+        log.info('GetProgram');
+        
+        data=SELECT_PROGRAM.get(ID);
+        for(const i in data){
+            if(data[i].DATA!=null){
+                data[i].DATA=JSON.parse(data[i].DATA);
+            }
+        }
+        log.info(data);
+        retval.data=data;
+        return retval;
+    }
+    catch(err){
+        log.error("Error during GetProgram: %s", err);
+        retval.error=true;
+        retval.message=err.message;
+        return retval;
+    }
+}
+
+
+
 const db = {
     UpdateMainDB: UpdateMainDB,
     GetPrograms: GetPrograms,
     UpdateProgram: UpdateProgram,
     AddProgram: AddProgram,
-    DeleteProgram: DeleteProgram
+    DeleteProgram: DeleteProgram,
+    GetScheduledProgram: GetScheduledProgram,
+    GetProgram: GetProgram
 };
 
 module.exports = db;

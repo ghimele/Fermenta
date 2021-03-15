@@ -17,6 +17,7 @@ var log = log4js.getLogger("startup");
 var joblog = log4js.getLogger("job"); 
 
 // Initilized jobscheduler
+//{ logger: joblog}
 var bree = new Bree({ logger: joblog});
 
 bree.start();

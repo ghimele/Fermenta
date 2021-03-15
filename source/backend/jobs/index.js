@@ -2,8 +2,8 @@
 const jobs = [
   {
     name: 'program',
-    timeout: '1s', // give program script time to run
-    interval: '1s'
+    timeout: '5s', // give program script time to run
+    interval: '1000'
   }
 
 ];

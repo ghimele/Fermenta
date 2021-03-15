@@ -15,11 +15,27 @@
             "maxLogSize": 5242880,
             "numBackups": 5
         },
-        "job": {
+        "jobfile": {
             "type": "file",
             "filename": "logs/job.log",
             "maxLogSize": 5242880,
             "numBackups": 10
+        },
+        "joberrorsfile": {
+            "type": "file",
+            "filename": "logs/joberrors.log",
+            "maxLogSize": 5242880,
+            "numBackups": 10
+        },
+        "job": {
+            "type":"noLogFilter", 
+            "exclude": "is already running", 
+            "appender": "jobfile"
+        },
+        "joberrors": {
+            "type": "logLevelFilter",
+            "level": "ERROR",
+            "appender": "joberrorsfile"
         },
         "errorFile": {
             "type": "file",
@@ -36,6 +52,6 @@
     "categories": {
         "default": { "appenders": [ "console","backend", "errors" ], "level": "DEBUG" },
         "http": { "appenders": [ "access" ], "level": "DEBUG" },
-        "job": { "appenders": [ "job" ], "level": "DEBUG" }
+        "job": { "appenders": [ "job","joberrors" ], "level": "DEBUG" }
     }
   }
