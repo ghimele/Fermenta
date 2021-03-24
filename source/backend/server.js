@@ -5,22 +5,18 @@
 var app = require('./app');
 var debug = require('debug')('server:server');
 var http = require('http');
-const Bree = require('bree');
+var log4js = require('log4js');
+const {MQTTClient,JobScheduler} = require('./utils');
 
 /**
  * Initialise log4js first, so we don't miss any log messages
  */
-var log4js = require('log4js');
 log4js.configure('./config/log4js.json');
  
 var log = log4js.getLogger("startup"); 
-var joblog = log4js.getLogger("job"); 
 
-// Initilized jobscheduler
-//{ logger: joblog}
-var bree = new Bree({ logger: joblog});
-
-bree.start();
+MQTTClient.start();
+JobScheduler.start();
 
 /**
  * Get port from environment and store in Express.

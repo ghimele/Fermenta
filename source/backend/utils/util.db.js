@@ -3,7 +3,7 @@ const fs = require("fs");
 const { version } = require('../package.json');
 const utilgeneral = require('./util.general');
 const sqliteDB = require('better-sqlite3');
-var log = require('log4js').getLogger("default");
+var log = require('log4js').getLogger("util.db");
 const maindbPath=path.join(__dirname,'..','database', 'main.db');
 
 const maindb= new sqliteDB(maindbPath, { verbose: console.log });
@@ -13,7 +13,9 @@ const SELECT_VERSION = maindb.prepare('SELECT * FROM VERSION WHERE ID=1');
 const SELECT_PROGRAMS = maindb.prepare('SELECT * FROM PROGRAM');
 
 const SELECT_PROGRAM = maindb.prepare('SELECT * FROM PROGRAM WHERE ID = ?');
+
 const SELECT_SCHEDULEDPROGRAM = maindb.prepare("SELECT * FROM SCHEDULEDPROGRAM WHERE ENABLED = 'TRUE'");
+const DISABLE_SCHEDULEDPROGRAM = maindb.prepare("UPDATE SCHEDULEDPROGRAM SET ENABLED = 'FALSE' WHERE ID = ?");
 
 const UPDATE_PROGRAM = maindb.prepare('UPDATE PROGRAM SET NAME=?, DATA=? WHERE ID = ?');
 const INSERT_PROGRAM = maindb.prepare('INSERT INTO PROGRAM (NAME,DATA) VALUES(?,?)');
@@ -255,7 +257,36 @@ function GetProgram(ID){
     }
 }
 
+function DisableScheduledProgram(ID){
+    var retval= new Object();
+    retval.error=false;
+    retval.message="";
+    try{
+        log.info('DisableScheduledProgram');
+        log.info("got ID: %d", ID);
 
+        if(utilgeneral.isEmpty(ID)){
+            retval.error=true;
+            retval.message="ID must not be empty";
+            return retval;
+        }
+        
+        const Transaction = maindb.transaction(() => {
+            retval.message=DISABLE_SCHEDULEDPROGRAM.run(ID);
+        });
+
+        Transaction.apply();
+
+        log.info(retval);
+        return retval;
+    }
+    catch(err){
+        log.error("Error during DisableScheduledProgram: %s", err);
+        retval.error=true;
+        retval.message=err.message;
+        return retval;
+    }
+}
 
 const db = {
     UpdateMainDB: UpdateMainDB,
@@ -264,7 +295,8 @@ const db = {
     AddProgram: AddProgram,
     DeleteProgram: DeleteProgram,
     GetScheduledProgram: GetScheduledProgram,
-    GetProgram: GetProgram
+    GetProgram: GetProgram,
+    DisableScheduledProgram: DisableScheduledProgram
 };
 
 module.exports = db;
