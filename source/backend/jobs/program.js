@@ -12,7 +12,7 @@ parentPort.on("message", (value)=>{
             Distance=value.Value;
         }
         else if(value.Name==="Temperature"){
-            Temperature="";
+            Temperature=value.Value;
         }
     }
 });
@@ -24,13 +24,27 @@ parentPort.on("message", (value)=>{
     var cycleIndex = 0;
     var endCycle = undefined;
     var startTime = undefined;
+    var currentTime = undefined;
+    var elapsedTime = undefined;
     var targetEndTime = undefined;
-    var startVolume = undefined;
-    var targetVolume = undefined;
-    var containerVolume = undefined;
-    var startTemp = undefined;
-    var targetTemp = undefined;
 
+    var startDoughVolume = undefined;
+    var startDoughHeight = undefined;
+
+    var currentVolume = undefined;
+    var currentDoughHeight = undefined;
+
+    var targetVolume = undefined;
+    var targetDoughHeight = undefined;
+    var targetHeight = undefined;
+
+    var containerHeight = undefined;
+    var containerSurface = undefined;
+    var containerVolume = undefined;
+    
+    var startTemp = undefined;
+    var currentTemp = undefined;
+    var targetTemp = undefined;
 
     if (parentPort){
         log("Job Program Started on "+ Date());
@@ -38,26 +52,30 @@ parentPort.on("message", (value)=>{
         //check if there is a program to run
         var scheduledProgram=utils.db.GetScheduledProgram();
         if(scheduledProgram.data!==undefined){
-            //parentPort.postMessage(utils.Message("ScheduledID: "+ scheduledProgram.data.ID));
             log("ScheduledID: "+ scheduledProgram.data.ID);
             log("ProgramID: "+ scheduledProgram.data.PROGRAMID);
-            //parentPort.postMessage(utils.Message("ProgramID: "+ scheduledProgram.data.PROGRAMID));
             var program = utils.db.GetProgram(scheduledProgram.data.PROGRAMID);
 
             var data= JSON.parse(program.data.DATA);
+
+            containerHeight = data.Height;
+            containerSurface = data.Width * data.Length;
+            containerVolume = containerSurface * containerHeight;
+            log("Container Volumer: "+ containerVolume);
             if(data.Cycles.length>0){
                 
                 while(!completed){
                     //every 1s while there is a program running
                     //do stuff
-                    await delay(1000);
 
                     //send a request to the main thread to get distance and temp
                     request("GetDistance");
                     request("GetTemperature");
 
-                    log("read Distance: "+ Distance);
-                    log("read Temperature: "+ Temperature);
+                    await delay(1000);
+
+                    //log("read Distance: "+ Distance);
+                    //log("read Temperature: "+ Temperature);
 
                     if(cycleIndex >= data.Cycles.length){
                         //There are no more Cycles available,
@@ -71,46 +89,64 @@ parentPort.on("message", (value)=>{
                             firstCycle = false;
                             cycleCompleted = false;
 
+                            startTime = Date.now();
+                            sendData("startTime", startTime);
+                            startTemp = Temperature; 
+                            sendData("startTemperature", startTemp);
+                            startDoughHeight= (containerHeight - Distance).toFixed(2);
+                            sendData("startDoughHeight", startDoughHeight);
+                            startDoughVolume = (containerSurface * startDoughHeight).toFixed(2);
+                            sendData("startDoughVolume", startDoughVolume);
+
                             endCycle = data.Cycles[cycleIndex].End;
                             log("Cycle Index: " + cycleIndex);
                             log("End Type: " + endCycle.Type);
                             if(endCycle.Type === "Duration")
                             {
-                                startTime = Date.now();
                                 targetEndTime = (Number(endCycle.Duration)*60000); //Duration is expressed in minutes
-                                log("targetEndTime: " + targetEndTime);
+                                log("targetEndTime: " + Math.round(targetEndTime / 60000) + " minutes");
                             }
                             else if(endCycle.Type==="Volume"){
-                                startVolume = Distance; // we need to get the value from the sensor
-                                targetVolume = Number(endCycle.Volume)*startVolume;
+                                targetHeight = Number(endCycle.Volume) * startDoughHeight;
+                                targetVolume = Number(endCycle.Volume) * startDoughVolume;
                                 log("targetVolume: " + targetVolume);
                             }
                             else if(endCycle.Type==="Temperature"){
-                                startTemp = 10; // we need to get the value from the sensor
                                 targetTemp = Number(endCycle.Temperature);
                                 log("targetTemp: " + targetTemp);
                             } 
                         }
 
+                        currentTemp = Temperature;
+                        currentDoughHeight = (containerHeight - Distance).toFixed(2);
+                        currentVolume = (containerSurface * currentDoughHeight).toFixed(2);
+                        currentTime = Date.now();
+
+                        elapsedTime = currentTime - startTime;
+                        //log("elapsed: " + Math.floor((elapsedTime % 60000)/1000));
+                        if(Math.floor((elapsedTime % 60000)/1000)===0){
+                            //send data every minute
+                            log("Elpsed Time = " + elapsedTime + " milliseconds" );
+                            log("Elpsed Time = " + Math.round(elapsedTime/60000) + " minutes" );
+                            sendData("currentTemp", currentTemp);
+                            sendData("currentDoughHeight", currentDoughHeight);
+                            sendData("currentVolume", currentVolume);
+                        }
+
                         if(endCycle.Type==="Duration"){
-                            let endtime = Date.now();
-    
-                            var elapsedTime =Math.floor(endtime - startTime);
                             if(elapsedTime>targetEndTime){
-                                log("seconds elapsed: "+ elapsedTime);
+                                log("minutes elapsed: "+ Math.round(elapsedTime/60000));
                                 cycleCompleted=true;
                                 cycleIndex++;
                             }
                         }
                         else if(endCycle.Type==="Volume"){
-                            var currentVolume = 2*startVolume; // we need to get the value from the sensor
                             if(currentVolume>= targetVolume){
                                 cycleCompleted=true;
                                 cycleIndex++;
                             }
                         }
                         else if(endCycle.Type==="Temperature"){
-                            var currentTemp = 20 // we need to get the value from the sensor
                             if(currentTemp >= targetTemp){
                                 cycleCompleted=true;
                                 cycleIndex++;
@@ -159,9 +195,20 @@ function error(message){
 function request(message){
     //send a message type Data to the main thread.
     const mess={
-        MessageType : "Data",
+        MessageType : "Request",
         Name : "",
         Value : message
+    };
+
+    parentPort.postMessage(mess);
+}
+
+function sendData(name,value){
+    //send a message type Data to the main thread.
+    const mess={
+        MessageType : "Data",
+        Name : name,
+        Value : value
     };
 
     parentPort.postMessage(mess);

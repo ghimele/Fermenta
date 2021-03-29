@@ -5,6 +5,7 @@ var log4js = require('log4js');
 var joblog = log4js.getLogger('job');
 
 var bree = undefined;
+var programData=[];
 
 function start(){
     if(bree===undefined){
@@ -16,12 +17,6 @@ function start(){
 
         bree.on('worker created', name=>{
             if(name==="program"){
-                //joblog.debug("Program Worker Created");
-                // bree.workers[name].on('message',metadata=>{
-                //     console.log(metadata);
-                // });
-        
-                //Comlink.expose(api, nodeEndpoint(bree.workers[name]))
             }
         });
     }
@@ -49,7 +44,7 @@ function handleWorkerMessage(metadata){
 
     if(metadata.name==="program"){
         // we got a message from Job program
-        if(inmess.MessageType==="Data"){
+        if(inmess.MessageType==="Request"){
             if(inmess.Value==="GetDistance"){
                 outmess.Name="Distance";
                 outmess.Value=MQTTClient.getDistance();
@@ -61,7 +56,20 @@ function handleWorkerMessage(metadata){
                 worker.postMessage(outmess);
             }
         }
+        else if(inmess.MessageType==="Data"){
+            data=new ProgramData(inmess.Name,inmess.Value);
+            joblog.info("Data: %s = %s",inmess.Name, inmess.Value);
+            programData[inmess.Name]=data;
+            programData.push(data);
+            //joblog.info("programData length: %d", programData.length);
+            //joblog.info("Data: %s", JSON.stringify(programData));
+        }
     }
+}
+
+function ProgramData(name,value){
+    Name=name;
+    Value=value;
 }
 
 const JobScheduler = {
@@ -69,3 +77,5 @@ const JobScheduler = {
 };
 
 module.exports = JobScheduler;
+
+

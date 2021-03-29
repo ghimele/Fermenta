@@ -24,6 +24,7 @@ const mqttoptions = {
 
 var Distance;
 var Temperature;
+var Humidity;
 
 //MQTT connection
 const url="mqtt://192.168.1.122:1883";
@@ -32,33 +33,47 @@ function handleDistance (message) {
     Distance = message.toString();
 }
 
+function handleTemperature (message) {
+    Temperature = message.toString();
+}
+function handleHumidity (message) {
+    Humidity = message.toString();
+}
+
 function getDistance(){
     return Distance;
 
-}function getTemperature(){
+}
+function getTemperature(){
     return Temperature;
+}
+function getHumidity(){
+    return Humidity;
 }
 
 function start(){
     const client = mqtt.connect(url,mqttoptions);
 
-    log.info("MQTT connection status: "+ client.connected);
-
-    client.subscribe('Fermenta/Sensors/Distance/1');
-
     client.on('error', (error) => {
-        log.log("Can't connect: "+ error);
+        log.log("MQTTClient can't connect: "+ error);
     });
 
     client.on('connect', () => {
+        log.info("MQTTClient connection status: "+ client.connected);
         client.subscribe('Fermenta/Sensors/Distance/1');
+        client.subscribe('Fermenta/Sensors/Temperature/1');
+        client.subscribe('Fermenta/Sensors/Humidity/1');
     });
 
     client.on('message', (topic, message) => {
-        log.info('received message %s %s', topic, message)
+        log.info('MQTTClient received message %s %s', topic, message)
         switch (topic) {
-        case 'Fermenta/Sensors/Distance/1':
-            return handleDistance(message)
+            case 'Fermenta/Sensors/Distance/1':
+                return handleDistance(message);
+            case 'Fermenta/Sensors/Temperature/1':
+                return handleTemperature(message);
+            case 'Fermenta/Sensors/Humidity/1':
+                return handleHumidity(message);
         }
     });
 }
