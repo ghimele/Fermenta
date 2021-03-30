@@ -7,7 +7,7 @@ import TableCycles from './TableCycles';
 import Services from '../../services';
 
 class ProgramForm extends React.Component {
-    state = { useVolume:this.props.program.UseVolume, selectedProgram:this.props.program, error: false, message:"" };
+    state = { useVolume:this.props.program.DATA.UseVolume, selectedProgram:this.props.program, error: false, message:"" };
 
     /* Initial loading of program properties */      
     ProgramEmpty={
@@ -104,7 +104,7 @@ class ProgramForm extends React.Component {
     }
 
     return (
-    <div>
+    // <div>
         <Form>
             <Form.Group controlId="formName">
                 <Form.Label>Name</Form.Label>
@@ -142,7 +142,6 @@ class ProgramForm extends React.Component {
                 Save
             </Button>
         </Form>
-      </div>
   );
   }
 }

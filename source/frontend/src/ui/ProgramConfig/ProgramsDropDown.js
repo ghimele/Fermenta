@@ -27,8 +27,10 @@ class ProgramsDropDown extends React.Component {
             Cycles: [
                 {       
                 Temperature:"30",    
-                Duration:"60",    
-                Volume:0
+                End:{
+                    Type:"Duration",
+                    Value:"60"
+                    }
                 }
             ]
         }
@@ -47,7 +49,6 @@ class ProgramsDropDown extends React.Component {
                 if(res.message.lastInsertRowid){
                     Services.ServiceAlert.AlertService.success('New Program created!', this.state.options);
                     this.handleGetPrograms(false,res.message.lastInsertRowid);
-                    //this.handleSelect(parseInt(res.message.lastInsertRowid-1));
                 }
             }
         }))
@@ -144,6 +145,7 @@ class ProgramsDropDown extends React.Component {
         list= Programs.map((item) =>{ 
             const description= (item.DATA!=null && item.DATA.Description!=null) ? item.DATA.Description : item.NAME;
             return (   
+                
                 <Dropdown.Item id={item.ID} eventKey={item.ID} title={description} aria-label={item.ID}>{item.NAME}</Dropdown.Item>
             );      
         });

@@ -3,54 +3,10 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import ProgramsDropDown from './ProgramsDropDown';
 import ProgramForm from './ProgramForm';
+import Container from 'react-bootstrap/Container';
 
 class ProgramConfig extends React.Component {
   state = { programs:'', selectedProgram:'', isProgramSelected:false};
-
-  ProgramsProps=[
-    {
-      Id: 1,
-      Name: "Test",
-      Description: "Test description",
-      UseVolume: false,
-      Width: 0,
-      Length: 0,
-      Height: 0,
-      Cycles: [
-        {       
-          Temperature:"20",    
-          Duration:"60",    
-          Volume:""
-        },
-        {    
-          Temperature:"30",    
-          Duration:"600",    
-          Volume:""
-        }
-      ]
-    },
-    {
-      Id: 2,
-      Name: "Test2",
-      Description: "Test2 description",
-      UseVolume: true,
-      Width: 10,
-      Length: 10,
-      Height: 10,
-      Cycles: [
-        {    
-          Temperature:"20",    
-          Duration:"30",    
-          Volume:""
-        },
-        {    
-          Temperature:"30",    
-          Duration:"",    
-          Volume:"3"
-        }
-      ]
-    }
-  ]
 
   handleSelectedProgramChange=(program)=>{
     this.setState({ selectedProgram: program,isProgramSelected:true });
@@ -58,15 +14,17 @@ class ProgramConfig extends React.Component {
 
   render() {
       return (
-        <Row> 
-          <Col>
+        <Container fluid>
+        {/* <Row> 
+          <Col md="12"> */}
             <ProgramsDropDown programs={this.state.programs.programs} onSelectedProgramChange={this.handleSelectedProgramChange} />
             <br />
             {
               this.state.isProgramSelected ? <ProgramForm program={this.state.selectedProgram}/> : <div></div>
             }
-          </Col>
-        </Row>
+          {/* </Col>
+        </Row> */}
+        </Container>
       );
   }
 }

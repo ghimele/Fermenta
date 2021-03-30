@@ -7,23 +7,26 @@ import {subscribe} from '../../components/mqtt-client';
 
 
 const GaaugeNumberTotalMemory = subscribe({topic: 'Fermenta/Sensors/Distance/1'})(GaugeNumberChart);
+const GaaugeNumberTemperature = subscribe({topic: 'Fermenta/Sensors/Temperature/1'})(GaugeNumberChart);
 
 class Sensors extends React.Component {
    
   render() {
       return (
         <Row> 
-          <Col>
-            <Card>
+          <Col md="auto" className="mb-3">
+            <Card >
               <Card.Header as="h2">Distance Sensors</Card.Header>
               <Card.Body>
                 <GaaugeNumberTotalMemory Title="Distance #1" Suffix="cm" Prefix=""/>
               </Card.Body>
             </Card>
+          </Col>
+          <Col md="auto" className="mb-3">
             <Card>
               <Card.Header as="h2">Temperature Sensors</Card.Header>
               <Card.Body>
-                {/* <GaaugeNumberTotalMemory Title="Distance #1" Suffix="cm" Prefix=""/> */}
+                <GaaugeNumberTemperature Title="Temperature #1" Suffix="°C" Prefix=""/>
               </Card.Body>
             </Card>
           </Col>
