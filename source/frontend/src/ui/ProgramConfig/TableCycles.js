@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React from 'react';
 import Table from 'react-bootstrap/Table';
 import { RiAddBoxLine,RiDeleteBin2Line,RiArrowUpSFill,RiArrowDownSFill} from "react-icons/ri";
 import Button from 'react-bootstrap/Button';
@@ -6,7 +6,11 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import DropdownButton from 'react-bootstrap/DropdownButton';
+import Dropdown from 'react-bootstrap/Dropdown';
 import Card from 'react-bootstrap/Card';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
 const tableColProps=[{    
     Id:10,    
@@ -16,27 +20,32 @@ const tableColProps=[{
   }]   
 
 class TableCycles extends React.Component {
-    state = { tableHeaders:["Cycle", "Temperature", "Duration", "Volume",""],
+    state = { tableHeaders:["#", "Temperature", "End Cycle", ""],
               rows: this.props.cycleRows };
 
     /* This event will fire on cell change */  
     handleChange = (index) => evt  => {    
         try {    
-              var item = {    
-                  id: evt.target.id,    
-                  name: evt.target.name,    
-                  value: evt.target.value    
-              };    
-              var rowsArray = this.state.rows;    
-              var newRow = rowsArray.map((row, i) => {    
-                  for (var key in row) {    
-                      if (key == item.name && i == index) {    
-                          row[key] = item.value;    
-                      }    
-                  }    
-                  return row;    
-              });    
-              this.setState({ rows: newRow });    
+                var item = {    
+                    id: evt.target.id,    
+                    name: evt.target.name,    
+                    value: evt.target.value    
+                };    
+                var rowsArray = this.state.rows;    
+                var newRow = rowsArray.map((row, i) => {    
+                    for (var key in row) {    
+                        if (key === item.name && i === index) {   
+                            if(key==="End"){
+                                row[key]["Value"] = item.value;
+                            } 
+                            else{
+                                row[key] = item.value;  
+                            }  
+                        }    
+                    }    
+                    return row;    
+                });    
+                this.setState({ rows: newRow });    
         } catch (error) {    
               console.log("Error in React Table handle change : " + error);    
         }           
@@ -49,8 +58,10 @@ class TableCycles extends React.Component {
             const tableColProps = {  
                 Id:id,    
                 Temperature:"20",    
-                Duration:"0",    
-                Volume:"0"   
+                End:{
+                    Type:"Duration",
+                    Value:"60"
+                }   
               }    
             this.state.rows.push(tableColProps);    
             this.setState(this.state.rows);       
@@ -65,11 +76,8 @@ class TableCycles extends React.Component {
              var rowsArray = this.state.rows;    
              if (index >= 0) {     
                 var newRow = rowsArray.splice(index, 1);  
-                //this.setState({ rows: newRow});    
-                this.state.rows=newRow;
-                // this.setState(() => ({
-                //     rows: rowsArray.splice(index, 1)
-                //   }));
+   
+                this.state.rows = newRow;
             }    
             this.setState();
         } catch (error) {    
@@ -78,29 +86,41 @@ class TableCycles extends React.Component {
     };    
 
     /* This event will fire on button up change */  
-    handleUp = (index,keyname,increment,max) => evt  => {    
+    handleUp = (index,keyname,increment,max, subkeyname="") => evt  => {    
         try {        
-              var digit=1;
-              var rowsArray = this.state.rows; 
-              if(Number.isInteger(increment)) {
-                  digit=0;
-              }  
-              var newRow = rowsArray.map((row, i) => {    
-                  for (var key in row) {    
-                      if (key == keyname && i == index) { 
-                        if(row[key]==="")
-                        {
-                            row[key]=0;
-                        }
-                        let newvalue= (parseFloat(row[key])+increment).toFixed(digit);
-                        if(newvalue<=max){
-                            row[key] = newvalue; 
-                        }  
-                      }    
-                  }    
-                  return row;    
-              });    
-              this.setState({ rows: newRow });    
+                var digit=1;
+                var rowsArray = this.state.rows; 
+                if(Number.isInteger(increment)) {
+                    digit=0;
+                }  
+                var newRow = rowsArray.map((row, i) => {    
+                    for (var key in row) {    
+                        if (key === keyname && i === index) { 
+                            if(subkeyname!==""){
+                                if(row[key][subkeyname]==="")
+                                {
+                                    row[key][subkeyname]=0;
+                                }
+                                let newvalue= (parseFloat(row[key][subkeyname])+increment).toFixed(digit);
+                                if(newvalue<=max){
+                                    row[key][subkeyname]=newvalue;
+                                }
+                            }
+                            else{
+                                if(row[key]==="")
+                                {
+                                    row[key]=0;
+                                }
+                                let newvalue= (parseFloat(row[key])+increment).toFixed(digit);
+                                if(newvalue<=max){
+                                    row[key] = newvalue; 
+                                }
+                            }
+                        }    
+                    }    
+                    return row;    
+                });    
+                this.setState({ rows: newRow });    
               //this.props.cycleRows=rowsArray;    
         } catch (error) {    
               console.log("Error in React Table handle Up : " + error);    
@@ -108,36 +128,62 @@ class TableCycles extends React.Component {
     };
 
     /* This event will fire on button Down change */  
-    handleDown = (index,keyname,increment,min) => evt  => {    
+    handleDown = (index,keyname,increment,min,subkeyname="") => evt  => {    
         try {        
-              var digit=1;
-              var rowsArray = this.state.rows; 
-              if(Number.isInteger(increment)) {
-                  digit=0;
-              }    
-              var newRow = rowsArray.map((row, i) => {    
-                  for (var key in row) {    
-                      if (key == keyname && i == index) {  
-                        if(row[key]==="")
-                        {
-                            row[key]=min;
-                        }
-                        let newvalue= (parseFloat(row[key])-increment).toFixed(1);
-                        if(newvalue>=min){
-                            row[key] = newvalue;   
-                        } 
-                      }    
-                  }    
-                  return row;    
-              });    
-              this.setState({ rows: newRow });       
+                var digit=1;
+                var rowsArray = this.state.rows; 
+                if(Number.isInteger(increment)) {
+                    digit=0;
+                }    
+                var newRow = rowsArray.map((row, i) => {    
+                    for (var key in row) {    
+                        if (key === keyname && i === index) { 
+                            if(subkeyname!==""){
+                                if(row[key][subkeyname]==="")
+                                {
+                                    row[key][subkeyname]=0;
+                                }
+                                let newvalue= (parseFloat(row[key][subkeyname])-increment).toFixed(digit);
+                                if(newvalue>=min){
+                                    row[key][subkeyname]=newvalue;
+                                }
+                            }
+                            else{ 
+                                if(row[key]==="")
+                                {
+                                    row[key]=min;
+                                }
+                                let newvalue= (parseFloat(row[key])-increment).toFixed(1);
+                                if(newvalue>=min){
+                                    row[key] = newvalue;   
+                                } 
+                            }
+                        }    
+                    }    
+                    return row;    
+                });    
+                this.setState({ rows: newRow });       
         } catch (error) {    
               console.log("Error in React Table handle down : " + error);    
         }           
     };
 
-     /* This event will fire on next properties update */    
-     componentWillReceiveProps(nextProps) {    
+    handleSelectDropDown = (index) => evt  => {    
+        console.log(evt);
+        console.log(index);
+        var rowsArray = this.state.rows; 
+        var newRow = rowsArray.map((row, i) => {   
+            if (i === index) { 
+                row.End.Type= evt;
+                row.End.Value=""; 
+            }    
+            return row;    
+        }); 
+        this.setState({ rows: newRow });
+    }
+
+    /* This event will fire on next properties update */    
+    componentWillReceiveProps(nextProps) {    
         try{    
             if (nextProps.cycleRows.length > 0) {    
                 this.setState({ rows: nextProps.cycleRows });    
@@ -158,11 +204,11 @@ class TableCycles extends React.Component {
         list= this.state.rows.map((item,idx) =>{    
             return (    
                 <tr id={"row"+this.state.rows[idx].Id}>    
-                    <td width="10">    
+                    <td width="5">    
                         <h5>{(idx+1)}</h5>
                     </td>    
     
-                    <td> 
+                    <td width="250"> 
                         <InputGroup className="mb-2 mr-sm-ls-2">
                             <Form.Control    
                                 as="input"
@@ -184,54 +230,57 @@ class TableCycles extends React.Component {
                         </InputGroup>
                     </td>    
     
-                    <td>
-                        <InputGroup className="mb-2 mr-sm-ls-2">
-                            <Form.Control 
-                                as="input"    
-                                type="number"
-                                step="30"
-                                name="Duration"    
-                                value={this.state.rows[idx].Duration}    
-                                onChange={this.handleChange(idx)}    
-                                id={this.state.rows[idx].Id}    
-                                inputMode="decimal"
-                                min="0"
-                            />  
-                            <InputGroup.Append>
-                                    <InputGroup.Text>min</InputGroup.Text>
-                                    <Button className="btn-fermenta btn-icon" onClick={this.handleUp(idx,"Duration",30,10000000)}><RiArrowUpSFill fontSize="2.25em"/></Button>
-                                    <Button className="btn-fermenta btn-icon" onClick={this.handleDown(idx,"Duration",30,0)}><RiArrowDownSFill fontSize="2.25em"/></Button>
-                                </InputGroup.Append>
-                        </InputGroup>
+                    <td width="400">
+                        <Row md="12">     
+                            <Col md="4">              
+                                <DropdownButton justified="true"
+                                    title={this.state.rows[idx].End.Type}    
+                                    onSelect={this.handleSelectDropDown(idx)}
+                                    focusFirstItemOnShow="keyboard"
+                                    as={ButtonGroup}
+                                    id="dropdown-CycleType"
+                                    className="mr-2"
+                                    ref={this.ref}
+                                >
+                                    <Dropdown.Item className="dropdown-CycleTypeItem" id="Duration" eventKey="Duration" title="Duration" aria-label="Duration">Duration</Dropdown.Item>
+                                    <Dropdown.Item className="dropdown-CycleTypeItem" id="Temperature" eventKey="Temperature" title="Temperature" aria-label="Temperature">Temperature</Dropdown.Item>
+                                    {this.props.useVolume ? <Dropdown.Item className="dropdown-CycleTypeItem" id="Volume" eventKey="Volume" title="Volume" aria-label="Volume">Volume</Dropdown.Item> : null}
+                                </DropdownButton>
+                            </Col>
+                            <Col md="8" className="align-middle">
+                                {this.state.rows[idx].End.Type==="Temperature" ? <span className="font-weight-bold align-middle">is reached</span>
+                                    :
+                                    <InputGroup className="mb-2 mr-sm-ls-2"> 
+                                        <Form.Control 
+                                            as="input"    
+                                            type="number"
+                                            step="30"
+                                            name="End"  
+                                            value={this.state.rows[idx].End.Value}    
+                                            onChange={this.handleChange(idx)}    
+                                            id={this.state.rows[idx].ID}    
+                                            inputMode="decimal"
+                                            min="0"
+                                        /> 
+                                        <InputGroup.Append>
+                                            { this.state.rows[idx].End.Type==="Duration" ? <InputGroup.Text>min</InputGroup.Text> :  null}
+                                            { this.state.rows[idx].End.Type==="Duration" ? 
+                                                <Button className="btn-fermenta btn-icon" onClick={this.handleUp(idx,"End",30,1000000,"Value")}><RiArrowUpSFill fontSize="2.25em"/></Button>
+                                                :
+                                                <Button className="btn-fermenta btn-icon" onClick={this.handleUp(idx,"End",0.5,10,"Value")}><RiArrowUpSFill fontSize="2.25em"/></Button>
+                                            }
+                                            { this.state.rows[idx].End.Type==="Duration" ? 
+                                                <Button className="btn-fermenta btn-icon" onClick={this.handleDown(idx,"End",30,0,"Value")}><RiArrowDownSFill fontSize="2.25em"/></Button>
+                                                :
+                                                <Button className="btn-fermenta btn-icon" onClick={this.handleDown(idx,"End",0.5,0,"Value")}><RiArrowDownSFill fontSize="2.25em"/></Button>
+                                            }                                       
+                                        </InputGroup.Append>
+                                    </InputGroup>
+                                }
+                            </Col>
+                        </Row>
                     </td>    
-                     
-                    {
-                        this.props.useVolume ? 
-                            <td>    
-                                <InputGroup className="mb-2 mr-sm-ls-2">
-                                    <Form.Control    
-                                    type="number"
-                                    step="0.1"   
-                                    name="Volume"    
-                                    value={this.state.rows[idx].Volume}    
-                                    onChange={this.handleChange(idx)}    
-                                    id={this.state.rows[idx].Id}  
-                                    readOnly={!this.props.useVolume} 
-                                    inputMode="decimal"
-                                    min="0"
-                                    max="10"
-                                />    
-                                    <InputGroup.Append>
-                                        <InputGroup.Text></InputGroup.Text>
-                                        <Button className="btn-fermenta btn-icon" onClick={this.handleUp(idx,"Volume",0.1,10)}><RiArrowUpSFill fontSize="2.25em"/></Button>
-                                        <Button className="btn-fermenta btn-icon" onClick={this.handleDown(idx,"Volume",0.1,0)}><RiArrowDownSFill fontSize="2.25em"/></Button>
-                                    </InputGroup.Append>
-                                </InputGroup>
-                            </td> 
-                        :
-                        null
-                    }
-                    
+
                     <td>
                         <InputGroup className="mb-2 mr-sm-ls-2">
                             <Button variant="danger" className="btn-fermenta btn-icon" onClick={this.handleRemoveRow(idx)}><RiDeleteBin2Line fontSize="2.25em" /> </Button>
@@ -243,14 +292,7 @@ class TableCycles extends React.Component {
         });  
         }
         var header =  this.state.tableHeaders.map((headerText) => {  
-            if(headerText!=="Volume")  
-                return <th> {headerText} </th>
-            else if (headerText==="Volume" && this.props.useVolume){
-                return <th> {headerText} </th>
-            }
-            else{
-                return null;
-            }    
+            return <th> {headerText} </th>   
         });
         return (
             <Card>

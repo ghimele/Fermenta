@@ -19,9 +19,11 @@
     "react-plotly.js": "^2.5.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.1",
+    "rxjs": "^6.6.6",
     "styled-components": "^5.2.1",
     "web-vitals": "^0.2.4"
   },
+  "proxy": "http://localhost:3000/",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

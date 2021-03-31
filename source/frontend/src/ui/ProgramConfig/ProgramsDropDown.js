@@ -1,21 +1,98 @@
-import React,{useState} from 'react';
+import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import DropdownButton from 'react-bootstrap/DropdownButton';
 import Dropdown from 'react-bootstrap/Dropdown';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-
+import {RiNewspaperLine, RiDeleteBinLine} from "react-icons/ri";
+import Button from 'react-bootstrap/Button';
+import DropdownButton from 'react-bootstrap/DropdownButton';
+import Services from '../../services';
+import UtilsDom from '../../components/utilities/utils.dom';
+//import LoadingFrame from '../../components/LoadingFrame';
 
 class ProgramsDropDown extends React.Component {
-    state = { DropDowntitle:'',Programs:this.props.programs, SelectedProgram:''};
+    state = { DropDowntitle:'',Programs:'', SelectedProgram:'', isLoading: true, programselected: false,
+    options: {autoClose: true,keepAfterRouteChange:false}};
+    ref= React.createRef();
+
+    newProgram= {
+        ID:"",
+        NAME: "NewProgram",
+        DATA:{
+            Name: "Test",
+            Description: "",
+            UseVolume: false,
+            Width: 0,
+            Length: 0,
+            Height: 0,
+            Cycles: [
+                {       
+                Temperature:"30",    
+                End:{
+                    Type:"Duration",
+                    Value:"60"
+                    }
+                }
+            ]
+        }
+    }
+
+    handleNew=(e)=>{
+        e.preventDefault();
+
+        Services.Programs.newProgram(this.newProgram)
+        .then((res=>{
+            this.setState({message:res});
+            if(res.error){
+                Services.ServiceAlert.AlertService.error(res.message, this.state.options);
+            }
+            else{
+                if(res.message.lastInsertRowid){
+                    Services.ServiceAlert.AlertService.success('New Program created!', this.state.options);
+                    this.handleGetPrograms(false,res.message.lastInsertRowid);
+                }
+            }
+        }))
+        .catch((error => { 
+            Services.ServiceAlert.AlertService.error('Error creating new program!', this.state.options);
+            console.error('There was an error!', error);
+          }));
+        
+    }
+
+    handleDelete=(e)=>{
+        e.preventDefault();
+        if(this.state.SelectedProgram){
+            const programName= this.state.SelectedProgram.NAME;
+            Services.Programs.deleteProgram(this.state.SelectedProgram.ID)
+            .then((res=>{
+                this.setState({message:res, SelectedProgram:'',programselected:false});
+                if(res.error){
+                    Services.ServiceAlert.AlertService.error(res.message, this.state.options);
+                }
+                else{
+                    Services.ServiceAlert.AlertService.success('Program '+ programName + ' deleted!' , this.state.options);
+                    this.handleGetPrograms(false,-1);
+                    this.props.onSelectedProgramChange('');
+                }
+            }))
+            .catch((error => {
+                Services.ServiceAlert.AlertService.error('Error deleting program!', this.state.options);
+                console.error('There was an error!', error);
+            }));
+        }
+    }
 
     handleSelect=(e)=>{
         console.log(e);
+        console.log(this.ref);
+
+        UtilsDom.UnselectItems(this.ref.current.children[1].children);
+        UtilsDom.SelectItem(e,this.ref.current.children[1].children);
+        
         var selectedp;
-        if(this.props.programs.length>0){
+        if(this.state.Programs.length>0){
             
-            this.props.programs.map(p =>{
+            this.state.Programs.map(p =>{
                 if(p.ID===parseInt(e)){
                     selectedp=p;
                 }
@@ -23,25 +100,53 @@ class ProgramsDropDown extends React.Component {
         }
 
         if(selectedp!==undefined){
-            this.setState({ DropDowntitle: selectedp.NAME });
+            this.setState({ DropDowntitle: selectedp.NAME, SelectedProgram: selectedp, programselected: true});
             this.props.onSelectedProgramChange(selectedp);
         }
     }
 
+    handleGetPrograms =(showLoading,selectindex)=>{
+        if(showLoading){
+            Services.ServiceAlert.AlertService.info("Loading...", {autoClose: false,keepAfterRouteChange:false});
+        }
+        this.setState({isLoading: true});
+        Services.Programs.getPrograms()
+        .then((data=>{
+            this.setState({Programs: data.programs, isLoading:false});
+            if(selectindex>-1){
+                this.handleSelect(selectindex);
+            }
+            if(showLoading){
+                Services.ServiceAlert.AlertService.clear();
+            }
+        }))
+        .catch((error => { 
+            Services.ServiceAlert.AlertService.clear();
+            Services.ServiceAlert.AlertService.error('Error getting programs!', this.state.options);
+            console.error('There was an error!', error);
+        }));
+    }
+
     componentDidMount(){
-        this.setState({Programs: this.props.programs})
+        this.handleGetPrograms(true,-1);
     }
 
     render() {
-    const DropDownTitleValue=this.state.DropDowntitle == '' ? "Select a program" : this.state.DropDowntitle;
+    const DropDownTitleValue=this.state.SelectedProgram === '' ? "Select a program" : this.state.SelectedProgram.NAME;
     const Programs = this.state.Programs;
 
     var list;
-    if(!this.props.isLoading && Programs!==undefined){
+
+    // if(this.state.isLoading ){
+    //     return (<LoadingFrame/>);
+    // }
+
+    if(Programs!==undefined && !this.state.isLoading){
         list= Programs.map((item) =>{ 
             const description= (item.DATA!=null && item.DATA.Description!=null) ? item.DATA.Description : item.NAME;
             return (   
-                <Dropdown.Item eventKey={item.ID} title={description} aria-label={item.ID}>{item.NAME}</Dropdown.Item>
+                
+                <Dropdown.Item id={item.ID} eventKey={item.ID} title={description} aria-label={item.ID}>{item.NAME}</Dropdown.Item>
             );      
         });
     }
@@ -49,24 +154,24 @@ class ProgramsDropDown extends React.Component {
         list= null;
     }
         
-
     return (
         <div>
-            <Dropdown justified
-                title={DropDownTitleValue}
-                onSelect={this.handleSelect}
-                focusFirstItemOnShow="keyboard"
-                as={ButtonGroup}
-            >
-                <Dropdown.Toggle id="dropdown-programs" className="btn-fermenta">{DropDownTitleValue}</Dropdown.Toggle>
-                <Dropdown.Menu id="dropdown-programs-menu">
-                    <Dropdown.Item eventKey="AddNew"> New Program</Dropdown.Item>
-                    <Dropdown.Item eventKey="Remove">Remove Program</Dropdown.Item>
-                    <Dropdown.Divider/>
+            <ButtonGroup>
+                <DropdownButton justified="true"
+                    title={DropDownTitleValue}
+                    onSelect={this.handleSelect}
+                    focusFirstItemOnShow="keyboard"
+                    as={ButtonGroup}
+                    id="dropdown-programs"
+                    className="mr-2"
+                    ref={this.ref}
+                >
                     {list}
-                </Dropdown.Menu>
-                
-            </Dropdown>
+                </DropdownButton>
+
+                <Button className="btn-fermenta mr-2 btn-dropdown" disabled={this.state.isLoading} onClick={this.handleNew}><RiNewspaperLine fontSize="1.5em"/><div className="btn-dropdown-text">New Program</div></Button>
+                <Button className="btn-fermenta mr-2 btn-dropdown" disabled={!this.state.programselected} onClick={this.handleDelete}><RiDeleteBinLine fontSize="1.5em"/><div className="btn-dropdown-text">Delete Program</div></Button>
+            </ButtonGroup>
       </div>
     );
   }

@@ -1,0 +1,57 @@
+{
+    "appenders": {
+        "console": { 
+            "type": "console" 
+        },
+        "access": {
+        "type": "dateFile",
+        "filename": "logs/access.log",
+        "pattern": "-yyyy-MM-dd",
+        "category": "http"
+        },
+        "backend": {
+            "type": "file",
+            "filename": "logs/backend.log",
+            "maxLogSize": 5242880,
+            "numBackups": 5
+        },
+        "jobfile": {
+            "type": "file",
+            "filename": "logs/job.log",
+            "maxLogSize": 5242880,
+            "numBackups": 10
+        },
+        "joberrorsfile": {
+            "type": "file",
+            "filename": "logs/joberrors.log",
+            "maxLogSize": 5242880,
+            "numBackups": 10
+        },
+        "job": {
+            "type":"noLogFilter", 
+            "exclude": "is already running", 
+            "appender": "jobfile"
+        },
+        "joberrors": {
+            "type": "logLevelFilter",
+            "level": "ERROR",
+            "appender": "joberrorsfile"
+        },
+        "errorFile": {
+            "type": "file",
+            "filename": "logs/errors.log",
+            "maxLogSize": 5242880,
+            "numBackups": 5
+        },
+        "errors": {
+            "type": "logLevelFilter",
+            "level": "ERROR",
+            "appender": "errorFile"
+        }
+    },
+    "categories": {
+        "default": { "appenders": [ "console","backend", "errors" ], "level": "DEBUG" },
+        "http": { "appenders": [ "access" ], "level": "DEBUG" },
+        "job": { "appenders": [ "job","joberrors" ], "level": "DEBUG" }
+    }
+  }

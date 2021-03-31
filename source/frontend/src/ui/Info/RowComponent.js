@@ -18,12 +18,12 @@ class RowComponent extends React.Component {
     {
       rows = <tr></tr>;
     }
-      return (
-        <React.Fragment>{rows}</React.Fragment>
-        
-      );
-    }
+    
+    return(
+      <React.Fragment>{rows}</React.Fragment>
+    );
   }
+}
 
 // Exporting the component
 export default RowComponent;

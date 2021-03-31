@@ -29,8 +29,8 @@ class Monitor extends React.Component {
       return (
         <Row> 
           
-          <Col md="6">
-            <Card>
+          <Col md="6" className="mb-4">
+            <Card >
               <Card.Header as="h2">Memory</Card.Header>
               <Card.Body>
                 <GaaugeMemoryUsage Title="Memory Usage" Suffix="%" Prefix=""/>
@@ -41,7 +41,7 @@ class Monitor extends React.Component {
               </Card.Body>
             </Card>
           </Col>
-          <Col md="6">
+          <Col md="6" className="mb-4">
             <Card>
               <Card.Header as="h2">Disk</Card.Header>
               <Card.Body>
@@ -53,7 +53,7 @@ class Monitor extends React.Component {
               </Card.Body>
             </Card>
           </Col>
-          <Col md="auto">
+          <Col md="auto" className="mb-4">
             <Card >
               <Card.Header as="h2">CPU</Card.Header>
               <Card.Body>
