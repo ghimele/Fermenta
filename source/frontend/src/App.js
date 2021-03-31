@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
-import Navbar from './components/NavBar';
+import Navbar from './ui/NavBar/NavBar';
 import SideBar from './components/SideBar';
 import Main from './components/Main';
 import Monitor from './components/Monitor';
@@ -12,6 +12,7 @@ import Sensors from './ui/Sensors';
 import classNames from 'classnames';
 import MQTTConnector from './components/mqtt-client/connector';
 import ProgramConfig from './ui/ProgramConfig';
+import RunningProgram from './ui/RunningProgram';
 import { Alert } from './components/Alert';
 
 import './scss/App.scss';
@@ -64,38 +65,35 @@ class App extends React.Component {
     //, {"mini": isMinimized}
 
     return (
-    <div className="App">
-      <header className="App-header">
-        <Navbar/>
-      </header>
-      
-      <Container fluid className="flex-shrink-0">
-        <Row className="h-100">
-
-          <MQTTConnector mqttProps={{ url: this.url,options: this.options}}>
-            <div>
-              <Alert/>
-              <Router>
-                <SideBar isMinimized={this.toggleSidebar.bind(this)}/>
-                <main className={MainClass} id="Main" ref={this.ref}> 
-                  <Switch>
-                    <Route path="/" exact component={() => <Main />} />
-                    <Route path="/Monitor" exact component={() => <Monitor mqttClient={this.state.mqttClient}/>} />
-                    <Route path="/Info" exact component={() => <Info />} />
-                    <Route path="/Sensors" exact component={() => <Sensors />} />
-                    <Route path="/ProgramConfig" exact component={() => <ProgramConfig />} />
-                  </Switch>
-                </main>
-              </Router>
-            </div>
-          </MQTTConnector>
+      <MQTTConnector mqttProps={{ url: this.url,options: this.options}}>
+        <div className="App">
           
+          <header className="App-header">
+            <Navbar/>
+          </header>
           
-        </Row>
-      </Container>
-      
-      
-    </div>
+          <Container fluid className="flex-shrink-0">
+            <Row className="h-100">
+                <div>
+                  <Alert/>
+                  <Router>
+                    <SideBar isMinimized={this.toggleSidebar.bind(this)}/>
+                    <main className={MainClass} id="Main" ref={this.ref}> 
+                      <Switch>
+                        <Route path="/" exact component={() => <Main />} />
+                        <Route path="/Monitor" exact component={() => <Monitor mqttClient={this.state.mqttClient}/>} />
+                        <Route path="/Info" exact component={() => <Info />} />
+                        <Route path="/Sensors" exact component={() => <Sensors />} />
+                        <Route path="/ProgramConfig" exact component={() => <ProgramConfig />} />
+                        <Route path="/RunningProgram" exact component={() => <RunningProgram />} />
+                      </Switch>
+                    </main>
+                  </Router>
+                </div>
+            </Row>
+          </Container>
+        </div>
+      </MQTTConnector>
     );
   }
 }

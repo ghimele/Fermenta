@@ -28,4 +28,9 @@ router.delete('/program/:id',middleware.programs.deleteProgram, function(req, re
   res.json({ error: false, message: req.message });
 });
 
+// Get Scheduled Program
+router.get('/scheduledprogram/',middleware.programs.getScheduledProgram, function(req, res, next) {
+  res.json({ error: false, message: req.data });
+});
+
 module.exports = router;

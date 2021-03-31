@@ -103,12 +103,12 @@ parentPort.on("message", (value)=>{
                             log("End Type: " + endCycle.Type);
                             if(endCycle.Type === "Duration")
                             {
-                                targetEndTime = (Number(endCycle.Duration)*60000); //Duration is expressed in minutes
+                                targetEndTime = (Number(endCycle.Value)*60000); //Duration is expressed in minutes
                                 log("targetEndTime: " + Math.round(targetEndTime / 60000) + " minutes");
                             }
                             else if(endCycle.Type==="Volume"){
-                                targetHeight = Number(endCycle.Volume) * startDoughHeight;
-                                targetVolume = Number(endCycle.Volume) * startDoughVolume;
+                                targetHeight = Number(endCycle.Value) * startDoughHeight;
+                                targetVolume = Number(endCycle.Value) * startDoughVolume;
                                 log("targetVolume: " + targetVolume);
                             }
                             else if(endCycle.Type==="Temperature"){

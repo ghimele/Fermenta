@@ -13,7 +13,7 @@ export const DateTime = () => {
     });
 
     return(
-        <div className="DateTime">
+        <div className="NavBarDateTime">
             <div>{date.toLocaleDateString()}</div>
             <div>{date.toLocaleTimeString()}</div>
         </div>

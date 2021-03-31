@@ -60,11 +60,27 @@ const deleteProgram = (req,res,next)=>{
         next();
     }
 }
+
+const getScheduledProgram = (req, res, next) => {
+    var ret;
+    ret = utils.db.GetScheduledProgram();
+
+    if (ret.error) {
+        return res.status(400).json({
+          error: true,
+          message: ret.message
+        });
+    } else {
+        req.data = ret.data;
+        next();
+    }
+};
 const programs = {
     getPrograms: getPrograms,
     updateProgram: updateProgram,
     createProgram: createProgram,
-    deleteProgram: deleteProgram
+    deleteProgram: deleteProgram,
+    getScheduledProgram: getScheduledProgram
 };
 
 module.exports = programs;

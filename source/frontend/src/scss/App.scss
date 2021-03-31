@@ -225,9 +225,26 @@ $sidebar-mini-width: 50px;
     }
   }
 
-.DateTime{
+.NavBarDateTime{
   color: white;
   margin:0px;
+  font-size: small;
+  text-align: center;
+}
+
+.NavBarTemperature{
+  color: white;
+  margin:0px;
+  margin-left: 2px;
+  margin-right: 2px;
+  font-size: small;
+  text-align: center;
+}
+.NavBarHumidity{
+  color: white;
+  margin:0px;
+  margin-left: 2px;
+  margin-right: 2px;
   font-size: small;
   text-align: center;
 }
@@ -307,4 +324,9 @@ input[type=number] {
   background-color: $light;
   border-left: 3px $yellow solid;
 }
+
+// svg {
+//    padding-top: 3px;
+// }
+
 @import "~bootstrap/scss/bootstrap";
