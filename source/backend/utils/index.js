@@ -1,15 +1,19 @@
 const utilfs = require("./util.fs");
 const db = require("./util.db");
-const utilgeneral = require("./util.general");
+const General = require("./util.general");
 const MQTTClient = require("./util.mqttclient");
 const JobScheduler = require("./util.jobscheduler");
 const Message = require("./util.message");
+const WebSocket = require("./util.websocket");
+const Enum = require("./util.enum");
 
 module.exports = {
     utilfs,
     db,
-    utilgeneral,
+    General: General,
     MQTTClient,
     JobScheduler,
-    Message
+    Message,
+    WebSocket,
+    Enum
 };

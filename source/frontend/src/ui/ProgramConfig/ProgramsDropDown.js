@@ -2,7 +2,7 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Dropdown from 'react-bootstrap/Dropdown';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
-import {RiNewspaperLine, RiDeleteBinLine} from "react-icons/ri";
+import Icons from '../../components/utilities/utils.icons';
 import Button from 'react-bootstrap/Button';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Services from '../../services';
@@ -25,7 +25,8 @@ class ProgramsDropDown extends React.Component {
             Length: 0,
             Height: 0,
             Cycles: [
-                {       
+                {    
+                Id: "1", 
                 Temperature:"30",    
                 End:{
                     Type:"Duration",
@@ -77,6 +78,29 @@ class ProgramsDropDown extends React.Component {
             }))
             .catch((error => {
                 Services.ServiceAlert.AlertService.error('Error deleting program!', this.state.options);
+                console.error('There was an error!', error);
+            }));
+        }
+    }
+
+    handleStart=(e)=>{
+        e.preventDefault();
+        if(this.state.SelectedProgram){
+            const programName= this.state.SelectedProgram.NAME;
+            Services.Programs.startProgram(this.state.SelectedProgram.ID)
+            .then((res=>{
+                this.setState({message:res, SelectedProgram:'',programselected:false});
+                if(res.error){
+                    Services.ServiceAlert.AlertService.error(res.message, this.state.options);
+                }
+                else{
+                    Services.ServiceAlert.AlertService.success('Program '+ programName + ' started!' , this.state.options);
+                    this.handleGetPrograms(false,-1);
+                    this.props.onSelectedProgramChange('');
+                }
+            }))
+            .catch((error => {
+                Services.ServiceAlert.AlertService.error('Error starting program!', this.state.options);
                 console.error('There was an error!', error);
             }));
         }
@@ -169,8 +193,9 @@ class ProgramsDropDown extends React.Component {
                     {list}
                 </DropdownButton>
 
-                <Button className="btn-fermenta mr-2 btn-dropdown" disabled={this.state.isLoading} onClick={this.handleNew}><RiNewspaperLine fontSize="1.5em"/><div className="btn-dropdown-text">New Program</div></Button>
-                <Button className="btn-fermenta mr-2 btn-dropdown" disabled={!this.state.programselected} onClick={this.handleDelete}><RiDeleteBinLine fontSize="1.5em"/><div className="btn-dropdown-text">Delete Program</div></Button>
+                <Button className="btn-fermenta mr-2 btn-dropdown" disabled={this.state.isLoading} onClick={this.handleNew}><Icons.NewspaperLine fontSize="1.5em"/><div className="btn-dropdown-text">New Program</div></Button>
+                <Button className="btn-fermenta mr-2 btn-dropdown" disabled={!this.state.programselected} onClick={this.handleDelete}><Icons.DeleteBinLine fontSize="1.5em"/><div className="btn-dropdown-text">Delete Program</div></Button>
+                <Button className="btn-fermenta mr-2 btn-dropdown" disabled={!this.state.programselected} onClick={this.handleStart}><Icons.RunLine fontSize="1.5em"/><div className="btn-dropdown-text">Start Program</div></Button>
             </ButtonGroup>
       </div>
     );

@@ -27,7 +27,7 @@ var Temperature;
 var Humidity;
 
 //MQTT connection
-const url="mqtt://192.168.1.122:1883";
+const url="mqtt://localhost:1883";
 
 function handleDistance (message) {
     Distance = message.toString();
@@ -42,7 +42,6 @@ function handleHumidity (message) {
 
 function getDistance(){
     return Distance;
-
 }
 function getTemperature(){
     return Temperature;
@@ -55,7 +54,7 @@ function start(){
     const client = mqtt.connect(url,mqttoptions);
 
     client.on('error', (error) => {
-        log.log("MQTTClient can't connect: "+ error);
+        log.debug("MQTTClient can't connect: "+ error);
     });
 
     client.on('connect', () => {
@@ -66,7 +65,7 @@ function start(){
     });
 
     client.on('message', (topic, message) => {
-        log.info('MQTTClient received message %s %s', topic, message)
+        //log.debug('MQTTClient received message %s %s', topic, message)
         switch (topic) {
             case 'Fermenta/Sensors/Distance/1':
                 return handleDistance(message);
@@ -81,7 +80,8 @@ function start(){
 const MQTTClient = {
     start: start,
     getDistance: getDistance,
-    getTemperature: getTemperature
+    getTemperature: getTemperature,
+    getHumidity: getHumidity
 };
 
 module.exports = MQTTClient;

@@ -13,9 +13,27 @@ function UnselectItems(items){
     }
 }
 
+function AddClass(id,className){
+    let element = document.querySelector('#' + id);
+    element.classList.add(className);
+}
+
+function RemoveClass(id,className){
+    let element = document.querySelector('#' + id);
+    element.classList.remove(className);
+}
+
+function ToggleClass(id,className){
+    let element = document.querySelector('#' + id);
+    element.classList.toggle(className);
+}
+
 const UtilsDom = {
     SelectItem: SelectItem,
-    UnselectItems: UnselectItems
+    UnselectItems: UnselectItems,
+    AddClass: AddClass,
+    RemoveClass: RemoveClass,
+    ToggleClass: ToggleClass
 }
 
 export default UtilsDom;
