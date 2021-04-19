@@ -1,5 +1,9 @@
 var utils = require('../utils');
 
+// ********************
+// Programs API - start
+// ********************
+
 const getPrograms = (req, res, next) => {
     var ret;
     ret = utils.db.GetPrograms();
@@ -61,9 +65,32 @@ const deleteProgram = (req,res,next)=>{
     }
 }
 
-const getScheduledProgram = (req, res, next) => {
+// ********************
+// Programs API - end
+// ********************
+
+// ********************
+// JOBS API - start
+// ********************
+
+const createJob= (req,res,next)=>{
     var ret;
-    ret = utils.db.GetScheduledProgram();
+    ret = utils.db.AddJob(req.params.programid);
+
+    if (ret.error) {
+        return res.status(400).json({
+          error: true,
+          message: ret.message
+        });
+    } else {
+        req.message = ret.message;
+        next();
+    }
+};
+
+const getJob = (req, res, next) => {
+    var ret;
+    ret = utils.db.GetJob('','',req.params.id);
 
     if (ret.error) {
         return res.status(400).json({
@@ -75,12 +102,78 @@ const getScheduledProgram = (req, res, next) => {
         next();
     }
 };
+
+const getJobs = (req, res, next) => {
+    var ret;
+    ret = utils.db.GetJobs();
+
+    if (ret.error) {
+        return res.status(400).json({
+          error: true,
+          message: ret.message
+        });
+    } else {
+        req.data = ret.data;
+        next();
+    }
+};
+
+
+const getRunningJobProgram = (req, res, next) => {
+    var ret;
+    ret = utils.db.GetJob(utils.Enum.JOBSTATUS.RUNNING,utils.Enum.JOBTYPE.PROGRAM);
+
+    if (ret.error) {
+        return res.status(400).json({
+          error: true,
+          message: ret.message
+        });
+    } else {
+        req.data = ret.data;
+        next();
+    }
+};
+
+// ********************
+// JOBS API - end
+// ********************
+
+// ********************
+// JOB LOGS API - start
+// ********************
+
+const getJobLog = (req, res, next) => {
+    var ret;
+    ret = utils.db.GetJobLog(req.params.jobid);
+
+    if (ret.error) {
+        return res.status(400).json({
+          error: true,
+          message: ret.message
+        });
+    } else {
+        req.data = ret.data;
+        next();
+    }
+};
+
+// ********************
+// JOB LOGS API - end
+// ********************
+
 const programs = {
+    //Programs Api
     getPrograms: getPrograms,
     updateProgram: updateProgram,
     createProgram: createProgram,
     deleteProgram: deleteProgram,
-    getScheduledProgram: getScheduledProgram
+    //JOB Api
+    createJob: createJob,
+    getJob: getJob,
+    getJobs: getJobs,
+    getRunningProgram: getRunningJobProgram,
+    //JOB Log Api
+    getJobLog: getJobLog
 };
 
 module.exports = programs;

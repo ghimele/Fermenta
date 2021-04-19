@@ -3,6 +3,7 @@ const MQTTClient = require('./util.mqttclient');
 const Message = require('./util.message');
 var log4js = require('log4js');
 var joblog = log4js.getLogger('job');
+var websocket = require('./util.websocket');
 
 var bree = undefined;
 var programData=[];
@@ -55,21 +56,23 @@ function handleWorkerMessage(metadata){
                 outmess.Value=MQTTClient.getTemperature();
                 worker.postMessage(outmess);
             }
+            else if(inmess.Value==="GetHumidity"){
+                outmess.Name="Humidity";
+                outmess.Value=MQTTClient.getHumidity();
+                worker.postMessage(outmess);
+            }
         }
         else if(inmess.MessageType==="Data"){
-            data=new ProgramData(inmess.Name,inmess.Value);
+            //data=new ProgramData(inmess.Name,inmess.Value);
             joblog.info("Data: %s = %s",inmess.Name, inmess.Value);
-            programData[inmess.Name]=data;
-            programData.push(data);
+            
+            programData[inmess.Name]=inmess.Value;
+            joblog.debug("programData lenght: "+ programData.length);
+            websocket.sendMessage(inmess);
             //joblog.info("programData length: %d", programData.length);
             //joblog.info("Data: %s", JSON.stringify(programData));
         }
     }
-}
-
-function ProgramData(name,value){
-    Name=name;
-    Value=value;
 }
 
 const JobScheduler = {

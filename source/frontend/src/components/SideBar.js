@@ -1,6 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
 import Accordion from 'react-bootstrap/Accordion';
 import Card from 'react-bootstrap/Card';
 import Icons from './utilities/utils.icons';
@@ -36,10 +37,23 @@ class SideBar extends React.Component {
         e.currentTarget.classList.add("selected");
     };
 
+    componentDidMount(){
+        var isminimized=this.state.isMinimized;
+
+        if(!isminimized)
+        {
+            localStorage.removeItem("isMinimized");
+        }
+        else
+        {
+            localStorage.setItem("isMinimized",true);
+        }
+    }
+
     render() {
         const isMinimized = this.state.isMinimized;
         const isSelected = this.state.isSelected;
-        const SidebarClass = classNames( "d-md-block", "bg-light", "sidebar","collapse", {"mini": isMinimized} );
+        const SidebarClass = classNames( "d-sm-block", "bg-light", "sidebar","collapse", {"mini": isMinimized} );
         const SidebarFooter = classNames("sidebarfooter", "fixed-bottom", "d-md-block", "bg-light", "collapse",{"mini": isMinimized});
         const SidebarTitle = classNames("SideBarTitle", {"mini": isMinimized});
         const ListItem = classNames("list-group-item-sidebar","list-group-item-action","light", "text-left", {"list-selected": isSelected});
@@ -54,7 +68,7 @@ class SideBar extends React.Component {
         }
 
         return (
-            <Nav className={SidebarClass} id="Sidebar">
+            <Navbar.Collapse className={SidebarClass} id="Sidebar" >
                 <div className="sidebar-sticky pt-3">
                     <Accordion ref={this.ref}>
                         <Card>
@@ -64,6 +78,7 @@ class SideBar extends React.Component {
                             <Accordion.Collapse eventKey="0">
                                 <div className="list-group card-body-sidebar">
                                 <Link className={ListItem} to="/RunningProgram" onClick={this.toggleSelected}><Icons.RunLine fontSize="1.5em"/><span className={SidebarTitle}>Active</span></Link>
+                                <Link className={ListItem} to="/JobPrograms" onClick={this.toggleSelected}><Icons.FileHistoryLine fontSize="1.5em"/><span className={SidebarTitle}>History</span></Link>
                                 <Link className={ListItem} to="/ProgramConfig" onClick={this.toggleSelected}><Icons.StackLine fontSize="1.5em"/><span className={SidebarTitle}>Configure</span></Link>
                                 </div>
                             </Accordion.Collapse>
@@ -91,7 +106,7 @@ class SideBar extends React.Component {
                         </div>
                     </footer>
                 </div>
-            </Nav>                               
+            </Navbar.Collapse>                               
         );
     }
 }

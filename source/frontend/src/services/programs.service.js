@@ -36,6 +36,20 @@ function deleteProgram(programId) {
         );
 }
 
+function startProgram(programId) {
+  const url=process.env.REACT_APP_API_BASE_URL;
+
+  const requestOptions = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' }
+  };
+
+  return fetch(url + "job/" + programId, requestOptions)
+        .then(
+          response => response.json()
+        );
+}
+
 function saveProgram(programId,updatedprogram) {
   const url=process.env.REACT_APP_API_BASE_URL;
 
@@ -51,11 +65,42 @@ function saveProgram(programId,updatedprogram) {
         );
 }
 
+function getRunningProgram() {
+  const url=process.env.REACT_APP_API_BASE_URL;
+
+  const requestOptions = {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' }
+  };
+
+  return fetch(url + "runningprogram/" , requestOptions)
+        .then(
+          response => response.json()
+        );
+}
+
+function getJobLogs(jobid) {
+  const url=process.env.REACT_APP_API_BASE_URL;
+
+  const requestOptions = {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' }
+  };
+
+  return fetch(url + "joblog/"+jobid, requestOptions)
+        .then(
+          response => response.json()
+        );
+}
+
 const ServiceProgram = {
     getPrograms: getPrograms,
     newProgram: newProgram,
     deleteProgram: deleteProgram,
-    saveProgram: saveProgram
+    saveProgram: saveProgram,
+    startProgram: startProgram,
+    getRunningProgram: getRunningProgram,
+    getJobLogs: getJobLogs
 };
 
 export default ServiceProgram;

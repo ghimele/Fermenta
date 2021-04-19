@@ -8,6 +8,10 @@ router.get('/', function(req, res, next) {
   res.json({ message: "Hello from server!" });
 });
 
+// ********************
+// Programs API - start
+// ********************
+
 // Get all programs stored into Main DB
 router.get('/programs',middleware.programs.getPrograms, function(req, res, next) {
   res.json({ error: false, programs: req.data });
@@ -28,9 +32,49 @@ router.delete('/program/:id',middleware.programs.deleteProgram, function(req, re
   res.json({ error: false, message: req.message });
 });
 
-// Get Scheduled Program
-router.get('/scheduledprogram/',middleware.programs.getScheduledProgram, function(req, res, next) {
+// ********************
+// Programs API - end
+// ********************
+
+// ********************
+// JOBS API - start
+// ********************
+
+// Create new job using programid
+router.post('/job/:programid',middleware.programs.createJob, function(req, res, next) {
+  res.json({ error: false, message: req.message });
+});
+
+// Get job using id
+router.get('/job/:id',middleware.programs.getJob, function(req, res, next) {
   res.json({ error: false, message: req.data });
 });
+
+// Get all jobs
+router.get('/jobs',middleware.programs.getJobs, function(req, res, next) {
+  res.json({ error: false, message: req.data });
+});
+
+// Get Scheduled Program
+router.get('/runningprogram/',middleware.programs.getRunningProgram, function(req, res, next) {
+  res.json({ error: false, message: req.data });
+});
+
+// ********************
+// JOBS API - end
+// ********************
+
+// ********************
+// JOB LOGS API - start
+// ********************
+
+// Get Job's logs
+router.get('/joblog/:jobid',middleware.programs.getJobLog, function(req, res, next) {
+  res.json({ error: false, message: req.data });
+});
+
+// ********************
+// JOB LOGS API - end
+// ********************
 
 module.exports = router;

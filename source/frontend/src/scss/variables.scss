@@ -68,4 +68,7 @@ $border-radius:               0px !default;
 $border-radius-lg:            0px !default;
 $border-radius-sm:            0px !default;
 
+$navbar-dark-brand-color: $yellow;
+$navbar-dark-brand-hover-color: $white;
+
 @import "~bootstrap/scss/_variables.scss";

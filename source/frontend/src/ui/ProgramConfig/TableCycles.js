@@ -297,7 +297,7 @@ class TableCycles extends React.Component {
         return (
             <Card>
                 <Card.Header>
-                <ButtonToolbar aria-label="Toolbar with button groups">
+                <ButtonToolbar aria-label="Toolbar with button groups" className="justify-content-between">
                     <ButtonGroup className="mr-2">
                         <h4>Cycles</h4>
                     </ButtonGroup>

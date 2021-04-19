@@ -1,30 +1,17 @@
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
-//var logger = require('morgan');
 var cors = require('cors');
 var helmet = require ('helmet');
 var log4js = require ('log4js');
 var indexRouter = require('./routes/index');
-var utils = require('./utils/index');
+//var utils = require('./utils/index');
 
 var log = log4js.getLogger("backend");
 
 var app = express();
 env = app.get('env')
-//app.use(helmet());
-// app.use(
-//   helmet.contentSecurityPolicy({
-//     directives: {
-//       defaultSrc: ["'self'"],
-//       scriptSrc: ["'self'", "192.168.1.122"],
-//       objectSrc: ["'none'"],
-//       upgradeInsecureRequests: [],
-//     },
-//   })
-// );
-//helmet
-//app.use(helmet.contentSecurityPolicy());
+
 app.use(helmet.dnsPrefetchControl());
 app.use(helmet.expectCt());
 app.use(helmet.frameguard());
@@ -35,8 +22,6 @@ app.use(helmet.noSniff());
 app.use(helmet.permittedCrossDomainPolicies());
 app.use(helmet.referrerPolicy());
 app.use(helmet.xssFilter());
-
-//app.use(logger('dev'));
 
 app.use(log4js.connectLogger(log4js.getLogger("http"), { level: 'auto' }));
 
@@ -60,10 +45,6 @@ if (process.env.NODE_ENV === 'production') {
     });
 }
 
-utils.db.UpdateMainDB(function(mess,err){
-    if(err) 
-        console.log("%s - %s",mess, err);
 
-});
 
 module.exports = app;

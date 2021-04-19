@@ -6,15 +6,27 @@ var app = require('./app');
 var debug = require('debug')('server:server');
 var http = require('http');
 var log4js = require('log4js');
-const {MQTTClient,JobScheduler} = require('./utils');
+
+const env = app.get('env');
+const host = app.get('hostname');
+var port = normalizePort(process.env.PORT || '3000');
+
 
 /**
  * Initialise log4js first, so we don't miss any log messages
  */
-log4js.configure('./config/log4js.json');
- 
-var log = log4js.getLogger("startup"); 
+ log4js.configure('./config/log4js.json');
 
+const {MQTTClient,JobScheduler,WebSocket,db} = require('./utils');
+
+
+var log = log4js.getLogger("startup"); 
+if(env==="PRODUCTION"){
+  log.level="info";
+}
+
+
+db.UpdateMainDB();
 MQTTClient.start();
 JobScheduler.start();
 
@@ -22,22 +34,24 @@ JobScheduler.start();
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3000');
+
 app.set('port', port);
 
-var env = app.get('env');
-var host = app.get('hostname');
+
+
 /**
  * Create HTTP server.
  */
-
 var server = http.createServer(app);
+
+/**
+ * Create and start the WebSocket.
+ */
+WebSocket.start(server);
 
 /**
  * Listen on provided port, on all network interfaces.
  */
-
-//server.listen(port);
 server.listen(port, function () {
     return console.log('Fermenta server listening on %s at port %d in %s mode', host, port, env);
   });
@@ -47,7 +61,6 @@ server.on('listening', onListening);
 /**
  * Normalize a port into a number, string, or false.
  */
-
 function normalizePort(val) {
   var port = parseInt(val, 10);
 
@@ -67,7 +80,6 @@ function normalizePort(val) {
 /**
  * Event listener for HTTP server "error" event.
  */
-
 function onError(error) {
   if (error.syscall !== 'listen') {
     throw error;
@@ -95,7 +107,6 @@ function onError(error) {
 /**
  * Event listener for HTTP server "listening" event.
  */
-
 function onListening() {
   var addr = server.address();
   var bind = typeof addr === 'string'

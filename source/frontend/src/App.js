@@ -17,6 +17,7 @@ import { Alert } from './components/Alert';
 
 import './scss/App.scss';
 
+
 class App extends React.Component {
   state = { isMinimized: localStorage.getItem("isMinimized"),mqttClient:undefined};
   ref= React.createRef();
@@ -59,6 +60,15 @@ class App extends React.Component {
     this.setState({ Error: error });
   }
 
+  componentDidMount()
+  {
+    if(this.state.isMinimized){
+      this.ref.current.classList.add("mini");
+    }
+    else{
+      this.ref.current.classList.remove("mini");
+    }
+  }
   render() {
     const isMinimized = this.state.isMinimized;
     const MainClass = classNames("main", "container-fluid", "flex-shrink-0");

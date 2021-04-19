@@ -1,6 +1,6 @@
 import React from 'react';
 import Plot from 'react-plotly.js';
-import {COLORS} from '../utilities/Color';
+import COLORS from '../utilities/Color';
 
 class StackedBarChart extends React.Component {
    
