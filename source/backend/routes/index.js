@@ -50,6 +50,11 @@ router.get('/job/:id',middleware.programs.getJob, function(req, res, next) {
   res.json({ error: false, message: req.data });
 });
 
+// Update program by ID
+router.put('/job/:id',middleware.programs.updateJob, function(req, res, next) {
+  res.json({ error: false, message: req.message });
+});
+
 // Get all jobs
 router.get('/jobs',middleware.programs.getJobs, function(req, res, next) {
   res.json({ error: false, message: req.data });

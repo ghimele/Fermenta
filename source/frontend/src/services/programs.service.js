@@ -79,6 +79,22 @@ function getRunningProgram() {
         );
 }
 
+function updateJob(jobid,status){
+  const url=process.env.REACT_APP_API_BASE_URL;
+  const body={"STATUS": status}
+
+  const requestOptions = {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  };
+
+  return fetch(url + "job/"+jobid, requestOptions)
+        .then(
+          response => response.json()
+        );
+}
+
 function getJobLogs(jobid) {
   const url=process.env.REACT_APP_API_BASE_URL;
 
@@ -100,7 +116,8 @@ const ServiceProgram = {
     saveProgram: saveProgram,
     startProgram: startProgram,
     getRunningProgram: getRunningProgram,
-    getJobLogs: getJobLogs
+    getJobLogs: getJobLogs,
+    updateJob: updateJob
 };
 
 export default ServiceProgram;

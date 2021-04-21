@@ -1,3 +1,4 @@
+const { log } = require('debug');
 var utils = require('../utils');
 
 // ********************
@@ -103,6 +104,43 @@ const getJob = (req, res, next) => {
     }
 };
 
+const updateJob = (req,res,next)=>{
+    var ret;
+    var message= utils.DataType.Message;
+    ret = utils.db.UpdateJobStatus(req.params.id, req.body.STATUS);
+
+    if (ret.error) {
+        return res.status(400).json({
+          error: true,
+          message: ret.message
+        });
+    }
+    else {
+        if(req.body.STATUS === utils.Enum.JOBSTATUS.PAUSED){
+            message.MessageType="Data";
+            message.Name = "Paused"
+            message.Value = true;
+            console.debug("send message: "+ JSON.stringify(message));
+            utils.JobScheduler.PostMessage(utils.Enum.JOBTYPE.PROGRAM,message);
+        }
+        else if(req.body.STATUS === utils.Enum.JOBSTATUS.CANCELLED){
+            message.MessageType="Data";
+            message.Name = "Cancelled"
+            message.Value = true;
+            utils.JobScheduler.PostMessage(utils.Enum.JOBTYPE.PROGRAM,message);
+        }
+        else if(req.body.STATUS === utils.Enum.JOBSTATUS.RUNNING){
+            message.MessageType="Data";
+            message.Name = "Running";
+            message.Value = true;
+            utils.JobScheduler.PostMessage(utils.Enum.JOBTYPE.PROGRAM,message);
+        }
+        
+        req.message = ret.message;
+        next();
+    }
+}
+
 const getJobs = (req, res, next) => {
     var ret;
     ret = utils.db.GetJobs();
@@ -129,6 +167,21 @@ const getRunningJobProgram = (req, res, next) => {
           message: ret.message
         });
     } else {
+        //to enable when we enable the PAUSE button in the interface
+        // if(ret.data === undefined){
+        //     ret = utils.db.GetJob(utils.Enum.JOBSTATUS.PAUSED,utils.Enum.JOBTYPE.PROGRAM);
+        //     if(ret.error){
+        //         return res.status(400).json({
+        //             error: true,
+        //             message: ret.message
+        //           });
+        //     }
+
+        //     req.data = ret.data;
+        // }
+        // else{
+        //     req.data = ret.data;
+        // }
         req.data = ret.data;
         next();
     }
@@ -171,6 +224,7 @@ const programs = {
     createJob: createJob,
     getJob: getJob,
     getJobs: getJobs,
+    updateJob: updateJob,
     getRunningProgram: getRunningJobProgram,
     //JOB Log Api
     getJobLog: getJobLog

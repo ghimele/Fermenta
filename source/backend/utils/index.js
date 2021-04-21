@@ -3,7 +3,7 @@ const db = require("./util.db");
 const General = require("./util.general");
 const MQTTClient = require("./util.mqttclient");
 const JobScheduler = require("./util.jobscheduler");
-const Message = require("./util.message");
+const DataType = require("./util.datatype");
 const WebSocket = require("./util.websocket");
 const Enum = require("./util.enum");
 
@@ -13,7 +13,7 @@ module.exports = {
     General: General,
     MQTTClient,
     JobScheduler,
-    Message,
+    DataType,
     WebSocket,
     Enum
 };

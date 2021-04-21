@@ -19,7 +19,7 @@ import Button from 'react-bootstrap/Button';
 
 
 class RunningProgram extends React.Component {
-  state = { RunningJob:'',RunningJobData:'',CurrentData:'',HistoricalData:[], isLoading:'false'}
+  state = { RunningJob:'',RunningJobData:'',CurrentData:'',HistoricalData:[], isLoading:'false', isPaused:false, isCancelled:false}
   
   constructor(props, context) {
     super(props, context);
@@ -66,8 +66,51 @@ class RunningProgram extends React.Component {
     console.log('WebSocket Close Connection: '+ e);
   }
 
-  handleStop(){
+  handleStop=(e)=>{
+    Services.Programs.updateJob(this.state.RunningJob.ID,"CANCELLED")
+    .then((data=>{
+        if(data.error){
+          Services.ServiceAlert.AlertService.error('Error stopping running program! ' + data.message);
+        }
 
+        this.setState({isCancelled: true, isPaused:false});
+    }))
+    .catch((error => { 
+        Services.ServiceAlert.AlertService.clear();
+        Services.ServiceAlert.AlertService.error('Error stopping running program!');
+        console.error('There was an error!', error);
+    }));
+  }
+
+  handlePause=(e)=>{
+    Services.Programs.updateJob(this.state.RunningJob.ID,"PAUSED")
+    .then((data=>{
+        if(data.error){
+          Services.ServiceAlert.AlertService.error('Error pausing running program! ' + data.message);
+        }
+        this.setState({isCancelled: false, isPaused:true});
+    }))
+    .catch((error => { 
+        Services.ServiceAlert.AlertService.clear();
+        Services.ServiceAlert.AlertService.error('Error pausing running program!');
+        console.error('There was an error!', error);
+    }));
+  }
+
+  handleRun=(e)=>{
+    Services.Programs.updateJob(this.state.RunningJob.ID,"RUNNING")
+    .then((data=>{
+        if(data.error){
+          Services.ServiceAlert.AlertService.error('Error running running program! ' + data.message);
+        }
+
+        this.setState({isCancelled: false, isPaused:false});
+    }))
+    .catch((error => { 
+        Services.ServiceAlert.AlertService.clear();
+        Services.ServiceAlert.AlertService.error('Error running running program!');
+        console.error('There was an error!', error);
+    }));
   }
 
   handleGetRunningProgram (showLoading){
@@ -200,10 +243,12 @@ class RunningProgram extends React.Component {
                     <ButtonGroup className="mr-2">
                         <h2>Active Program</h2>
                     </ButtonGroup>
-                    <ButtonGroup className="ml-2"> 
-                        <Button id="StopProgram" className="btn-fermenta mr-2 btn-dropdown" onClick={this.handleStop()}><Icons.StopLine fontSize="1.75em"/><div className="btn-dropdown-text">Stop</div></Button> 
-                        <Button id="PauseProgram" className="btn-fermenta mr-2 btn-dropdown" onClick={this.handleStop()}><Icons.PauseLine fontSize="1.75em"/><div className="btn-dropdown-text">Pause</div></Button> 
-                        <Button id="PlayProgram" className="btn-fermenta mr-2 btn-dropdown" onClick={this.handleStop()}><Icons.PlayLine fontSize="1.75em"/><div className="btn-dropdown-text">Play</div></Button> 
+                    <ButtonGroup className="ml-2">
+
+                        <Button id="StopProgram" className="btn-fermenta mr-2 btn-dropdown" disabled={this.state.isPaused || this.state.isCancelled} onClick={this.handleStop}><Icons.StopLine fontSize="1.75em"/><div className="btn-dropdown-text">Stop</div></Button> 
+                        {/* <Button id="PauseProgram" className="btn-fermenta mr-2 btn-dropdown" disabled={this.state.isPaused || this.state.isCancelled} onClick={this.handlePause}><Icons.PauseLine fontSize="1.75em"/><div className="btn-dropdown-text">Pause</div></Button> 
+                        <Button id="PlayProgram" className="btn-fermenta mr-2 btn-dropdown" disabled={!this.state.isPaused} onClick={this.handleRun}><Icons.PlayLine fontSize="1.75em"/><div className="btn-dropdown-text">Play</div></Button> */}
+                        
                     </ButtonGroup>    
                 </ButtonToolbar>
               </Card.Header>
@@ -211,7 +256,7 @@ class RunningProgram extends React.Component {
                 <Row style={{fontSize: '1.8em'}} className="align-middle">
                   <Col xs="12" >Name: {this.state.RunningJobData.Name}</Col>
                   <Col xs="12" md="auto"><DateTime datetime={this.state.RunningJob.STARTDATE} label="Started:"/></Col>
-                  <Col xs="12" ><ElapsedTime startdate={this.state.RunningJob.STARTDATE} label="Elapsed Times:"/></Col>
+                  <Col xs="12" >{this.state.isPaused ? <strong>PAUSED</strong> : this.state.isCancelled ? <strong>CANCELLED</strong> : <ElapsedTime startdate={this.state.RunningJob.STARTDATE} label="Elapsed Time:"/>}</Col>
                 </Row>
             </Card.Body>
             </Card>

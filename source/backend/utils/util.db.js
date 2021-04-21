@@ -268,28 +268,6 @@ function GetJobs(){
         return retval;
     }
 }
-// function GetJob(ID){
-//     const SELECT_JOB = maindb.prepare("SELECT * FROM JOB WHERE ID = ?");
-//     var retval= new Object();
-//     retval.error=false;
-//     retval.message="";
-//     retval.data=null;
-
-//     var data;
-//     try{
-//         log.info('GetJob');
-//         data=SELECT_JOB.get(ID);
-//         log.info(data);
-//         retval.data=data;
-//         return retval;
-//     }
-//     catch(err){
-//         log.error("Error during GetJob: %s", err);
-//         retval.error=true;
-//         retval.message=err.message;
-//         return retval;
-//     }
-// }
 
 function GetProgram(ID){
     const SELECT_PROGRAM = maindb.prepare('SELECT * FROM PROGRAM WHERE ID = ?');

@@ -1,0 +1,274 @@
+{
+	"info": {
+		"_postman_id": "a893d9f2-06e0-4311-9e44-d31363a2b780",
+		"name": "Fermenta",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Programs",
+			"item": [
+				{
+					"name": "Get Programs",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "http://192.168.1.122:3000/api/programs",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"1",
+								"122"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"programs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Program",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"ID\": 1,\r\n    \"NAME\": \"Test1\",\r\n    \"DATA\": {\r\n        \"Name\": \"Test1\",\r\n        \"Description\": \"Test1 description updated\",\r\n        \"UseVolume\": true,\r\n        \"Width\": 10,\r\n        \"Length\": 20,\r\n        \"Height\": 30,\r\n        \"Cycles\": [\r\n            {\r\n                \"Temperature\": \"20\",\r\n                \"Duration\": \"60\",\r\n                \"Volume\": \"\"\r\n            },\r\n            {\r\n                \"Temperature\": \"30\",\r\n                \"Duration\": \"600\",\r\n                \"Volume\": \"\"\r\n            }\r\n        ]\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://192.168.1.122:3000/api/program/:id",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"1",
+								"122"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"program",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Program",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://192.168.1.122:3000/api/program/:id",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"1",
+								"122"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"program",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Program",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"NAME\": \"TestNew\",\r\n    \"DATA\": {\r\n        \"Name\": \"TestNew\",\r\n        \"Description\": \"TestNew description updated\",\r\n        \"UseVolume\": false,\r\n        \"Width\": 0,\r\n        \"Length\": 0,\r\n        \"Height\": 0,\r\n        \"Cycles\": [\r\n            {\r\n                \"Temperature\": \"20\",\r\n                \"Duration\": \"60\",\r\n                \"Volume\": \"0\"\r\n            }\r\n        ]\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://192.168.1.122:3000/api/program",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"1",
+								"122"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"program"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Jobs",
+			"item": [
+				{
+					"name": "Jobs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://192.168.1.122:3000/api/jobs",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"1",
+								"122"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"jobs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Job",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://192.168.1.122:3000/api/job/:id",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"1",
+								"122"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"job",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "71"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Job",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"STATUS\": \"PAUSED\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://192.168.1.122:3000/api/job/:id",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"1",
+								"122"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"job",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RunningProgram",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://192.168.1.122:3000/api/runningprogram",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"1",
+								"122"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"runningprogram"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

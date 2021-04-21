@@ -1,9 +1,11 @@
 const Bree = require('bree');
 const MQTTClient = require('./util.mqttclient');
-const Message = require('./util.message');
+const DataType = require('./util.datatype');
+ 
 var log4js = require('log4js');
 var joblog = log4js.getLogger('job');
 var websocket = require('./util.websocket');
+const Enum = require('./util.enum');
 
 var bree = undefined;
 var programData=[];
@@ -17,8 +19,8 @@ function start(){
         bree.start();
 
         bree.on('worker created', name=>{
-            if(name==="program"){
-            }
+            // if(name==="program"){
+            // }
         });
     }
 }
@@ -43,7 +45,7 @@ function handleWorkerMessage(metadata){
         joblog.error(inmess.Value);
     }
 
-    if(metadata.name==="program"){
+    if(metadata.name===Enum.JOBTYPE.PROGRAM){
         // we got a message from Job program
         if(inmess.MessageType==="Request"){
             if(inmess.Value==="GetDistance"){
@@ -75,8 +77,18 @@ function handleWorkerMessage(metadata){
     }
 }
 
+function PostMessage(workername,message){
+    var worker;
+    joblog.debug("got Message to send to worker: " + workername + " message: "+ message);
+    worker = bree.workers[workername];
+    if(worker!=undefined){
+        worker.postMessage(message);
+    }
+}
+
 const JobScheduler = {
-    start: start
+    start: start,
+    PostMessage: PostMessage
 };
 
 module.exports = JobScheduler;
