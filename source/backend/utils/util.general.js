@@ -25,12 +25,36 @@ const Median = (arr = []) => {
     };
 };
 
+function DateTimeToString(milliseconds){
+    var date;
+
+    date= new Date(milliseconds);
+
+    return date.toLocaleDateString() + "-" + date.toLocaleTimeString();
+}
+
+function ElapsedTime(milliseconds){
+    var value;
+
+    var difference_ms = milliseconds/1000;
+    seconds = Math.floor(difference_ms % 60);
+    difference_ms = difference_ms/60; 
+    minutes = Math.floor(difference_ms % 60);
+    difference_ms = difference_ms/60; 
+    hours = Math.floor(difference_ms % 24);  
+    days = Math.floor(difference_ms/24);
+
+    value=days + ":" + hours + ":" + minutes + ":" + seconds;
+    return value;
+}
 
 
 const utilgeneral = {
     isEmpty: isEmpty,
     Median: Median,
-    removeNAN:removeNAN
+    removeNAN:removeNAN,
+    DateTimeToString: DateTimeToString,
+    ElapsedTime:ElapsedTime
 };
 
 module.exports = utilgeneral;

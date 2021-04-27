@@ -6,6 +6,7 @@ const JobScheduler = require("./util.jobscheduler");
 const DataType = require("./util.datatype");
 const WebSocket = require("./util.websocket");
 const Enum = require("./util.enum");
+const Email = require("./util.email");
 
 module.exports = {
     utilfs,
@@ -15,5 +16,6 @@ module.exports = {
     JobScheduler,
     DataType,
     WebSocket,
-    Enum
+    Enum,
+    Email
 };

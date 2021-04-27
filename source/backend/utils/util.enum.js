@@ -8,7 +8,8 @@ const JOBSTATUS={
 };
 
 const JOBTYPE={
-    PROGRAM: "PROGRAM"
+    PROGRAM: "Program",
+    EMAIL: "Email"
 };
 const Enum={
     JOBSTATUS:JOBSTATUS,

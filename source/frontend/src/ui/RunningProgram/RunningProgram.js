@@ -19,7 +19,7 @@ import Button from 'react-bootstrap/Button';
 
 
 class RunningProgram extends React.Component {
-  state = { RunningJob:'',RunningJobData:'',CurrentData:'',HistoricalData:[], isLoading:'false', isPaused:false, isCancelled:false}
+  state = { RunningJob:'',RunningJobData:'',CurrentData:'',HistoricalData:[], isLoading:'false', isPaused:false, isCancelled:false, isCompleted:false}
   
   constructor(props, context) {
     super(props, context);
@@ -40,14 +40,15 @@ class RunningProgram extends React.Component {
         this.setState({CurrentData: message.Value,HistoricalData: histdata});
       }
       else if(message.Name==="jobCompleted"){
-        Services.ServiceAlert.AlertService.info("Program Completed", {autoClose: false,keepAfterRouteChange:true});
+        this.setState({isCompleted: true});
+        Services.ServiceAlert.AlertService.info("Program Completed", {autoClose: true,keepAfterRouteChange:false});
       }
       else if(message.Name==="cycleCompleted"){
         this.handleGetRunningProgram(true);
         Services.ServiceAlert.AlertService.info("Cycle Completed", {autoClose: true,keepAfterRouteChange:false});
       }
       else if(message.Name==="jobError"){
-        Services.ServiceAlert.AlertService.error(message.Name, {autoClose: false,keepAfterRouteChange:true});
+        Services.ServiceAlert.AlertService.error(message.Name, {autoClose: true,keepAfterRouteChange:false});
       }
     }
     catch(err){
@@ -245,7 +246,7 @@ class RunningProgram extends React.Component {
                     </ButtonGroup>
                     <ButtonGroup className="ml-2">
 
-                        <Button id="StopProgram" className="btn-fermenta mr-2 btn-dropdown" disabled={this.state.isPaused || this.state.isCancelled} onClick={this.handleStop}><Icons.StopLine fontSize="1.75em"/><div className="btn-dropdown-text">Stop</div></Button> 
+                        <Button id="StopProgram" className="btn-fermenta mr-2 btn-dropdown" disabled={this.state.isPaused || this.state.isCancelled || this.state.isCompleted} onClick={this.handleStop}><Icons.StopLine fontSize="1.75em"/><div className="btn-dropdown-text">Stop</div></Button> 
                         {/* <Button id="PauseProgram" className="btn-fermenta mr-2 btn-dropdown" disabled={this.state.isPaused || this.state.isCancelled} onClick={this.handlePause}><Icons.PauseLine fontSize="1.75em"/><div className="btn-dropdown-text">Pause</div></Button> 
                         <Button id="PlayProgram" className="btn-fermenta mr-2 btn-dropdown" disabled={!this.state.isPaused} onClick={this.handleRun}><Icons.PlayLine fontSize="1.75em"/><div className="btn-dropdown-text">Play</div></Button> */}
                         
@@ -256,7 +257,7 @@ class RunningProgram extends React.Component {
                 <Row style={{fontSize: '1.8em'}} className="align-middle">
                   <Col xs="12" >Name: {this.state.RunningJobData.Name}</Col>
                   <Col xs="12" md="auto"><DateTime datetime={this.state.RunningJob.STARTDATE} label="Started:"/></Col>
-                  <Col xs="12" >{this.state.isPaused ? <strong>PAUSED</strong> : this.state.isCancelled ? <strong>CANCELLED</strong> : <ElapsedTime startdate={this.state.RunningJob.STARTDATE} label="Elapsed Time:"/>}</Col>
+                  <Col xs="12" >{this.state.isPaused ? <strong>PAUSED</strong> : this.state.isCancelled ? <strong>CANCELLED</strong> : this.state.isCompleted ? <strong>COMPLETED</strong> : <ElapsedTime startdate={this.state.RunningJob.STARTDATE} label="Elapsed Time:"/>}</Col>
                 </Row>
             </Card.Body>
             </Card>

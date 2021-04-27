@@ -399,7 +399,31 @@ function AddJob(PROGRAMID){
         return retval;
     }
     catch(err){
-        log.error("Error during AddProgram: %s", err);
+        log.error("Error during AddJob: %s", err);
+        retval.error=true;
+        retval.message=err.message;
+        return retval;
+    }
+}
+
+function AddJobEmail(JobProgramData){
+    const INSERT_JOB = maindb.prepare('INSERT INTO JOB (NAME,STATUS,ARRIVALDATE,JOBTYPE,DATA) VALUES(?,?,?,?,?)');
+    var retval= new Object();
+    retval.error=false;
+    retval.message="";
+    try{
+        log.info('AddJobEmail');
+        const Transaction = maindb.transaction(() => {
+            retval.message=INSERT_JOB.run("EMAIL",Enum.JOBSTATUS.QUEUED,new Date().toLocaleString(),Enum.JOBTYPE.EMAIL,JobProgramData);
+        });
+
+        Transaction.apply();
+
+        log.info(retval);
+        return retval;
+    }
+    catch(err){
+        log.error("Error during AddJobEmail: %s", err);
         retval.error=true;
         retval.message=err.message;
         return retval;
@@ -473,6 +497,7 @@ const db = {
     AddJob: AddJob,
     UpdateJobData: UpdateJobData,
     GetJobs: GetJobs,
+    AddJobEmail: AddJobEmail,
     //JOB Log functions
     AddJobLog: AddJobLog,
     GetJobLog: GetJobLog 

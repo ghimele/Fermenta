@@ -114,241 +114,250 @@ parentPort.on("message", (value)=>{
         DoughVolume: ""
     };
 
-    if (parentPort){
-        try{
-            //check if there is a program to run
-            var queuedProgram=db.GetJob(Enum.JOBSTATUS.QUEUED,Enum.JOBTYPE.PROGRAM);
-            if(queuedProgram.data!==undefined){
-                log("Job Program Started on "+ Date());
-                jobProgramID=queuedProgram.data.ID;
-                db.UpdateJobStatus(jobProgramID,Enum.JOBSTATUS.RUNNING);
-                log("ScheduledID: "+ jobProgramID);
-                log("ProgramID: "+ queuedProgram.data.PROGRAMID);
-                var program = db.GetProgram(queuedProgram.data.PROGRAMID);
+    if(parentPort === undefined) process.exit(0); 
 
-                var programdata= JSON.parse(program.data.DATA);
+    try{
+        //check if there is a program to run
+        var queuedProgram=db.GetJob(Enum.JOBSTATUS.QUEUED,Enum.JOBTYPE.PROGRAM);
 
-                containerHeight = programdata.Height;
-                containerSurface = programdata.Width * programdata.Length;
-                containerVolume = containerSurface * containerHeight;
-                log("Container Volumer: "+ containerVolume);
-                if(programdata.Cycles.length>0){
-                    
-                    while(!Completed){
-                        //every 1s while there is a program running
-                        //do stuff
-                        if(Cancelled){
-                            log("Job Program Cancelled");
-                            Completed=true;
-                        }
+        if(queuedProgram.data===undefined) parentPort.postMessage('done');
 
-                        if(Paused){
-                            log("Job Program Paused");
-                            if(Restarted) {
-                                log("Job Program Restarted");
-                                Paused= false;
-                            }
-                            await delay(100);
-                        }
 
-                        if(!Paused && !Cancelled){
-                            //send a request to the main thread to get distance and temp
-                            request("GetDistance");
-                            request("GetTemperature");
-                            request("GetHumidity");
+        log("Job Program Started on "+ Date());
+        jobProgramID=queuedProgram.data.ID;
+        db.UpdateJobStatus(jobProgramID,Enum.JOBSTATUS.RUNNING);
+        log("ScheduledID: "+ jobProgramID);
+        log("ProgramID: "+ queuedProgram.data.PROGRAMID);
+        var program = db.GetProgram(queuedProgram.data.PROGRAMID);
 
-                            await delay(100);
-                            index++;
+        var programdata= JSON.parse(program.data.DATA);
 
-                            if(cycleIndex >= programdata.Cycles.length){
-                                //There are no more Cycles available,
-                                //We have completed the program
-                                Completed = true;
+        containerHeight = programdata.Height;
+        containerSurface = programdata.Width * programdata.Length;
+        containerVolume = containerSurface * containerHeight;
+        log("Container Volumer: "+ containerVolume);
 
-                                jobData.EndTime= Date.now();
-                                jobData.EndTemperature= Temperature;
-                                jobData.EndDoughHeight= currentDoughHeight;
-                                jobData.EndDoughVolume= currentDoughVolume;
-                                jobData.ElapsedTime= jobData.EndTime - jobData.StartTime
+        if(programdata.Cycles.length===0) parentPort.postMessage('done');
+ 
+        while(!Completed){
+            //every 1s while there is a program running
+            //do stuff
 
-                                jobData.Cycles[cycleIndex-1].EndTime = currentTime;
-                                jobData.Cycles[cycleIndex-1].EndTemperature = Temperature;
-                                jobData.Cycles[cycleIndex-1].EndDoughHeight = currentDoughHeight;
-                                jobData.Cycles[cycleIndex-1].EndDoughVolume = currentDoughVolume;
-                                jobData.Cycles[cycleIndex-1].ElapsedTime= jobData.Cycles[cycleIndex-1].EndTime - jobData.Cycles[cycleIndex-1].StartTime;
-                            }
-                            else{
-                                if(firstCycle || cycleCompleted){
-                                    // We've completed a cycle or it is the first cycle so now we need to
-                                    // initialized the variables for the cycle
+            if(Cancelled){
+                //the job is cancelled will exit
+                sendData("jobCancelled", "true");
+                log("Job Program Cancelled by user on "+ Date());
+                Completed=true;
+                parentPort.postMessage('done');
+            }
 
-                                    sendData("cycleCompleted", "true");
-                                    firstCycle = false;
-                                    cycleCompleted = false;
+            if(Paused){
+                //the Job is Paused we wait until it will be resume
+                log("Job Program Paused");
+                if(Restarted) {
+                    log("Job Program Restarted");
+                    Paused= false;
+                }
+                await delay(100);
+            }
 
-                                    startTime = Date.now();
-                                    //sendData("startTime", startTime);
-                                    startTemp = Temperature; 
-                                    //sendData("startTemperature", startTemp);
-                                    startDoughHeight= (containerHeight - Distance).toFixed(2);
-                                    //sendData("startDoughHeight", startDoughHeight);
-                                    startDoughVolume = (containerSurface * startDoughHeight).toFixed(2);
-                                    //sendData("startDoughVolume", startDoughVolume);
+            if(!Paused && !Cancelled){
+                //send a request to the main thread to get distance and temp
+                request("GetDistance");
+                request("GetTemperature");
+                request("GetHumidity");
 
-                                    if(cycleIndex===0){
-                                        jobData.Name= program.data.NAME;
-                                        jobData.StartTime= startTime;
-                                        jobData.StartTemperature= Temperature;
-                                        jobData.StartDoughHeight= startDoughHeight;
-                                        jobData.StartDoughVolume= startDoughVolume;
+                await delay(100);
+                index++;
 
-                                        for(const c of programdata.Cycles){
-                                            cycle.Id= c.Id;
-                                            cycle.TargetTemperature= Number(c.Temperature);
-                                            cycle.Type= c.End.Type;
-                                            //deep copy of cycle object
-                                            jobData.Cycles.push(JSON.parse(JSON.stringify(cycle)));
-                                        }
-                                    }
-                                    else{
-                                        jobData.Cycles[cycleIndex-1].EndTime = currentTime;
-                                        jobData.Cycles[cycleIndex-1].EndTemperature = Temperature;
-                                        jobData.Cycles[cycleIndex-1].EndDoughHeight = currentDoughHeight;
-                                        jobData.Cycles[cycleIndex-1].EndDoughVolume = currentDoughVolume;
-                                        jobData.Cycles[cycleIndex-1].ElapsedTime= jobData.Cycles[cycleIndex-1].EndTime - jobData.Cycles[cycleIndex-1].StartTime;
-                                    }
-                                    
-                                    jobData.Cycles[cycleIndex].StartTime = startTime;
-                                    jobData.Cycles[cycleIndex].StartTemperature = Temperature;
-                                    jobData.Cycles[cycleIndex].StartDoughHeight = startDoughHeight;
-                                    jobData.Cycles[cycleIndex].StartDoughVolume = startDoughVolume;
+                if(cycleIndex >= programdata.Cycles.length){
+                    //There are no more Cycles available,
+                    //We have completed the program
+                    Completed = true;
 
-                                    var ret=db.UpdateJobData(queuedProgram.data.ID,jobData);
+                    jobData.EndTime= Date.now();
+                    jobData.EndTemperature= Temperature;
+                    jobData.EndDoughHeight= currentDoughHeight;
+                    jobData.EndDoughVolume= currentDoughVolume;
+                    jobData.ElapsedTime= jobData.EndTime - jobData.StartTime
 
-                                    endCycle = programdata.Cycles[cycleIndex].End;
-                                    log("Cycle Index: " + cycleIndex);
-                                    log("End Type: " + endCycle.Type);
-                                    if(endCycle.Type === "Duration")
-                                    {
-                                        targetEndTime = (Number(endCycle.Value)*60000); //Duration is expressed in minutes
-                                        log("targetEndTime: " + Math.round(targetEndTime / 60000) + " minutes");
-                                    }
-                                    else if(endCycle.Type==="Volume"){
-                                        targetHeight = Number(endCycle.Value) * startDoughHeight;
-                                        log("targetHeight: " + targetHeight);
-                                        targetVolume = Number(endCycle.Value) * startDoughVolume;
-                                        log("targetVolume: " + targetVolume);
-                                    }
+                    jobData.Cycles[cycleIndex-1].EndTime = currentTime;
+                    jobData.Cycles[cycleIndex-1].EndTemperature = Temperature;
+                    jobData.Cycles[cycleIndex-1].EndDoughHeight = currentDoughHeight;
+                    jobData.Cycles[cycleIndex-1].EndDoughVolume = currentDoughVolume;
+                    jobData.Cycles[cycleIndex-1].ElapsedTime= jobData.Cycles[cycleIndex-1].EndTime - jobData.Cycles[cycleIndex-1].StartTime;
+                }
+                else{
+                    if(firstCycle || cycleCompleted){
+                        // We've completed a cycle or it is the first cycle so now we need to
+                        // initialized the variables for the cycle
 
-                                    targetTemp = Number(programdata.Cycles[cycleIndex].Temperature);
-                                    log("targetTemp: " + targetTemp);
-                                }
+                        sendData("cycleCompleted", "true");
+                        firstCycle = false;
+                        cycleCompleted = false;
 
-                                currentTemp = Temperature;
-                                tmpDoughHeight = (containerHeight - Distance).toFixed(2);
-                                currentDoughHeights.push(tmpDoughHeight);
-                                tmpDoughVolume = (containerSurface * tmpDoughHeight).toFixed(2);
-                                currentDoughVolumes.push(tmpDoughVolume);
-                                currentTime = Date.now();
+                        startTime = Date.now();
+                        //sendData("startTime", startTime);
+                        startTemp = Temperature; 
+                        //sendData("startTemperature", startTemp);
+                        startDoughHeight= (containerHeight - Distance).toFixed(2);
+                        //sendData("startDoughHeight", startDoughHeight);
+                        startDoughVolume = (containerSurface * startDoughHeight).toFixed(2);
+                        //sendData("startDoughVolume", startDoughVolume);
 
-                                elapsedTime = currentTime - startTime;
+                        if(cycleIndex===0){
+                            jobData.Name= program.data.NAME;
+                            jobData.StartTime= startTime;
+                            jobData.StartTemperature= Temperature;
+                            jobData.StartDoughHeight= startDoughHeight;
+                            jobData.StartDoughVolume= startDoughVolume;
 
-                                //every 30 seconds
-                                //if(Math.floor((elapsedTime % 60000)/1000)===0){
-                                if(index>300 || Restarted){
-                                    index=0;
-                                    Restarted= false;
-                                    //Dough volume
-                                    currentDoughVolumes= General.removeNAN(currentDoughVolumes);
-                                    log("currentVolumes length: " + currentDoughVolumes.length);
-                                    tmpDoughVolume= General.Median(currentDoughVolumes);
-                                    if(tmpDoughVolume!=NaN){
-                                        currentDoughVolume= tmpDoughVolume;
-                                    }
-
-                                    //dough height
-                                    currentDoughHeights= General.removeNAN(currentDoughHeights);
-                                    log("currentDoughHeights length: " + currentDoughHeights.length);
-                                    tmpDoughHeight= General.Median(currentDoughHeights);
-                                    if(tmpDoughHeight!=NaN){
-                                        currentDoughHeight= tmpDoughHeight;
-                                    }
-
-                                    currentDoughVolumes= [];
-                                    currentDoughHeights= [];
-
-                                    currentData.CycleID= cycleIndex;
-                                    currentData.DateTime= currentTime;
-                                    currentData.Humidity= Humidity;
-                                    currentData.Temperature= currentTemp;
-                                    currentData.DoughHeight= currentDoughHeight;
-                                    currentData.DoughVolume= currentDoughVolume;
-
-                                    //send data 
-                                    log("Elpsed Time = " + elapsedTime + " milliseconds" );
-                                    log("Elpsed Time = " + Math.round(elapsedTime/60000) + " minutes" );
-                                    db.AddJobLog(queuedProgram.data.ID,JSON.stringify(currentData));
-                                    sendData("currentData", currentData);
-
-                                    //check if cycle is completed
-                                    if(endCycle.Type==="Duration"){
-                                        if(elapsedTime>targetEndTime){
-                                            log("minutes elapsed: "+ Math.round(elapsedTime/60000));
-                                            cycleCompleted=true;
-                                            cycleIndex++;
-                                        }
-                                    }
-                                    else if(endCycle.Type==="Volume"){
-                                        if(currentDoughVolume>= targetVolume){
-                                            
-                                            cycleCompleted=true;
-                                            cycleIndex++;
-                                        }
-                                    }
-                                    else if(endCycle.Type==="Temperature"){
-                                        if(currentTemp >= targetTemp){
-                                            cycleCompleted=true;
-                                            cycleIndex++;
-                                        }
-                                    }
-                                }
+                            for(const c of programdata.Cycles){
+                                cycle.Id= c.Id;
+                                cycle.TargetTemperature= Number(c.Temperature);
+                                cycle.Type= c.End.Type;
+                                //deep copy of cycle object
+                                jobData.Cycles.push(JSON.parse(JSON.stringify(cycle)));
                             }
                         }
-                    }
-
-                    if(!Cancelled){
+                        else{
+                            jobData.Cycles[cycleIndex-1].EndTime = currentTime;
+                            jobData.Cycles[cycleIndex-1].EndTemperature = Temperature;
+                            jobData.Cycles[cycleIndex-1].EndDoughHeight = currentDoughHeight;
+                            jobData.Cycles[cycleIndex-1].EndDoughVolume = currentDoughVolume;
+                            jobData.Cycles[cycleIndex-1].ElapsedTime= jobData.Cycles[cycleIndex-1].EndTime - jobData.Cycles[cycleIndex-1].StartTime;
+                        }
+                        
+                        jobData.Cycles[cycleIndex].StartTime = startTime;
+                        jobData.Cycles[cycleIndex].StartTemperature = Temperature;
+                        jobData.Cycles[cycleIndex].StartDoughHeight = startDoughHeight;
+                        jobData.Cycles[cycleIndex].StartDoughVolume = startDoughVolume;
 
                         var ret=db.UpdateJobData(queuedProgram.data.ID,jobData);
-                        var ret=db.UpdateJobStatus(queuedProgram.data.ID,Enum.JOBSTATUS.COMPLETED);
-                        
-                        if(ret.error){
-                            sendData("jobError", ret.message);
-                            error(ret.message);
-                            process.exit(1);
+
+                        endCycle = programdata.Cycles[cycleIndex].End;
+                        log("Cycle Index: " + cycleIndex);
+                        log("End Type: " + endCycle.Type);
+                        if(endCycle.Type === "Duration")
+                        {
+                            targetEndTime = (Number(endCycle.Value)*60000); //Duration is expressed in minutes
+                            log("targetEndTime: " + Math.round(targetEndTime / 60000) + " minutes");
+                        }
+                        else if(endCycle.Type==="Volume"){
+                            targetHeight = Number(endCycle.Value) * startDoughHeight;
+                            log("targetHeight: " + targetHeight);
+                            targetVolume = Number(endCycle.Value) * startDoughVolume;
+                            log("targetVolume: " + targetVolume);
                         }
 
-                        sendData("jobCompleted", "true");
-                        log("Job Program Completed on "+ Date());
+                        targetTemp = Number(programdata.Cycles[cycleIndex].Temperature);
+                        log("targetTemp: " + targetTemp);
                     }
-                    else{
-                        sendData("jobCancelled", "true");
-                        log("Job Program Cancelled by user on "+ Date());
+
+                    currentTemp = Temperature;
+                    tmpDoughHeight = (containerHeight - Distance).toFixed(2);
+                    currentDoughHeights.push(tmpDoughHeight);
+                    tmpDoughVolume = (containerSurface * tmpDoughHeight).toFixed(2);
+                    currentDoughVolumes.push(tmpDoughVolume);
+                    currentTime = Date.now();
+
+                    elapsedTime = currentTime - startTime;
+
+                    //every 30 seconds
+                    //if(Math.floor((elapsedTime % 60000)/1000)===0){
+                    if(index>300 || Restarted){
+                        index=0;
+                        Restarted= false;
+                        //Dough volume
+                        currentDoughVolumes= General.removeNAN(currentDoughVolumes);
+                        log("currentVolumes length: " + currentDoughVolumes.length);
+                        tmpDoughVolume= General.Median(currentDoughVolumes);
+                        if(tmpDoughVolume!=NaN){
+                            currentDoughVolume= tmpDoughVolume;
+                        }
+
+                        //dough height
+                        currentDoughHeights= General.removeNAN(currentDoughHeights);
+                        log("currentDoughHeights length: " + currentDoughHeights.length);
+                        tmpDoughHeight= General.Median(currentDoughHeights);
+                        if(tmpDoughHeight!=NaN){
+                            currentDoughHeight= tmpDoughHeight;
+                        }
+
+                        currentDoughVolumes= [];
+                        currentDoughHeights= [];
+
+                        currentData.CycleID= cycleIndex;
+                        currentData.DateTime= currentTime;
+                        currentData.Humidity= Humidity;
+                        currentData.Temperature= currentTemp;
+                        currentData.DoughHeight= currentDoughHeight;
+                        currentData.DoughVolume= currentDoughVolume;
+
+                        //send data 
+                        log("Elpsed Time = " + elapsedTime + " milliseconds" );
+                        log("Elpsed Time = " + Math.round(elapsedTime/60000) + " minutes" );
+                        
+                        db.AddJobLog(queuedProgram.data.ID,JSON.stringify(currentData));
+                        sendData("currentData", currentData);
+
+                        //check if cycle is completed
+                        if(endCycle.Type==="Duration"){
+                            if(elapsedTime>targetEndTime){
+                                log("minutes elapsed: "+ Math.round(elapsedTime/60000));
+                                cycleCompleted=true;
+                                cycleIndex++;
+                            }
+                        }
+                        else if(endCycle.Type==="Volume"){
+                            if(currentDoughVolume>= targetVolume){
+                                
+                                cycleCompleted=true;
+                                cycleIndex++;
+                            }
+                        }
+                        else if(endCycle.Type==="Temperature"){
+                            if(currentTemp >= targetTemp){
+                                cycleCompleted=true;
+                                cycleIndex++;
+                            }
+                        }
                     }
                 }
             }
-            parentPort.postMessage('done');
+        }
 
+        var ret=db.UpdateJobData(queuedProgram.data.ID,jobData);
+        var ret=db.UpdateJobStatus(queuedProgram.data.ID,Enum.JOBSTATUS.COMPLETED);
+        var emaildata={ 
+            subject:"",
+            body: ""
+        };
+        emaildata.subject = "Job for Program: " + jobData.Name + " Completed!"
+        emaildata.body = transformJsonDataToHtml(jobData);
+        var ret= db.AddJobEmail(JSON.stringify(emaildata));
+
+        if(ret.error){
+            sendData("jobError", ret.message);
+            error(ret.message);
+            process.exit(1);
         }
-        catch(err){
-            log("Job Program Error: "+ err);
-            sendData("jobError", err);
-            var ret=db.UpdateJobStatus(jobProgramID,Enum.JOBSTATUS.FAILED);
-            process.exit(0);
-        }
+
+        sendData("jobCompleted", "true");
+        log("Job Program Completed on "+ Date());
+        
+
+
+        //we have completed the job
+        parentPort.postMessage('done');
     }
-    else {
+    catch(err){
+        log("Job Program Error: "+ err);
+        sendData("jobError", err);
+        var ret=db.UpdateJobStatus(jobProgramID,Enum.JOBSTATUS.FAILED);
         process.exit(0);
     }
+
 })();
 
 
@@ -392,4 +401,139 @@ function sendData(name,value){
     };
 
     parentPort.postMessage(mess);
+}
+
+function transformJsonDataToHtml(jsonData){
+    var retstring="";
+
+    retstring+="<table style='width:100%; border:1px solid ; border-collapse: collapse'>";
+
+    retstring+="<tr style='border:1px solid ; border-collapse: collapse; background-color: #dddddd'>";
+    retstring+="<th colSpan='4'>Program report</th>" ;
+    retstring+="</tr>";
+
+    retstring+="<tr style='border:1px solid ; border-collapse: collapse'>";
+    retstring+="<th>Name</th>" ;
+    retstring+="<td colSpan='3'>" + jsonData.Name + "</td>";
+    retstring+="</tr>";
+
+    retstring+="<tr style='border-top:1px solid ; border-collapse: collapse'>";
+    retstring+="<th rowSpan='4'>Start</th>" ;
+    retstring+="<td>Time</td>";
+    retstring+="<td colSpan='2'>" + General.DateTimeToString(jsonData.StartTime) +"" + "</td>";
+    retstring+="</tr>";
+
+    retstring+="<tr>";
+    retstring+="<td>Temperature</td>" ;
+    retstring+="<td colSpan='2'>" + jsonData.StartTemperature + "</td>";
+    retstring+="</tr>";
+
+    retstring+="<tr>";
+    retstring+="<td>DoughHeight</td>" ;
+    retstring+="<td colSpan='2'>" + jsonData.StartDoughHeight + "</td>";
+    retstring+="</tr>";
+
+    retstring+="<tr>";
+    retstring+="<td>DoughVolume</td>" ;
+    retstring+="<td colSpan='2'>" + jsonData.StartDoughVolume + "</td>";
+    retstring+="</tr>";
+
+    retstring+="<tr style='border-top:1px solid ; border-collapse: collapse'>";
+    retstring+="<th rowSpan='4'>End</th>" ;
+    retstring+="<td>Time</td>" ;
+    retstring+="<td colSpan='2'>" + General.DateTimeToString(jsonData.EndTime) + "</td>";
+    retstring+="</tr>";
+
+    retstring+="<tr >";
+    retstring+="<td>Temperature</td>" ;
+    retstring+="<td colSpan='2'>" + jsonData.EndTemperature + "</td>";
+    retstring+="</tr>";
+
+    retstring+="<tr>";
+    retstring+="<td>DoughHeight</td>" ;
+    retstring+="<td colSpan='2'>" + jsonData.EndDoughHeight + "</td>";
+    retstring+="</tr>";
+
+    retstring+="<tr>";
+    retstring+="<td>DoughVolume</td>" ;
+    retstring+="<td colSpan='2'>" + jsonData.EndDoughVolume + "</td>";
+    retstring+="</tr>";
+
+    retstring+="<tr style='border:1px solid ; border-collapse: collapse'>";
+    retstring+="<th>ElapsedTime</th>" ;
+    retstring+="<td colSpan='3'>" + General.ElapsedTime(jsonData.ElapsedTime) + "</td>";
+    retstring+="</tr>";
+
+    retstring+="<tr style='border:1px solid ; border-collapse: collapse; background-color: #dddddd'>";
+    retstring+="<th colSpan='4'>Cycles</th>" ;
+    retstring+="</tr>";
+    jsonData.Cycles.forEach(cycle => {
+        retstring+="<tr style='border:1px solid ; border-collapse: collapse'>";
+        retstring+="<th rowSpan='12'>Cycle " + cycle.Id + "</th>" ;
+        // retstring+="<td colSpan='2'>" + cycle.Id + "</td>";
+        retstring+="</tr>";
+
+        retstring+="<tr style='border:1px solid ; border-collapse: collapse'>";
+        retstring+="<th style='border-left:1px solid ; border-collapse: collapse'>Target Temperature</th>" ;
+        retstring+="<td colSpan='2'>" + cycle.TargetTemperature + "</td>";
+        retstring+="</tr>";
+
+        retstring+="<tr style='border:1px solid ; border-collapse: collapse'>";
+        retstring+="<th style='border-left:1px solid ; border-collapse: collapse'>Type</th>" ;
+        retstring+="<td colSpan='2'>" + cycle.Type + "</td>";
+        retstring+="</tr>";
+
+        retstring+="<tr style='border-top:1px solid ; border-collapse: collapse'>";
+        retstring+="<th rowSpan='4' style='border-left:1px solid ; border-collapse: collapse'>Start</th>" ;
+        retstring+="<td>Time</td>";
+        retstring+="<td>" + General.DateTimeToString(cycle.StartTime) +"" + "</td>";
+        retstring+="</tr>";
+
+        retstring+="<tr>";
+        retstring+="<td>Temperature</td>" ;
+        retstring+="<td>" + cycle.StartTemperature + "</td>";
+        retstring+="</tr>";
+    
+        retstring+="<tr>";
+        retstring+="<td>DoughHeight</td>" ;
+        retstring+="<td>" + cycle.StartDoughHeight + "</td>";
+        retstring+="</tr>";
+    
+        retstring+="<tr>";
+        retstring+="<td>DoughVolume</td>" ;
+        retstring+="<td>" + cycle.StartDoughVolume + "</td>";
+        retstring+="</tr>";
+
+        retstring+="<tr style='border-top:1px solid ; border-collapse: collapse'>";
+        retstring+="<th rowSpan='4' style='border-left:1px solid ; border-collapse: collapse'>End</th>" ;
+        retstring+="<td>Time</td>" ;
+        retstring+="<td>" + General.DateTimeToString(cycle.EndTime) + "</td>";
+        retstring+="</tr>";
+
+        retstring+="<tr >";
+        retstring+="<td>Temperature</td>" ;
+        retstring+="<td>" + cycle.EndTemperature + "</td>";
+        retstring+="</tr>";
+
+        retstring+="<tr>";
+        retstring+="<td>DoughHeight</td>" ;
+        retstring+="<td>" + cycle.EndDoughHeight + "</td>";
+        retstring+="</tr>";
+
+        retstring+="<tr>";
+        retstring+="<td>DoughVolume</td>" ;
+        retstring+="<td>" + cycle.EndDoughVolume + "</td>";
+        retstring+="</tr>";
+
+        retstring+="<tr style='border:1px solid ; border-collapse: collapse'>";
+        retstring+="<th style='border-left:1px solid ; border-collapse: collapse'>ElapsedTime</th>" ;
+        retstring+="<td colSpan='2'>" + General.ElapsedTime(cycle.ElapsedTime) + "</td>";
+        retstring+="</tr>";
+    });
+    
+
+    retstring+="</table>";
+
+
+    return retstring;
 }

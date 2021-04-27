@@ -1,24 +1,24 @@
 /**
  * Module dependencies.
  */
+var {config} = require('./config');
+
+/**
+ * Initialise log4js first, so we don't miss any log messages
+ */
+var log4js = require('log4js');
+log4js.configure(config().Log4js);
 
 var app = require('./app');
 var debug = require('debug')('server:server');
 var http = require('http');
-var log4js = require('log4js');
+
 
 const env = app.get('env');
 const host = app.get('hostname');
 var port = normalizePort(process.env.PORT || '3000');
 
-
-/**
- * Initialise log4js first, so we don't miss any log messages
- */
- log4js.configure('./config/log4js.json');
-
 const {MQTTClient,JobScheduler,WebSocket,db} = require('./utils');
-
 
 var log = log4js.getLogger("startup"); 
 if(env==="PRODUCTION"){
