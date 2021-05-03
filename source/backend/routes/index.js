@@ -82,4 +82,24 @@ router.get('/joblog/:jobid',middleware.programs.getJobLog, function(req, res, ne
 // JOB LOGS API - end
 // ********************
 
+
+// ********************
+// SETTINGS API - start
+// ********************
+
+// Get Settings
+router.get('/settings',middleware.programs.getSettings, function(req, res, next) {
+  res.json({ error: false, message: req.data });
+});
+
+// Update settings
+router.put('/settings',middleware.programs.updateSettings, function(req, res, next) {
+  res.json({ error: false, message: req.message });
+});
+
+// ********************
+// SETTINGS API - end
+// ********************
+
+
 module.exports = router;

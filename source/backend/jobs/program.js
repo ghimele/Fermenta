@@ -1,6 +1,6 @@
 const { parentPort } = require('worker_threads');
 const {db,Enum,General} = require('../utils');
-
+const {config} = require ('../config');
 
 var Distance="";
 var Temperature="";
@@ -329,13 +329,17 @@ parentPort.on("message", (value)=>{
 
         var ret=db.UpdateJobData(queuedProgram.data.ID,jobData);
         var ret=db.UpdateJobStatus(queuedProgram.data.ID,Enum.JOBSTATUS.COMPLETED);
-        var emaildata={ 
-            subject:"",
-            body: ""
-        };
-        emaildata.subject = "Job for Program: " + jobData.Name + " Completed!"
-        emaildata.body = transformJsonDataToHtml(jobData);
-        var ret= db.AddJobEmail(JSON.stringify(emaildata));
+        
+
+        if(config().EMAIL_NOTIFY){
+            var emaildata={ 
+                subject:"",
+                body: ""
+            };
+            emaildata.subject = "Job for Program: " + jobData.Name + " Completed!"
+            emaildata.body = transformJsonDataToHtml(jobData);
+            var ret= db.AddJobEmail(JSON.stringify(emaildata));
+        }
 
         if(ret.error){
             sendData("jobError", ret.message);

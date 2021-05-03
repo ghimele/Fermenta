@@ -1,4 +1,5 @@
 const fs = require("fs");
+var log = require('log4js').getLogger("util.fs");
 
 // Create a folder if it doesn't exists
 function CreateFolder(path, mask, cb) {
@@ -17,8 +18,21 @@ function CreateFolder(path, mask, cb) {
     });
 }
 
+function WriteFile(filepath,data){
+    console.log("WriteFile: " + filepath);
+    fs.writeFile(filepath, data, 'utf8', function (err) {
+        if (err) {
+            log.error("An error occured while writing file: " + err);
+            return console.log(err);
+        }
+    
+        log.debug("file: " + filepath + " has been saved.");
+    });
+}
+
 const utilfs = {
-    CreateFolder: CreateFolder
+    CreateFolder: CreateFolder,
+    WriteFile: WriteFile
 };
 
 module.exports = utilfs;

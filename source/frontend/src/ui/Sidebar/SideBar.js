@@ -4,10 +4,10 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import Accordion from 'react-bootstrap/Accordion';
 import Card from 'react-bootstrap/Card';
-import Icons from './utilities/utils.icons';
+import Icons from '../../components/utilities/utils.icons';
 import classNames from 'classnames';
 import Disclaimer from './Disclaimer';
-import UtilsDom from './utilities/utils.dom';
+import UtilsDom from '../../components/utilities/utils.dom';
 
 class SideBar extends React.Component {
     state = { isMinimized: localStorage.getItem("isMinimized"), isSelected: localStorage.getItem("isSelected") };
@@ -57,6 +57,7 @@ class SideBar extends React.Component {
         const SidebarFooter = classNames("sidebarfooter", "fixed-bottom", "d-md-block", "bg-light", "collapse",{"mini": isMinimized});
         const SidebarTitle = classNames("SideBarTitle", {"mini": isMinimized});
         const ListItem = classNames("list-group-item-sidebar","list-group-item-action","light", "text-left", {"list-selected": isSelected});
+        const SettingsItem = classNames("list-group-item-settings","list-group-item-action", "text-left", {"list-selected": isSelected});
         let SidebarButton;
         
 
@@ -68,9 +69,9 @@ class SideBar extends React.Component {
         }
 
         return (
-            <Navbar.Collapse className={SidebarClass} id="Sidebar" >
+            <Navbar.Collapse className={SidebarClass} id="Sidebar" ref={this.ref}>
                 <div className="sidebar-sticky pt-3">
-                    <Accordion ref={this.ref}>
+                    <Accordion>
                         <Card>
                             <Accordion.Toggle as={Card.Header} eventKey="0" className="card-header-sidebar" style={{cursor: 'pointer'}}>
                                 <div className="text-left"><Icons.MiniProgramLine fontSize="2em"/><span className={SidebarTitle}>Programs</span></div>
@@ -97,6 +98,7 @@ class SideBar extends React.Component {
                         </Card>
                     </Accordion>
                     <footer className={SidebarFooter} id="SidebarFooter">
+                        <Link className={SettingsItem} to="/Settings" onClick={this.toggleSelected}><Icons.Settings4Line fontSize="1.5em"/><span className={SidebarTitle}>Settings</span></Link>
                         <div className="dropdown-divider"/>
                         <div className="d-flex">
                             <Disclaimer isMinimized={this.state.isMinimized}/>

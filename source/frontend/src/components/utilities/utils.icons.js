@@ -1,4 +1,4 @@
-import { RiNewspaperLine, RiDeleteBinLine,RiComputerLine, RiArrowLeftSLine,RiArrowRightSLine, RiDashboardLine,RiSensorLine,RiInformationLine,RiMiniProgramLine,RiRunLine,RiStackLine,RiTempHotFill,RiCelsiusLine,RiPercentLine,RiTempHotLine,RiTimeLine,RiFileHistoryLine,RiStopLine,RiPauseLine,RiPlayLine,RiMenuLine} from "react-icons/ri";
+import { RiNewspaperLine, RiDeleteBinLine,RiComputerLine, RiArrowLeftSLine,RiArrowRightSLine, RiDashboardLine,RiSensorLine,RiInformationLine,RiMiniProgramLine,RiRunLine,RiStackLine,RiTempHotFill,RiCelsiusLine,RiPercentLine,RiTempHotLine,RiTimeLine,RiFileHistoryLine,RiStopLine,RiPauseLine,RiPlayLine,RiMenuLine,RiSettings4Line} from "react-icons/ri";
 import { BsHash } from "react-icons/bs"; 
 import { WiHumidity } from "react-icons/wi";
 import { AiOutlineColumnHeight } from "react-icons/ai";
@@ -26,6 +26,7 @@ const Icons={
     PauseLine:RiPauseLine,
     PlayLine:RiPlayLine,
     MenuLine: RiMenuLine,
+    Settings4Line:RiSettings4Line,
     //Weather Icons
     Humidity:WiHumidity,
     //Ant Design Icons

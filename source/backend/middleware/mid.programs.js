@@ -1,6 +1,6 @@
-const { log } = require('debug');
 var utils = require('../utils');
-
+var config = require('../config');
+var log = require('log4js').getLogger("mid.programs");
 // ********************
 // Programs API - start
 // ********************
@@ -214,6 +214,43 @@ const getJobLog = (req, res, next) => {
 // JOB LOGS API - end
 // ********************
 
+
+// ********************
+// SETTINGS API - start
+// ********************
+const getSettings = (req, res, next) => {
+
+    var data={
+        "EMAIL_TO": config.config().EMAIL_TO,
+        "EMAIL_NOTIFY": config.config().EMAIL_NOTIFY,
+        "LANGUAGE": config.config().LANGUAGE
+    };
+
+    log.debug("getSettings: " + data);
+    req.data = data;
+    next();
+    
+};
+
+
+const updateSettings = (req,res,next)=>{
+    log.debug("updateSettings - body: " + JSON.stringify(req.body));
+    config.config().EMAIL_TO= req.body.EMAIL_TO;
+    config.config().EMAIL_NOTIFY= req.body.EMAIL_NOTIFY;
+    config.config().LANGUAGE= req.body.LANGUAGE;
+
+    config.utils.SaveData();
+    log.debug(config.config());
+    req.message = 'updated';
+    next();
+}
+
+
+// ********************
+// SETTINGS API - end
+// ********************
+
+
 const programs = {
     //Programs Api
     getPrograms: getPrograms,
@@ -227,7 +264,10 @@ const programs = {
     updateJob: updateJob,
     getRunningProgram: getRunningJobProgram,
     //JOB Log Api
-    getJobLog: getJobLog
+    getJobLog: getJobLog,
+    //Settings Api
+    getSettings: getSettings,
+    updateSettings: updateSettings
 };
 
 module.exports = programs;

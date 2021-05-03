@@ -24,6 +24,7 @@ const Data = () =>{
     //     config_data = require('./config.production.json')
     // }}
     config_data = require('./config.json');
+    config_data.Log4js= require('./log4js.json');
     //LOAD FROM ENV VARIABLES
     config_data.PORT = process.env.port || 3000;
     config_data.EMAIL_HOST= process.env.EMAIL_HOST;

@@ -109,6 +109,44 @@ function getJobLogs(jobid) {
         );
 }
 
+function getSettings() {
+  const url=process.env.REACT_APP_API_BASE_URL;
+
+  const requestOptions = {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' }
+  };
+
+  return fetch(url + "settings", requestOptions)
+        .then(
+          response => response.json()
+        );
+}
+
+function updateSettings(Language,EmaliNotification,Email){
+  const url=process.env.REACT_APP_API_BASE_URL;
+  const body={
+              "LANGUAGE": false,
+              "EMAIL_NOTIFY": "",
+              "EMAIL_TO": ""
+              };
+
+  body.LANGUAGE= Language;
+  body.EMAIL_NOTIFY= EmaliNotification;
+  body.EMAIL_TO= Email;
+
+  const requestOptions = {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  };
+
+  return fetch(url + "settings", requestOptions)
+        .then(
+          response => response.json()
+        );
+}
+
 const ServiceProgram = {
     getPrograms: getPrograms,
     newProgram: newProgram,
@@ -117,7 +155,9 @@ const ServiceProgram = {
     startProgram: startProgram,
     getRunningProgram: getRunningProgram,
     getJobLogs: getJobLogs,
-    updateJob: updateJob
+    updateJob: updateJob,
+    getSettings: getSettings,
+    updateSettings: updateSettings
 };
 
 export default ServiceProgram;

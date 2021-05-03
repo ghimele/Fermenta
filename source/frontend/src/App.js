@@ -4,7 +4,8 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Navbar from './ui/NavBar/NavBar';
-import SideBar from './components/SideBar';
+import SideBar from './ui/Sidebar/SideBar';
+import Settings from './ui/Sidebar/Settings';
 import Main from './components/Main';
 import Monitor from './components/Monitor';
 import Info from './ui/Info/Info';
@@ -96,6 +97,7 @@ class App extends React.Component {
                         <Route path="/Sensors" exact component={() => <Sensors />} />
                         <Route path="/ProgramConfig" exact component={() => <ProgramConfig />} />
                         <Route path="/RunningProgram" exact component={() => <RunningProgram />} />
+                        <Route path="/Settings" exact component={() => <Settings />} />
                       </Switch>
                     </main>
                   </Router>
