@@ -11,6 +11,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import Card from 'react-bootstrap/Card';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Services from '../../services';
 
 const tableColProps=[{    
     Id:10,    
@@ -20,7 +21,7 @@ const tableColProps=[{
   }]   
 
 class TableCycles extends React.Component {
-    state = { tableHeaders:["#", "Temperature", "End Cycle", ""],
+    state = { tableHeaders:["#", Services.i18n.t('temperature'), Services.i18n.t('cycle.end'), ""],
               rows: this.props.cycleRows };
 
     /* This event will fire on cell change */  
@@ -182,6 +183,16 @@ class TableCycles extends React.Component {
         this.setState({ rows: newRow });
     }
 
+    getDropDowntitle(name){
+        if(name==="Duration") return Services.i18n.t('duration');
+        
+        if(name==="Volume") return Services.i18n.t('volume.volume');
+
+        if(name==="Temperature") return Services.i18n.t('temperature');
+
+        return "";
+    }
+
     /* This event will fire on next properties update */    
     componentWillReceiveProps(nextProps) {    
         try{    
@@ -234,7 +245,7 @@ class TableCycles extends React.Component {
                         <Row md="12">     
                             <Col md="4">              
                                 <DropdownButton justified="true"
-                                    title={this.state.rows[idx].End.Type}    
+                                    title={this.getDropDowntitle(this.state.rows[idx].End.Type)}    
                                     onSelect={this.handleSelectDropDown(idx)}
                                     focusFirstItemOnShow="keyboard"
                                     as={ButtonGroup}
@@ -242,13 +253,13 @@ class TableCycles extends React.Component {
                                     className="mr-2"
                                     ref={this.ref}
                                 >
-                                    <Dropdown.Item className="dropdown-CycleTypeItem" id="Duration" eventKey="Duration" title="Duration" aria-label="Duration">Duration</Dropdown.Item>
-                                    <Dropdown.Item className="dropdown-CycleTypeItem" id="Temperature" eventKey="Temperature" title="Temperature" aria-label="Temperature">Temperature</Dropdown.Item>
-                                    {this.props.useVolume ? <Dropdown.Item className="dropdown-CycleTypeItem" id="Volume" eventKey="Volume" title="Volume" aria-label="Volume">Volume</Dropdown.Item> : null}
+                                    <Dropdown.Item className="dropdown-CycleTypeItem" id="Duration" eventKey="Duration" title={Services.i18n.t('duration')} aria-label={Services.i18n.t('duration')}>{Services.i18n.t('duration')}</Dropdown.Item>
+                                    <Dropdown.Item className="dropdown-CycleTypeItem" id="Temperature" eventKey="Temperature" title={Services.i18n.t('temperature')} aria-label={Services.i18n.t('temperature')}>{Services.i18n.t('temperature')}</Dropdown.Item>
+                                    {this.props.useVolume ? <Dropdown.Item className="dropdown-CycleTypeItem" id="Volume" eventKey="Volume" title={Services.i18n.t('volume.volume')} aria-label={Services.i18n.t('volume.volume')}>{Services.i18n.t('volume.volume')}</Dropdown.Item> : null}
                                 </DropdownButton>
                             </Col>
                             <Col md="8" className="align-middle">
-                                {this.state.rows[idx].End.Type==="Temperature" ? <span className="font-weight-bold align-middle">is reached</span>
+                                {this.state.rows[idx].End.Type==="Temperature" ? <span className="font-weight-bold align-middle">{Services.i18n.t('reached')}</span>
                                     :
                                     <InputGroup className="mb-2 mr-sm-ls-2"> 
                                         <Form.Control 
@@ -299,10 +310,10 @@ class TableCycles extends React.Component {
                 <Card.Header>
                 <ButtonToolbar aria-label="Toolbar with button groups" className="justify-content-between">
                     <ButtonGroup className="mr-2">
-                        <h4>Cycles</h4>
+                        <h4>{Services.i18n.t('cycle.cycle_plural')}</h4>
                     </ButtonGroup>
                     <ButtonGroup className="ml-2">
-                        <Button id="add-row" className="btn-fermenta" onClick={this.handleAddRow(0)}><RiAddBoxLine fontSize="1.75em"/>Add new Cycle</Button> 
+                        <Button id="add-row" className="btn-fermenta" onClick={this.handleAddRow(0)}><RiAddBoxLine fontSize="1.75em"/>{Services.i18n.t('cycle.action.new')}</Button> 
                     </ButtonGroup>    
                 </ButtonToolbar>  
                 </Card.Header>

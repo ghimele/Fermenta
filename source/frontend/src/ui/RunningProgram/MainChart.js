@@ -1,6 +1,7 @@
 import React from 'react';
 import LineChart from '../../components/Charts/LineChart';
 import COLORS from '../../components/utilities/Color';
+import Services from '../../services';
 
 class MainChart extends React.Component {
   state = { Data: this.props.data}
@@ -89,8 +90,8 @@ class MainChart extends React.Component {
     ];
 
     var layout = {
-      title: 'Dough Height',
-      yaxis: { title: 'Height cm', tickfont: { color: COLORS.dark } },
+      title: Services.i18n.t('doughheight'),
+      yaxis: { title: Services.i18n.t('height') +' cm', tickfont: { color: COLORS.dark } },
       autosize: true,
       xaxis: {
         type: 'date', 'tickmode': 'auto',
@@ -104,15 +105,15 @@ class MainChart extends React.Component {
     };
 
     var layout2 = {
-      title: 'Temperature / Humidity',
+      title: Services.i18n.t('temperature') + '/' + Services.i18n.t('humidity'),
       xaxis: { type: 'date', 'tickmode': 'auto' ,
       rangeselector: {
         visible: true,
         buttons: buttons
       }},
-      yaxis: { title: 'Temperature °C', tickfont: { color: COLORS.dark } },
+      yaxis: { title: Services.i18n.t('temperature')+ ' °C', tickfont: { color: COLORS.dark } },
       yaxis2: {
-        title: '% of Humidity',
+        title: Services.i18n.t('%humidity'),
         titlefont: { color: COLORS.dark },
         tickfont: { color: COLORS.dark },
         overlaying: 'y',

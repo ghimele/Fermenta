@@ -6,6 +6,7 @@ import GaugeChart from './Charts/GaugeChart';
 import GaugeNumberChart from './Charts/GaugeNumberChart';
 import {subscribe} from './mqtt-client';
 import StackedBarChart from './Charts/StackedBarChart';
+import Services from '../services';
 
 const GaugeCPUTemp = subscribe({topic: 'Fermenta/System/CPU/Temp'})(GaugeChart);
 const GaaugeCPUUsage = subscribe({topic: 'Fermenta/System/CPU/Load'})(GaugeChart);
@@ -31,34 +32,34 @@ class Monitor extends React.Component {
           
           <Col md="6" className="mb-4">
             <Card >
-              <Card.Header as="h2">Memory</Card.Header>
+              <Card.Header as="h2">{Services.i18n.t('memory.memory')}</Card.Header>
               <Card.Body>
-                <GaaugeMemoryUsage Title="Memory Usage" Suffix="%" Prefix=""/>
-                <StackedBarChartMemory Title="Memory info" field1="memory_active" field2="memory_available"/>
-                <GaaugeNumberTotalMemory Title="Total Memory" Suffix="GB" Prefix=""/>
-                <GaaugeNumberMemoryUsed Title="Memory Used" Suffix="GB" Prefix=""/>
-                <GaaugeNumberMemoryFree Title="Memory Free" Suffix="GB" Prefix=""/>
+                <GaaugeMemoryUsage Title={Services.i18n.t('memory.usage')} Suffix="%" Prefix=""/>
+                <StackedBarChartMemory Title={Services.i18n.t('memory.info')} field1="memory_active" field2="memory_available"/>
+                <GaaugeNumberTotalMemory Title={Services.i18n.t('memory.total')} Suffix="GB" Prefix=""/>
+                <GaaugeNumberMemoryUsed Title={Services.i18n.t('memory.used')} Suffix="GB" Prefix=""/>
+                <GaaugeNumberMemoryFree Title={Services.i18n.t('memory.free')} Suffix="GB" Prefix=""/>
               </Card.Body>
             </Card>
           </Col>
           <Col md="6" className="mb-4">
             <Card>
-              <Card.Header as="h2">Disk</Card.Header>
+              <Card.Header as="h2">{Services.i18n.t('disk.disk')}</Card.Header>
               <Card.Body>
-                <GaaugeDiskUsage Title="Disk Usage" Suffix="%" Prefix=""/>
-                <StackedBarChartDisk Title="Disk info" field1="disk_used" field2="disk_free"/>
-                <GaaugeNumberTotalDisk Title="Disk Size" Suffix="GB" Prefix=""/>
-                <GaaugeNumberDiskUsed Title="Disk Used" Suffix="GB" Prefix=""/>
-                <GaaugeNumberDiskFree Title="Disk Free" Suffix="GB" Prefix=""/>
+                <GaaugeDiskUsage Title={Services.i18n.t('disk.usage')} Suffix="%" Prefix=""/>
+                <StackedBarChartDisk Title={Services.i18n.t('disk.info')} field1="disk_used" field2="disk_free"/>
+                <GaaugeNumberTotalDisk Title={Services.i18n.t('disk.size')} Suffix="GB" Prefix=""/>
+                <GaaugeNumberDiskUsed Title={Services.i18n.t('disk.used')} Suffix="GB" Prefix=""/>
+                <GaaugeNumberDiskFree Title={Services.i18n.t('disk.free')} Suffix="GB" Prefix=""/>
               </Card.Body>
             </Card>
           </Col>
           <Col md="auto" className="mb-4">
             <Card >
-              <Card.Header as="h2">CPU</Card.Header>
+              <Card.Header as="h2">{Services.i18n.t('cpu.cpu')}</Card.Header>
               <Card.Body>
-                <GaugeCPUTemp Title="CPU Temperature" Text="CardTest text" Suffix="°C" Prefix=""/>
-                <GaaugeCPUUsage  Title="CPU Usage" Text="CardTest text" Suffix="%"/> 
+                <GaugeCPUTemp Title={Services.i18n.t('cpu.temperature')} Text="CardTest text" Suffix="°C" Prefix=""/>
+                <GaaugeCPUUsage  Title={Services.i18n.t('cpu.usage')} Text="CardTest text" Suffix="%"/> 
               </Card.Body>
             </Card>
           </Col>

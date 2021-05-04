@@ -4,7 +4,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Table from 'react-bootstrap/Table';
 import {subscribe} from '../../components/mqtt-client';
-
+import Services from '../../services';
 import RowComponent from './RowComponent';
 
 const parse= function (message) {
@@ -82,7 +82,7 @@ class Info extends React.Component {
         <Row> 
           <Col>
             <Card>
-              <Card.Header as="h2">System Info</Card.Header>
+              <Card.Header as="h2">{Services.i18n.t('systeminfo')}</Card.Header>
               <Card.Body>
                 <Table borderless="true" hover="true">
                   <tbody>

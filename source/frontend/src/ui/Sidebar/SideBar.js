@@ -8,6 +8,7 @@ import Icons from '../../components/utilities/utils.icons';
 import classNames from 'classnames';
 import Disclaimer from './Disclaimer';
 import UtilsDom from '../../components/utilities/utils.dom';
+import Services from '../../services';
 
 class SideBar extends React.Component {
     state = { isMinimized: localStorage.getItem("isMinimized"), isSelected: localStorage.getItem("isSelected") };
@@ -74,31 +75,31 @@ class SideBar extends React.Component {
                     <Accordion>
                         <Card>
                             <Accordion.Toggle as={Card.Header} eventKey="0" className="card-header-sidebar" style={{cursor: 'pointer'}}>
-                                <div className="text-left"><Icons.MiniProgramLine fontSize="2em"/><span className={SidebarTitle}>Programs</span></div>
+                                <div className="text-left"><Icons.MiniProgramLine fontSize="2em"/><span className={SidebarTitle}>{Services.i18n.t('program.program_plural')}</span></div>
                             </Accordion.Toggle>
                             <Accordion.Collapse eventKey="0">
                                 <div className="list-group card-body-sidebar">
-                                <Link className={ListItem} to="/RunningProgram" onClick={this.toggleSelected}><Icons.RunLine fontSize="1.5em"/><span className={SidebarTitle}>Active</span></Link>
-                                <Link className={ListItem} to="/JobPrograms" onClick={this.toggleSelected}><Icons.FileHistoryLine fontSize="1.5em"/><span className={SidebarTitle}>History</span></Link>
-                                <Link className={ListItem} to="/ProgramConfig" onClick={this.toggleSelected}><Icons.StackLine fontSize="1.5em"/><span className={SidebarTitle}>Configure</span></Link>
+                                <Link className={ListItem} to="/RunningProgram" onClick={this.toggleSelected}><Icons.RunLine fontSize="1.5em"/><span className={SidebarTitle}>{Services.i18n.t('active')}</span></Link>
+                                <Link className={ListItem} to="/JobPrograms" onClick={this.toggleSelected}><Icons.FileHistoryLine fontSize="1.5em"/><span className={SidebarTitle}>{Services.i18n.t('history')}</span></Link>
+                                <Link className={ListItem} to="/ProgramConfig" onClick={this.toggleSelected}><Icons.StackLine fontSize="1.5em"/><span className={SidebarTitle}>{Services.i18n.t('configure')}</span></Link>
                                 </div>
                             </Accordion.Collapse>
                         </Card>
                         <Card>
                             <Accordion.Toggle as={Card.Header}  eventKey="1" className="card-header-sidebar" style={{cursor: 'pointer'}}>
-                                <div className="text-left"><Icons.ComputerLine fontSize="2em"/><span className={SidebarTitle}>System</span></div>
+                                <div className="text-left"><Icons.ComputerLine fontSize="2em"/><span className={SidebarTitle}>{Services.i18n.t('system')}</span></div>
                             </Accordion.Toggle>
                             <Accordion.Collapse eventKey="1">
                                 <div className="list-group card-body-sidebar">
-                                <Link className={ListItem} to="/Monitor" onClick={this.toggleSelected}><Icons.DashboardLine fontSize="1.5em"/><span className={SidebarTitle}>Monitor</span></Link>
-                                <Link className={ListItem} to="/Sensors" onClick={this.toggleSelected}><Icons.SensorLine fontSize="1.5em"/><span className={SidebarTitle}>Sensors</span></Link>
-                                <Link className={ListItem} to="/Info" onClick={this.toggleSelected}><Icons.InformationLine fontSize="1.5em"/><span className={SidebarTitle}>Info</span></Link>
+                                <Link className={ListItem} to="/Monitor" onClick={this.toggleSelected}><Icons.DashboardLine fontSize="1.5em"/><span className={SidebarTitle}>{Services.i18n.t('monitor')}</span></Link>
+                                <Link className={ListItem} to="/Sensors" onClick={this.toggleSelected}><Icons.SensorLine fontSize="1.5em"/><span className={SidebarTitle}>{Services.i18n.t('sensor_plural')}</span></Link>
+                                <Link className={ListItem} to="/Info" onClick={this.toggleSelected}><Icons.InformationLine fontSize="1.5em"/><span className={SidebarTitle}>{Services.i18n.t('info')}</span></Link>
                                 </div>
                             </Accordion.Collapse>
                         </Card>
                     </Accordion>
                     <footer className={SidebarFooter} id="SidebarFooter">
-                        <Link className={SettingsItem} to="/Settings" onClick={this.toggleSelected}><Icons.Settings4Line fontSize="1.5em"/><span className={SidebarTitle}>Settings</span></Link>
+                        <Link className={SettingsItem} to="/Settings" onClick={this.toggleSelected}><Icons.Settings4Line fontSize="1.5em"/><span className={SidebarTitle}>{Services.i18n.t('settings')}</span></Link>
                         <div className="dropdown-divider"/>
                         <div className="d-flex">
                             <Disclaimer isMinimized={this.state.isMinimized}/>

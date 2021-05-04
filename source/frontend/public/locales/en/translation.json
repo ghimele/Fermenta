@@ -1,0 +1,124 @@
+{
+    "title": "Welcome to Fermenta",
+    "settings": "Settings",
+    "language": "Language",
+    "email": {
+        "email": "Email",
+        "notification": "Email notification",
+        "placesholder": "Enter email separated by semicolon ';'"
+      },
+    "save": "Save",
+    "active": "Active",
+    "history": "History",
+    "configure": "Configure",
+    "system": "System",
+    "monitor": "Monitor",
+    "info": "Info",
+    "program": {
+        "program": "Program",
+        "program_plural":"Programs",
+        "select": "$t(select) $t(a) $t(program.program)",
+        "new": "$t(new) $t(program.program)",
+        "delete":"$t(delete) $t(program.program)",
+        "start":"$t(start) $t(program.program)",
+        "active":"Active $t(program.program)",
+        "action":{
+            "started":"$t(program.program) {{program}} started!",
+            "saved":"$t(program.program) {{program}} saved!",
+            "deleted":"$t(program.program) {{program}} deleted!",
+            "created":"$t(new) $t(program.program) created!"
+        },
+        "error":{
+            "starting":"$t(error) starting the {{program}} $t(programs.program)!",
+            "saving":"$t(error) saving the {{program}} $t(programs.program)!",
+            "getting":"$t(error) getting $t(programs.programs_plurar)!",
+            "creating":"$t(error) creating a new $t(programs.program)!",
+            "deleting":"$t(error) deleting the {{program}} $t(programs.program)!"
+        }
+    },
+    "loading":"Loading...",
+    "select": "Select",
+    "a": "a",
+    "new": "New",
+    "delete": "Delete",
+    "start":"Start",
+    "error": "Error",
+    "volume":{
+        "volume":"Volume",
+        "label":"Configure the container size, dimension in cm",
+        "switch_label":"Use the dough volume",
+        "width_ph":"$t(width) in cm",
+        "length_ph":"$t(length) in cm",
+        "height_ph":"$t(height) in cm"
+    },
+    "width":"Width",
+    "length":"Length",
+    "height":"Height",
+    "name":"Name",
+    "name_ph":"Enter the Name",
+    "description":"Description",
+    "description_ph":"Enter the Description",
+    "temperature":"Temperature",
+    "reached":"is reached",
+    "duration":"Duration",
+    "cycle":{
+        "cycle":"Cycle",
+        "cycle_plural":"Cycles",
+        "end":"End $t(cycle.cycle)",
+        "start":"Start $t(cycle.cycle)",
+        "action":{
+            "new":"Add new $t(cycle.cycle)"
+        }
+    },
+    "stop":"Stop",
+    "started":"Started",
+    "elapsed":"Elapsed Time",
+    "currentdata":"Current Data",
+    "chart":"Chart",
+    "chart_plural":"Charts",
+    "targettemp":"Target Temp",
+    "completed":"Completed",
+    "programnotrunning":"There is no Program running!",
+    "doughheight":"Dough Height",
+    "humidity":"Humidity",
+    "%humidity":"% of Humidity",
+    "systeminfo":"System Info",
+    "sensor":{
+        "sensor":"Sensor",
+        "sensor_plural":"Sensors",
+        "temperature": "$t(temperature) $t(sensor.sensor)",
+        "temperature_plural": "$t(temperature) $t(sensor.sensor_plural)",
+        "distance": "$t(distance) $t(sensor.sensor)",
+        "distance_plural": "$t(distance) $t(sensor.sensor_plural)"
+    },
+    "sensor_plural":"Sensors",
+    "distance":"Distance",
+    "usage":"Usage",
+    "total":"Total",
+    "used":"Used",
+    "free":"Free",
+    "size":"Size",
+    "memory":{
+        "memory":"Memory",
+        "info":"$t(memory.memory) $t(info)",
+        "total":"$t(total)",
+        "used":"$t(used)",
+        "free":"$t(free)",
+        "usage":"% of $t(memory.memory) $t(usage,lowercase)"
+    },
+    "disk":{
+        "disk":"Disk",
+        "info":"$t(disk.disk) $t(info)",
+        "size":"$t(size)",
+        "used":"$t(used)",
+        "free":"$t(free)",
+        "usage":"% of $t(disk.disk) $t(usage,lowercase)"
+    },
+    "cpu":{
+        "cpu":"CPU",
+        "temperature":"$t(temperature)",
+        "usage":"% of $t(cpu.cpu) $t(usage,lowercase)"
+    }
+
+
+}

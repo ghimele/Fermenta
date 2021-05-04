@@ -1,0 +1,127 @@
+{
+    "title": "Benvenuti in Fermenta",
+    "settings": "Impostazioni",
+    "language": "Lingua",
+    "email": {
+        "email": "Email",
+        "notification": "notifica email",
+        "placesholder": "Inserire l'email separate dal carattere ';'"
+      },
+    "save": "Salva",
+    "active": "Attivo",
+    "history": "Storia",
+    "configure": "Configura",
+    "system": "Sistema",
+    "monitor": "Monitor",
+    "info": "Informazioni",
+    "program": {
+      "program": "Programma",
+      "program_plural":"Programmi",
+      "select": "$t(select) $t(a) $t(program.program)",
+      "new": "$t(new) $t(program.program)",
+      "delete":"$t(delete) $t(program.program)",
+      "start":"$t(start) $t(program.program)",
+      "active":"$t(program.program) Attivo",
+      "action":{
+        "started":"$t(program.program) {{program}} avviato!",
+        "saved":"$t(program.program) {{program}} salvato!",
+        "deleted":"$t(program.program) {{program}} eliminato!",
+        "created":"$t(new) $t(program.program) creato!"
+    },
+    "error":{
+        "starting":"$t(error) durante l'avvio del {{program}} $t(programs.program)!",
+        "saving":"$t(error) durante il salvataggio del {{program}} $t(programs.program)!",
+        "getting":"$t(error) il caricamento dei $t(programs.programs_plurar)!",
+        "creating":"$t(error) durante la creazione di un nuovo $t(programs.program)!",
+        "deleting":"$t(error) durante la cancellazzione del {{program}} $t(programs.program)!"
+    }
+    },
+    "loading":"Caricamento...",
+    "select": "Seleziona",
+    "a": "un",
+    "new": "Nuovo",
+    "delete": "Elimina",
+    "start":"Avvia",
+    "error": "Errore",
+    "volume":{
+      "volume":"Volume",
+      "label":"Configura la dimensione del contenitore, misure in cm",
+      "switch_label":"Utilizza il volume dell'impasto",
+      "width_ph":"$t(width) in cm",
+      "length_ph":"$t(length) in cm",
+      "height_ph":"$t(height) in cm"
+  },
+  "width":"Larghezza",
+  "length":"Lunghezza",
+  "height":"Altezza",
+  "name":"Nome",
+  "name_ph":"Inserisci il Nome",
+  "description":"Descrizione",
+  "description_ph":"Inserisci la Descrizione",
+  "temperature":"Temperatura",
+  "reached":"è raggiunta",
+  "duration":"Durata",
+  "cycle":{
+        "cycle":"Ciclo",
+        "cycle_plural":"Cicli",
+        "end":"Fine $t(cycle.cycle)",
+        "start":"Inizio $t(cycle.cycle)",
+        "action":{
+            "new":"Aggiungi nuovo $t(cycle.cycle)"
+        }
+    },
+    "stop":"Annulla",
+    "started":"Iniziato",
+    "elapsed":"Tempo Trascorso",
+    "currentdata":"Dati Correnti",
+    "chart":"Grafico",
+    "chart_plural":"Grafici",
+    "targettemp":"Temperatura Obiettivo",
+    "completed":"Completato",
+    "programnotrunning":"Non ci sono Programmi in esecuzione!",
+    "doughheight":"Altezza Impasto",
+    "humidity":"Umidità",
+    "%humidity":"% di Umidità",
+    "systeminfo":"Informazioni di Sistema",
+    "sensor":{
+      "sensor":"Sensore",
+      "sensor_plural":"Sensori",
+      "temperature": "$t(sensor.sensor) di $t(temperature)",
+      "temperature_plural": "$t(sensor.sensor_plural) di $t(temperature)",
+      "distance": "$t(sensor.sensor) di Distanza",
+      "distance_plural": "$t(sensor.sensor_plural) di Distanza"
+  },
+  "sensor_plural":"Sensori",
+  "distance":"Distanza",
+    "usage":"Uso",
+    "total":"Totale",
+    "used":"Usato",
+    "used_male":"Usato",
+    "used_female":"Usata",
+    "free":"Libero",
+    "free_male":"Libero",
+    "free_female":"Libera",
+    "size":"Dimensione",
+    "memory":{
+        "memory":"Memoria",
+        "info":"$t(info) sulla $t(memory.memory)",
+        "total":"$t(total)",
+        "used":"$t(used_female)",
+        "free":"$t(free_female)",
+        "usage":"% $t(memory.memory) in $t(usage, lowercase)"
+    },
+    "disk":{
+        "disk":"Disco",
+        "info":"$t(info) sul $t(disk.disk)",
+        "size":"$t(size)",
+        "used":"$t(used)",
+        "free":"$t(free)",
+        "usage":"% $t(disk.disk) in $t(usage, lowercase)"
+    },
+    "cpu":{
+        "cpu":"CPU",
+        "temperature":"$t(temperature)",
+        "usage":"% $t(cpu.cpu) in $t(usage,lowercase)"
+    }
+
+}

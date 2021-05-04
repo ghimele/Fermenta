@@ -29,12 +29,12 @@ class ProgramForm extends React.Component {
                 Services.ServiceAlert.AlertService.error(res.message, {autoClose: true,keepAfterRouteChange:false});
             }
             else{
-                Services.ServiceAlert.AlertService.success('Program ' + this.state.selectedProgram.NAME + ' saved!', {autoClose: true});
+                Services.ServiceAlert.AlertService.success(Services.i18n.t('program.action.saved',{program:this.state.selectedProgram.NAME}), {autoClose: true});
                 this.setState({message:res})
             }
         }))
         .catch((error => {
-            console.error('There was an error!', error);
+            console.error(Services.i18n.t('program.error.saving',{program:this.state.selectedProgram.NAME}), error);
         }));
     }
 
@@ -92,7 +92,7 @@ class ProgramForm extends React.Component {
                 this.setState({ useVolume: this.props.program.DATA.UseVolume });    
             }
         }catch(error){    
-            console.log("Error in React Table component will receive props : " + error);    
+            console.log("componentDidUpdate : " + error);    
         }            
     } 
 
@@ -107,23 +107,23 @@ class ProgramForm extends React.Component {
     // <div>
         <Form>
             <Form.Group controlId="formName">
-                <Form.Label>Name</Form.Label>
-                <Form.Control required type="text" placeholder="Enter Name" value={this.state.selectedProgram.NAME} onChange={this.handleNameChange}/>
+                <Form.Label>{Services.i18n.t('name')}</Form.Label>
+                <Form.Control required type="text" placeholder={Services.i18n.t('name_ph')} value={this.state.selectedProgram.NAME} onChange={this.handleNameChange}/>
             </Form.Group>
 
             <Form.Group controlId="formDesciprtion">
-                <Form.Label>Description</Form.Label>
-                <Form.Control type="text" placeholder="Enter Description" value={this.state.selectedProgram.DATA.Description} onChange={this.handleDescriptionChange}/>
+                <Form.Label>{Services.i18n.t('description')}</Form.Label>
+                <Form.Control type="text" placeholder={Services.i18n.t('description_ph')} value={this.state.selectedProgram.DATA.Description} onChange={this.handleDescriptionChange}/>
             </Form.Group>
             <br />
             <Card>
                 <Card.Header>
-                    <h4>Volume</h4>
+                    <h4>{Services.i18n.t('volume.volume')}</h4>
                 </Card.Header>
                 <Form.Check 
                         type="switch"
                         id="cbVolume"
-                        label="Use the volume of dough"
+                        label={Services.i18n.t('volume.switch_label')}
                         onChange={this.handleVolumeChange}
                         checked={useVolume}
                         className="m-2"
@@ -139,7 +139,7 @@ class ProgramForm extends React.Component {
             <TableCycles cycleRows={this.state.selectedProgram.DATA.Cycles} useVolume={useVolume} />
             <br />
             <Button variant="primary" type="submit" className="btn-fermenta" onClick={this.handleSaveClick}>
-                Save
+            {Services.i18n.t('save')}
             </Button>
         </Form>
   );

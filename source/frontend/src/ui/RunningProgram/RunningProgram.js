@@ -41,14 +41,14 @@ class RunningProgram extends React.Component {
       }
       else if(message.Name==="jobCompleted"){
         this.setState({isCompleted: true});
-        Services.ServiceAlert.AlertService.info("Program Completed", {autoClose: true,keepAfterRouteChange:false});
+        Services.ServiceAlert.AlertService.info("Program Completed", {autoClose: false,keepAfterRouteChange:false});
       }
       else if(message.Name==="cycleCompleted"){
         this.handleGetRunningProgram(true);
-        Services.ServiceAlert.AlertService.info("Cycle Completed", {autoClose: true,keepAfterRouteChange:false});
+        Services.ServiceAlert.AlertService.info("Cycle Completed", {autoClose: false,keepAfterRouteChange:false});
       }
       else if(message.Name==="jobError"){
-        Services.ServiceAlert.AlertService.error(message.Name, {autoClose: true,keepAfterRouteChange:false});
+        Services.ServiceAlert.AlertService.error(message.Name, {autoClose: false,keepAfterRouteChange:false});
       }
     }
     catch(err){
@@ -242,11 +242,11 @@ class RunningProgram extends React.Component {
               <Card.Header >
               <ButtonToolbar aria-label="Toolbar with button groups" className="justify-content-between">
                     <ButtonGroup className="mr-2">
-                        <h2>Active Program</h2>
+                        <h2>{Services.i18n.t('program.active')}</h2>
                     </ButtonGroup>
                     <ButtonGroup className="ml-2">
 
-                        <Button id="StopProgram" className="btn-fermenta mr-2 btn-dropdown" disabled={this.state.isPaused || this.state.isCancelled || this.state.isCompleted} onClick={this.handleStop}><Icons.StopLine fontSize="1.75em"/><div className="btn-dropdown-text">Stop</div></Button> 
+                        <Button id="StopProgram" className="btn-fermenta mr-2 btn-dropdown" disabled={this.state.isPaused || this.state.isCancelled || this.state.isCompleted} onClick={this.handleStop}><Icons.StopLine fontSize="1.75em"/><div className="btn-dropdown-text">{Services.i18n.t('stop')}</div></Button> 
                         {/* <Button id="PauseProgram" className="btn-fermenta mr-2 btn-dropdown" disabled={this.state.isPaused || this.state.isCancelled} onClick={this.handlePause}><Icons.PauseLine fontSize="1.75em"/><div className="btn-dropdown-text">Pause</div></Button> 
                         <Button id="PlayProgram" className="btn-fermenta mr-2 btn-dropdown" disabled={!this.state.isPaused} onClick={this.handleRun}><Icons.PlayLine fontSize="1.75em"/><div className="btn-dropdown-text">Play</div></Button> */}
                         
@@ -255,9 +255,9 @@ class RunningProgram extends React.Component {
               </Card.Header>
               <Card.Body>
                 <Row style={{fontSize: '1.8em'}} className="align-middle">
-                  <Col xs="12" >Name: {this.state.RunningJobData.Name}</Col>
-                  <Col xs="12" md="auto"><DateTime datetime={this.state.RunningJob.STARTDATE} label="Started:"/></Col>
-                  <Col xs="12" >{this.state.isPaused ? <strong>PAUSED</strong> : this.state.isCancelled ? <strong>CANCELLED</strong> : this.state.isCompleted ? <strong>COMPLETED</strong> : <ElapsedTime startdate={this.state.RunningJob.STARTDATE} label="Elapsed Time:"/>}</Col>
+                  <Col xs="12" >{Services.i18n.t('name')}: {this.state.RunningJobData.Name}</Col>
+                  <Col xs="12" md="auto"><DateTime datetime={this.state.RunningJob.STARTDATE} label={Services.i18n.t('started')+":"}/></Col>
+                  <Col xs="12" >{this.state.isPaused ? <strong>PAUSED</strong> : this.state.isCancelled ? <strong>CANCELLED</strong> : this.state.isCompleted ? <strong>COMPLETED</strong> : <ElapsedTime startdate={this.state.RunningJob.STARTDATE} label={Services.i18n.t('elapsed')+":"}/>}</Col>
                 </Row>
             </Card.Body>
             </Card>
@@ -266,7 +266,7 @@ class RunningProgram extends React.Component {
           {/* Current Data Card */}
           <Col sm="6" className="mb-3">
             <Card>
-              <Card.Header as="h2">Current Data</Card.Header>
+              <Card.Header as="h2">{Services.i18n.t('currentdata')}</Card.Header>
               <Card.Body>
                 <Row style={{fontSize: '1.8em'}} className="align-middle">
                   <Col xs="6"><Temperature Value={this.state.CurrentData.Temperature} /></Col>
@@ -281,7 +281,7 @@ class RunningProgram extends React.Component {
           {/* Charts Card */}
           <Col xs="12" sm="12" md="12" className="mb-3">
             <Card>
-              <Card.Header as="h2">Charts</Card.Header>
+              <Card.Header as="h2">{Services.i18n.t('chart_plural')}</Card.Header>
               <Card.Body>
                 <MainChart data={this.state.HistoricalData}/>
               </Card.Body>
@@ -291,16 +291,16 @@ class RunningProgram extends React.Component {
           {/* Cycle Card */}
           <Col xs="12" sm="12" md="12" className="mb-3">
             <Card>
-              <Card.Header as="h2">Cycles</Card.Header>
+              <Card.Header as="h2">{Services.i18n.t('cycle.cycle_plural')}</Card.Header>
               <Card.Body>
                 <Table responsive="sm" hover="true" style={{fontSize: '1.5em'}}>
                   <thead>    
                     <tr>    
                       <th width="10"><Icons.Hash /></th>
-                      <th>Started</th>
-                      <th>Target Temp</th>
+                      <th>{Services.i18n.t('started')}</th>
+                      <th>{Services.i18n.t('targettemp')}</th>
                       <th><Icons.TimeLine/></th>
-                      <th>Completed</th>
+                      <th>{Services.i18n.t('completed')}</th>
                     </tr> 
                   </thead>
                   <Accordion as="tbody">
@@ -316,7 +316,7 @@ class RunningProgram extends React.Component {
     else{
       return (
         <Row>
-          <Col>There is no Program running</Col>
+          <Col>{Services.i18n.t('programnotrunning')}</Col>
         </Row>
       );
     }

@@ -48,13 +48,13 @@ class ProgramsDropDown extends React.Component {
             }
             else{
                 if(res.message.lastInsertRowid){
-                    Services.ServiceAlert.AlertService.success('New Program created!', this.state.options);
+                    Services.ServiceAlert.AlertService.success(Services.i18n.t('program.action.created'), this.state.options);
                     this.handleGetPrograms(false,res.message.lastInsertRowid);
                 }
             }
         }))
         .catch((error => { 
-            Services.ServiceAlert.AlertService.error('Error creating new program!', this.state.options);
+            Services.ServiceAlert.AlertService.error(Services.i18n.t('program.error.creating'), this.state.options);
             console.error('There was an error!', error);
           }));
         
@@ -71,13 +71,13 @@ class ProgramsDropDown extends React.Component {
                     Services.ServiceAlert.AlertService.error(res.message, this.state.options);
                 }
                 else{
-                    Services.ServiceAlert.AlertService.success('Program '+ programName + ' deleted!' , this.state.options);
+                    Services.ServiceAlert.AlertService.success(Services.i18n.t('program.action.deleted', {program:programName}) , this.state.options);
                     this.handleGetPrograms(false,-1);
                     this.props.onSelectedProgramChange('');
                 }
             }))
             .catch((error => {
-                Services.ServiceAlert.AlertService.error('Error deleting program!', this.state.options);
+                Services.ServiceAlert.AlertService.error(Services.i18n.t('program.error.deleting', {program:programName}), this.state.options);
                 console.error('There was an error!', error);
             }));
         }
@@ -94,13 +94,13 @@ class ProgramsDropDown extends React.Component {
                     Services.ServiceAlert.AlertService.error(res.message, this.state.options);
                 }
                 else{
-                    Services.ServiceAlert.AlertService.success('Program '+ programName + ' started!' , this.state.options);
+                    Services.ServiceAlert.AlertService.success(Services.i18n.t('program.action.started', {program:programName}) , this.state.options);
                     this.handleGetPrograms(false,-1);
                     this.props.onSelectedProgramChange('');
                 }
             }))
             .catch((error => {
-                Services.ServiceAlert.AlertService.error('Error starting program!', this.state.options);
+                Services.ServiceAlert.AlertService.error(Services.i18n.t('program.error.starting', {program:programName}), this.state.options);
                 console.error('There was an error!', error);
             }));
         }
@@ -131,7 +131,7 @@ class ProgramsDropDown extends React.Component {
 
     handleGetPrograms =(showLoading,selectindex)=>{
         if(showLoading){
-            Services.ServiceAlert.AlertService.info("Loading...", {autoClose: false,keepAfterRouteChange:false});
+            Services.ServiceAlert.AlertService.info(Services.i18n.t('loading'), {autoClose: false,keepAfterRouteChange:false});
         }
         this.setState({isLoading: true});
         Services.Programs.getPrograms()
@@ -146,7 +146,7 @@ class ProgramsDropDown extends React.Component {
         }))
         .catch((error => { 
             Services.ServiceAlert.AlertService.clear();
-            Services.ServiceAlert.AlertService.error('Error getting programs!', this.state.options);
+            Services.ServiceAlert.AlertService.error(Services.i18n.t('program.error.getting'), this.state.options);
             console.error('There was an error!', error);
         }));
     }
@@ -156,7 +156,7 @@ class ProgramsDropDown extends React.Component {
     }
 
     render() {
-    const DropDownTitleValue=this.state.SelectedProgram === '' ? "Select a program" : this.state.SelectedProgram.NAME;
+    const DropDownTitleValue=this.state.SelectedProgram === '' ? Services.i18n.t('program.select') : this.state.SelectedProgram.NAME;
     const Programs = this.state.Programs;
 
     var list;
@@ -193,9 +193,9 @@ class ProgramsDropDown extends React.Component {
                     {list}
                 </DropdownButton>
 
-                <Button className="btn-fermenta mr-2 btn-dropdown" disabled={this.state.isLoading} onClick={this.handleNew}><Icons.NewspaperLine fontSize="1.5em"/><div className="btn-dropdown-text">New Program</div></Button>
-                <Button className="btn-fermenta mr-2 btn-dropdown" disabled={!this.state.programselected} onClick={this.handleDelete}><Icons.DeleteBinLine fontSize="1.5em"/><div className="btn-dropdown-text">Delete Program</div></Button>
-                <Button className="btn-fermenta mr-2 btn-dropdown" disabled={!this.state.programselected} onClick={this.handleStart}><Icons.RunLine fontSize="1.5em"/><div className="btn-dropdown-text">Start Program</div></Button>
+                <Button className="btn-fermenta mr-2 btn-dropdown" disabled={this.state.isLoading} onClick={this.handleNew}><Icons.NewspaperLine fontSize="1.5em"/><div className="btn-dropdown-text">{Services.i18n.t('program.new')}</div></Button>
+                <Button className="btn-fermenta mr-2 btn-dropdown" disabled={!this.state.programselected} onClick={this.handleDelete}><Icons.DeleteBinLine fontSize="1.5em"/><div className="btn-dropdown-text">{Services.i18n.t('program.delete')}</div></Button>
+                <Button className="btn-fermenta mr-2 btn-dropdown" disabled={!this.state.programselected} onClick={this.handleStart}><Icons.RunLine fontSize="1.5em"/><div className="btn-dropdown-text">{Services.i18n.t('program.start')}</div></Button>
             </ButtonGroup>
       </div>
     );

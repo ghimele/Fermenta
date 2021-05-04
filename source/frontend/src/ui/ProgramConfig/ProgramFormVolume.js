@@ -1,7 +1,7 @@
 import React from 'react';
 import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
-
+import Services from '../../services';
 
 
 class ProgramFormVolume extends React.Component {
@@ -45,7 +45,7 @@ class ProgramFormVolume extends React.Component {
                 this.setState({ height: this.props.height });    
             }
         }catch(error){    
-            console.log("Error in React Table component will receive props : " + error);    
+            console.log("componentDidUpdate : " + error);    
         }            
     } 
     
@@ -54,20 +54,20 @@ class ProgramFormVolume extends React.Component {
             return (
             <div className="p-2">
                 <Form.Row>
-                    <Form.Label className="ml-1">Configure the container size, dimension in cm</Form.Label>
+                    <Form.Label className="ml-1">{Services.i18n.t('volume.label')}</Form.Label>
                 </Form.Row>
                 <Form.Row >
                     <Form.Group controlId="formVolumeWidth" as={Col}>
-                        <Form.Label>Width</Form.Label>
-                        <Form.Control required type="number" placeholder="Width in cm" value={this.state.width} onChange={this.handleWidthChange}/>
+                        <Form.Label>{Services.i18n.t('width')}</Form.Label>
+                        <Form.Control required type="number" placeholder={Services.i18n.t('volume.width_ph')} value={this.state.width} onChange={this.handleWidthChange}/>
                     </Form.Group>
                     <Form.Group controlId="formVolumeLength" as={Col}>
-                        <Form.Label>Length</Form.Label>
-                        <Form.Control required type="number" placeholder="Length in cm" value={this.state.length} onChange={this.handleLengthChange}/>
+                        <Form.Label>{Services.i18n.t('length')}</Form.Label>
+                        <Form.Control required type="number" placeholder={Services.i18n.t('volume.length_ph')} value={this.state.length} onChange={this.handleLengthChange}/>
                     </Form.Group>
                     <Form.Group controlId="formVolumeHeight" as={Col}>
-                        <Form.Label>Height</Form.Label>
-                        <Form.Control required type="number" placeholder="Height in cm" value={this.state.height} onChange={this.handleHeightChange}/>
+                        <Form.Label>{Services.i18n.t('height')}</Form.Label>
+                        <Form.Control required type="number" placeholder={Services.i18n.t('volume.height_ph')} value={this.state.height} onChange={this.handleHeightChange}/>
                     </Form.Group>
                 </Form.Row>
             </div>
