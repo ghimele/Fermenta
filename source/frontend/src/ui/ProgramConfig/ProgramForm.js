@@ -5,6 +5,7 @@ import Button from 'react-bootstrap/Button';
 import FormVolume from './ProgramFormVolume';
 import TableCycles from './TableCycles';
 import Services from '../../services';
+import InputKeyboard from '../../components/InputKeyboard';
 
 class ProgramForm extends React.Component {
     state = { useVolume:this.props.program.DATA.UseVolume, selectedProgram:this.props.program, error: false, message:"" };
@@ -38,19 +39,20 @@ class ProgramForm extends React.Component {
         }));
     }
 
-    handleNameChange=(e)=>{
+    handleNameChange=(value)=>{
         const p=this.state.selectedProgram;
-        p.NAME= e.target.value;
+        //p.NAME= e.target.value;
+        p.NAME=value;
         if(p.DATA!=null){
             p.DATA.Name=p.NAME;
         }
         this.setState({ selectedProgram: p});
     }
 
-    handleDescriptionChange=(e)=>{
+    handleDescriptionChange=(value)=>{
         const p=this.state.selectedProgram;
         if (p.DATA!=null){
-            p.DATA.Description= e.target.value;
+            p.DATA.Description= value;
             this.setState({ selectedProgram: p});
         }
     }
@@ -108,13 +110,18 @@ class ProgramForm extends React.Component {
         <Form>
             <Form.Group controlId="formName">
                 <Form.Label>{Services.i18n.t('name')}</Form.Label>
-                <Form.Control required type="text" placeholder={Services.i18n.t('name_ph')} value={this.state.selectedProgram.NAME} onChange={this.handleNameChange}/>
+                {/* <Form.Control required type="text" placeholder={Services.i18n.t('name_ph')} value={this.state.selectedProgram.NAME} onChange={this.handleNameChange}/> */}
+                <InputKeyboard id="InputName" baseClass="InputName" required={true} type="text" placeholder={Services.i18n.t('name_ph')} value={this.state.selectedProgram.NAME} onChange={this.handleNameChange}/>
             </Form.Group>
 
             <Form.Group controlId="formDesciprtion">
                 <Form.Label>{Services.i18n.t('description')}</Form.Label>
-                <Form.Control type="text" placeholder={Services.i18n.t('description_ph')} value={this.state.selectedProgram.DATA.Description} onChange={this.handleDescriptionChange}/>
+                {/* <Form.Control type="text" placeholder={Services.i18n.t('description_ph')} value={this.state.selectedProgram.DATA.Description} onChange={this.handleDescriptionChange}/> */}
+                <InputKeyboard id="InputDescr" baseClass="InputDescr" type="text" placeholder={Services.i18n.t('description_ph')} value={this.state.selectedProgram.DATA.Description} onChange={this.handleDescriptionChange}/>
             </Form.Group>
+
+            
+            
             <br />
             <Card>
                 <Card.Header>

@@ -6,6 +6,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container'
 import Services from '../../services';
+import InputKeyboard from '../../components/InputKeyboard';
 
 class Settings extends React.Component {
     state = {isLoading: true, emailNotify: true, Language: 'English' , email:'',lng:'en'}
@@ -13,8 +14,6 @@ class Settings extends React.Component {
     handleSaveClick = (e) => {
         e.preventDefault();
         //const { t, i18n } = useTranslation();
-
-  
 
         Services.Programs.updateSettings(this.state.Language,this.state.emailNotify,this.state.email)
         .then((res=>{
@@ -39,9 +38,9 @@ class Settings extends React.Component {
         this.setState({ emailNotify: e.target.checked });
     }
 
-    handleEmailChange = (e) => {
+    handleEmailChange = (value) => {
         var val = this.state.email;
-        val= e.target.value;
+        val= value;
 
         this.setState({ email: val });
     }
@@ -106,7 +105,7 @@ class Settings extends React.Component {
                             <Form.Group as={Row} controlId="formEmail">
                                 <Form.Label column sm="3">{Services.i18n.t('email.email')}</Form.Label>
                                 <Col sm="9">
-                                    <Form.Control className="inpute-settings" 
+                                    {/* <Form.Control className="inpute-settings" 
                                                 type="text" 
                                                 as="textarea" 
                                                 rows={3} 
@@ -114,7 +113,19 @@ class Settings extends React.Component {
                                                 // "Enter email separated by semicolon ';'" 
                                                 value={this.state.email} 
                                                 onChange={this.handleEmailChange}
-                                                disabled={!this.state.emailNotify}/>
+                                                disabled={!this.state.emailNotify}/> */}
+                                    <InputKeyboard 
+                                        required={false} 
+                                        as="textarea"
+                                        type="text"  
+                                        baseClass="InputEmail" 
+                                        layoutName="default" 
+                                        placeholder={Services.i18n.t('email.placesholder')}
+                                        value={this.state.email} 
+                                        onChange={this.handleEmailChange} 
+                                        disabled={!this.state.emailNotify}
+                                    />
+
                                 </Col>
                             </Form.Group>
                             <Button variant="primary" type="submit" className="btn-fermenta" onClick={this.handleSaveClick}>

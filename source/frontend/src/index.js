@@ -8,7 +8,9 @@ import './services/i18n.service';
 
 ReactDOM.render(
   <React.StrictMode>
+    {/* <React.Suspense fallback="Loading..."> */}
     <App />
+    {/* </React.Suspense> */}
   </React.StrictMode>,
   document.getElementById('root')
 ); 

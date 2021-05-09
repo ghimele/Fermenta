@@ -200,6 +200,10 @@ $sidebar-mini-width: 50px;
   .card-width-650{
     width: 300px;
   }
+  
+  .keyboardContainer{
+    display:none;
+  }
 }
 
 @media (min-width: 576px) and (max-width: 1024px){
@@ -280,6 +284,10 @@ $sidebar-mini-width: 50px;
 
   .card-width-650{
     width: 650px;
+  }
+
+  .keyboardContainer{
+    display:none;
   }
 }
 
@@ -407,6 +415,10 @@ input[type=number] {
 
 .align-middle{
   align-items: center; 
+}
+
+.hidden {
+  display: none;
 }
 
 @import "~bootstrap/scss/bootstrap";
