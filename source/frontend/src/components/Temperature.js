@@ -10,8 +10,14 @@ export const Temperature = (props) => {
     });
 
     return(
-        <div className="align-middle list-inline">
-            <span style={{verticalAlign: 'middle'}}><Icons.TempHotLine /></span> 
+        <div className="align-middle list-inline" >
+            {props.Hot ?
+                <span style={{verticalAlign: 'middle'}}><Icons.TempHotLine color="red"/></span> 
+                : props.Cold ?
+                <span style={{verticalAlign: 'middle'}}><Icons.TempHotLine color="blue"/></span> 
+                : <span style={{verticalAlign: 'middle'}}><Icons.TempHotLine /></span> 
+            }
+            
             <span style={{verticalAlign: 'middle'}}> {props.Value}</span> 
             <span style={{position:'absolute'}}><Icons.CelsiusLine/></span>
         </div>

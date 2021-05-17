@@ -28,13 +28,12 @@ if(env==="PRODUCTION"){
 
 db.UpdateMainDB();
 MQTTClient.start();
+
 JobScheduler.start();
 
 /**
  * Get port from environment and store in Express.
  */
-
-
 app.set('port', port);
 
 

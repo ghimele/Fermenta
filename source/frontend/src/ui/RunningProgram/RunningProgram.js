@@ -269,7 +269,7 @@ class RunningProgram extends React.Component {
               <Card.Header as="h2">{Services.i18n.t('currentdata')}</Card.Header>
               <Card.Body>
                 <Row style={{fontSize: '1.8em'}} className="align-middle">
-                  <Col xs="6"><Temperature Value={this.state.CurrentData.Temperature} /></Col>
+                  <Col xs="6"><Temperature Value={this.state.CurrentData.Temperature} Hot={this.state.CurrentData.Hot} Cold={this.state.CurrentData.Cold}/></Col>
                   <Col xs="6"><Humidity Value={this.state.CurrentData.Humidity} /></Col>
                   <Col xs="6"><Distance Value={this.state.CurrentData.DoughHeight} /></Col>
                   <Col xs="6"><Volume Value={this.state.CurrentData.DoughVolume} /></Col>

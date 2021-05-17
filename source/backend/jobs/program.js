@@ -111,7 +111,9 @@ parentPort.on("message", (value)=>{
         Temperature: "",
         Humidity: "",
         DoughHeight: "",
-        DoughVolume: ""
+        DoughVolume: "",
+        Hot:"",
+        Cold:""
     };
 
     if(parentPort === undefined) process.exit(0); 
@@ -294,6 +296,19 @@ parentPort.on("message", (value)=>{
                         currentData.DoughHeight= currentDoughHeight;
                         currentData.DoughVolume= currentDoughVolume;
 
+                        if(currentTemp < (targetTemp - config().TEMPERATURE_HYSTERESIS)){
+                            currentData.Hot=true;
+                            currentData.Cold=false;
+                        }
+                        else if(currentTemp > (targetTemp + config().TEMPERATURE_HYSTERESIS)){
+                            currentData.Hot=false;
+                            currentData.Cold=true;
+                        }
+                        else{
+                            currentData.Hot=false;
+                            currentData.Cold=false;
+                        }
+
                         //send data 
                         log("Elpsed Time = " + elapsedTime + " milliseconds" );
                         log("Elpsed Time = " + Math.round(elapsedTime/60000) + " minutes" );
@@ -330,6 +345,8 @@ parentPort.on("message", (value)=>{
         var ret=db.UpdateJobData(queuedProgram.data.ID,jobData);
         var ret=db.UpdateJobStatus(queuedProgram.data.ID,Enum.JOBSTATUS.COMPLETED);
         
+        //send alarm to notify the completition
+        var ret= db.AddJobAlarm();
 
         if(config().EMAIL_NOTIFY){
             var emaildata={ 

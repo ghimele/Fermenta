@@ -430,6 +430,30 @@ function AddJobEmail(JobProgramData){
     }
 }
 
+function AddJobAlarm(JobAlarmData){
+    const INSERT_JOB = maindb.prepare('INSERT INTO JOB (NAME,STATUS,ARRIVALDATE,JOBTYPE,DATA) VALUES(?,?,?,?,?)');
+    var retval= new Object();
+    retval.error=false;
+    retval.message="";
+    try{
+        log.info('AddJobAlarm');
+        const Transaction = maindb.transaction(() => {
+            retval.message=INSERT_JOB.run("ALARM",Enum.JOBSTATUS.QUEUED,new Date().toLocaleString(),Enum.JOBTYPE.ALARM,JobAlarmData);
+        });
+
+        Transaction.apply();
+
+        log.info(retval);
+        return retval;
+    }
+    catch(err){
+        log.error("Error during JobAlarmData: %s", err);
+        retval.error=true;
+        retval.message=err.message;
+        return retval;
+    }
+}
+
 
 function AddJobLog(JOBID,DATA){
     const INSERT_JOBLOG = maindb.prepare('INSERT INTO JOBLOG (JOBID,DATA) VALUES(?,?)');
@@ -498,6 +522,7 @@ const db = {
     UpdateJobData: UpdateJobData,
     GetJobs: GetJobs,
     AddJobEmail: AddJobEmail,
+    AddJobAlarm: AddJobAlarm,
     //JOB Log functions
     AddJobLog: AddJobLog,
     GetJobLog: GetJobLog 

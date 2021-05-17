@@ -33,6 +33,7 @@ const Data = () =>{
     config_data.EMAIL_USER= process.env.EMAIL_USER;
     config_data.EMAIL_PASSWORD= process.env.EMAIL_PASSWORD;
     config_data.EMAIL_FROM= process.env.EMAIL_FROM;
+    config_data.BUZZER_PIN= process.env.BUZZER_PIN;
     return config_data;
  }
 

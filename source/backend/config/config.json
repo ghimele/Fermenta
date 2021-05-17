@@ -1,1 +1,6 @@
-{"LANGUAGE":"English","EMAIL_NOTIFY":true,"EMAIL_TO":"michele.vomera@outlook.com; michele.vomera@gmail.com; michele.vomera@bentley.com"}
+{
+    "LANGUAGE": "English",
+    "EMAIL_NOTIFY": true,
+    "EMAIL_TO": "michele.vomera@outlook.com; michele.vomera@gmail.com; michele.vomera@bentley.com",
+    "TEMPERATURE_HYSTERESIS": 0.5
+}

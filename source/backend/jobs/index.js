@@ -10,6 +10,11 @@ const jobs = [
     name: Enum.JOBTYPE.EMAIL,
     timeout: '3s', // give email script time to run
     interval: '1000'
+  },
+  {
+    name: Enum.JOBTYPE.ALARM,
+    timeout: '3s', // give alarm script time to run
+    interval: '1000'
   }
 ];
 
